@@ -99,10 +99,12 @@ func ValidateRequest(req *http.Request, res http.ResponseWriter, url, method str
 }
 
 func RenderPage(basePath, pagePath string, data any, res http.ResponseWriter) {
-	files := []string{"templates/common/" + basePath + ".html", "templates/" + pagePath + ".html"}
+	fmt.Println(basePath)
+
+	files := []string{"newtemplates/" + pagePath + ".html"}
 	tpl, err := template.ParseFiles(files...)
 	if err != nil {
-		res.WriteHeader(http.StatusInternalServerError)
+		//res.WriteHeader(http.StatusInternalServerError)
 		log.Println("🚨 " + err.Error())
 	} else {
 		tpl.Execute(res, data)
@@ -148,7 +150,6 @@ func RenderPage(basePath, pagePath string, data any, res http.ResponseWriter) {
 	return imageURL
 } */
 
-
 func UploadImage(req *http.Request) string {
 	image, header, err := req.FormFile("image")
 	if err != nil {
@@ -187,8 +188,6 @@ func UploadImage(req *http.Request) string {
 
 	return imageURL
 }
-
-
 
 func generateUniqueFilename(filename string) string {
 	ext := filepath.Ext(filename)

@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"forum/data/models"
 	"forum/lib"
 	"log"
@@ -27,7 +29,8 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		basePath := "base"
 		pagePath := "index"
 
-		isSessionOpen := models.ValidSession(req)
+		// isSessionOpen := models.ValidSession(req)
+		isSessionOpen := true
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -100,7 +103,13 @@ func Index(res http.ResponseWriter, req *http.Request) {
 			AllNotifs:     notifications,
 		}
 
-		lib.RenderPage(basePath, pagePath, homePageData, res)
+		jsonData, err := json.Marshal(homePageData)
+		if err != nil {
+			fmt.Println("Erreur lors de la conversion en JSON:", err)
+			return
+		}
+
+		lib.RenderPage(basePath, pagePath, string(jsonData), res)
 		log.Println("✅ Home page get with success")
 	}
 }
