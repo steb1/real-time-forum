@@ -21,6 +21,7 @@ func main() {
 	// http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./assets/img/"))))
 	// http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads/"))))
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./newtemplates/js/"))))
+	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
 
 	http.Handle("/sign-up", rateLimiter.Wrap("auth", auth.SignUp))
 	http.Handle("/sign-up-page", rateLimiter.Wrap("auth", auth.SignUpPage))
@@ -30,6 +31,9 @@ func main() {
 
 	// API endpoint rate limiting
 	http.Handle("/", rateLimiter.Wrap("api", handler.Index))
+	http.Handle("/dashboard", rateLimiter.Wrap("api", handler.HandleDashboard))
+	http.Handle("/settings", rateLimiter.Wrap("api", handler.HandleSettings))
+	http.Handle("/disconnect", rateLimiter.Wrap("api", handler.HandleDisconnect))
 
 
 	/* httpsServer := http.Server{

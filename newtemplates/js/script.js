@@ -1,7 +1,8 @@
 let isLoggedIn = true
-let rightBarContent = ["photo", "dashboard", "bibblii", "settings", "Deconnect"]
+let rightBarContent = ["photo", "dashboard", "settings", "disconnect"]
 let container = document.getElementById("container-flex")
 const preventReloadLinks = container.querySelectorAll('.leftnav-link');
+const AllRoutes =  ["", "photo", "dashboard", "settings", "disconnect"]
 
 
 function generateAuthPage() {
@@ -23,6 +24,25 @@ function generateAuthPage() {
     container.appendChild(authPage);
 }
 
+const generate404 = () => {
+    // Create and append the 404 page content
+    var body = document.body;
+    body.innerHTML = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>404 Not Found</title>
+      </head>
+      <body>
+        <h1>404 Not Found</h1>
+        <p>Sorry, the page you are looking for might be in another castle.</p>
+      </body>
+      </html>
+    `;
+}
+
 
 const displayAccueil = () => {
     let rightBar = document.createElement("div")
@@ -31,7 +51,7 @@ const displayAccueil = () => {
         if (element == "photo") {
             let li = document.createElement("li")
             let img = document.createElement("img")
-            img.src = "./assets/profile.png"
+            img.src = "../../uploads/gif.gif"
             img.id = `${element}${i}`
             li.appendChild(img)
             rightBar.appendChild(li)
@@ -55,6 +75,7 @@ const displayAccueil = () => {
     content.id = "allContent"
 
     displayAllContent(content)
+    container.innerHTML = ""        
     container.appendChild(rightBar)
     container.appendChild(content)
     console.log('ok')
@@ -103,11 +124,21 @@ const displayAllContent = (element) => {
     bodyContent.appendChild(onlineStatus)
     element.appendChild(bodyContent)
 }
-if (all.IsLoggedIn) {
-    console.log('1');
-    displayAccueil();
-} else {
-    console.log('2');
-    generateAuthPage();
+let accueil = true
+
+const handleRoutes = (route) => {
+    if (all != "404" || AllRoutes.includes(window.location.href.split("/")[3])) {
+        console.log("ok");
+        if (all.IsLoggedIn) {
+                displayAccueil();
+        } else {
+            generateAuthPage();
+        }
+    } else {
+        console.log("ok");
+        generate404()
+    }
 }
+handleRoutes()
+
 
