@@ -25,7 +25,7 @@ func main() {
 
 	http.Handle("/sign-up", rateLimiter.Wrap("auth", auth.SignUp))
 	http.Handle("/sign-up-page", rateLimiter.Wrap("auth", auth.SignUpPage))
-	http.Handle("/sign-in", rateLimiter.Wrap("auth", auth.SignIn))
+	//http.Handle("/sign-in", rateLimiter.Wrap("auth", auth.SignIn))
 	http.Handle("/sign-in-page", rateLimiter.Wrap("auth", auth.SignInPage))
 	http.Handle("/logout", rateLimiter.Wrap("auth", auth.Logout))
 
@@ -34,6 +34,9 @@ func main() {
 	http.Handle("/dashboard", rateLimiter.Wrap("api", handler.HandleDashboard))
 	http.Handle("/settings", rateLimiter.Wrap("api", handler.HandleSettings))
 	http.Handle("/disconnect", rateLimiter.Wrap("api", handler.HandleDisconnect))
+	http.Handle("/CheckAuthentication", rateLimiter.Wrap("api", handler.CheckAuthentication))
+	http.Handle("/register", rateLimiter.Wrap("api", handler.Registration))
+
 
 
 	/* httpsServer := http.Server{

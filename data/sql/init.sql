@@ -2,7 +2,11 @@
 -- Table for 'user'
 CREATE TABLE IF NOT EXISTS "user" (
     id VARCHAR PRIMARY KEY,
-    username VARCHAR,
+    nickname VARCHAR,
+    age VARCHAR,
+    gender VARCHAR,
+    firstname VARCHAR, 
+    lastname VARCHAR,
     email VARCHAR,
     password TEXT,
     avatarURL VARCHAR,

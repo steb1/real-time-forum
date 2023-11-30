@@ -113,7 +113,7 @@ func FormatNotifications(Notifications []Notification) []string {
 		author, _ := UserRepo.GetUserByID(notification.AuthorName)
 
 		timeago := lib.FormatDateDB(notification.Time)
-		notif := fmt.Sprintf("%s %s   %s", author.Username, motif, timeago)
+		notif := fmt.Sprintf("%s %s   %s", author.Nickname, motif, timeago)
 		FormatedNotif = append(FormatedNotif, notif)
 	}
 	return FormatedNotif

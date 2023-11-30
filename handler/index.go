@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"forum/data/models"
 	"forum/lib"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
@@ -30,7 +31,7 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		pagePath := "index"
 
 		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := true
+		isSessionOpen := false
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -50,12 +51,12 @@ func Index(res http.ResponseWriter, req *http.Request) {
 				}
 			}
 		}
-		randomUsers, err := models.UserRepo.SelectRandomUsers(17)
-		if err != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			log.Println("❌ Can't get 17 random users in the database")
-			return
-		}
+		// randomUsers, err := models.UserRepo.SelectRandomUsers(17)
+		// if err != nil {
+		// 	res.WriteHeader(http.StatusInternalServerError)
+		// 	log.Println("❌ Can't get 17 random users in the database")
+		// 	return
+		// }
 
 		posts, _ := models.PostRepo.GetAllPostsItems(limit)
 
@@ -93,7 +94,7 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		homePageData := HomePageData{
 			IsLoggedIn:    isSessionOpen,
 			CurrentUser:   *user,
-			RandomUsers:   randomUsers,
+			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
 			TopUsers:      TopUsers,
@@ -119,7 +120,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		pagePath := "index"
 
 		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := true
+		isSessionOpen := false
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -139,12 +140,12 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 				}
 			}
 		}
-		randomUsers, err := models.UserRepo.SelectRandomUsers(17)
-		if err != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			log.Println("❌ Can't get 17 random users in the database")
-			return
-		}
+		// randomUsers, err := models.UserRepo.SelectRandomUsers(17)
+		// if err != nil {
+		// 	res.WriteHeader(http.StatusInternalServerError)
+		// 	log.Println("❌ Can't get 17 random users in the database")
+		// 	return
+		// }
 
 		posts, _ := models.PostRepo.GetAllPostsItems(limit)
 
@@ -182,7 +183,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		homePageData := HomePageData{
 			IsLoggedIn:    isSessionOpen,
 			CurrentUser:   *user,
-			RandomUsers:   randomUsers,
+			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
 			TopUsers:      TopUsers,
@@ -209,7 +210,7 @@ func HandleSettings(res http.ResponseWriter, req *http.Request) {
 		pagePath := "index"
 
 		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := true
+		isSessionOpen := false
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -229,12 +230,12 @@ func HandleSettings(res http.ResponseWriter, req *http.Request) {
 				}
 			}
 		}
-		randomUsers, err := models.UserRepo.SelectRandomUsers(17)
-		if err != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			log.Println("❌ Can't get 17 random users in the database")
-			return
-		}
+		// randomUsers, err := models.UserRepo.SelectRandomUsers(17)
+		// if err != nil {
+		// 	res.WriteHeader(http.StatusInternalServerError)
+		// 	log.Println("❌ Can't get 17 random users in the database")
+		// 	return
+		// }
 
 		posts, _ := models.PostRepo.GetAllPostsItems(limit)
 
@@ -272,7 +273,7 @@ func HandleSettings(res http.ResponseWriter, req *http.Request) {
 		homePageData := HomePageData{
 			IsLoggedIn:    isSessionOpen,
 			CurrentUser:   *user,
-			RandomUsers:   randomUsers,
+			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
 			TopUsers:      TopUsers,
@@ -299,7 +300,7 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 		pagePath := "index"
 
 		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := true
+		isSessionOpen := false
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -319,12 +320,12 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 				}
 			}
 		}
-		randomUsers, err := models.UserRepo.SelectRandomUsers(17)
-		if err != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			log.Println("❌ Can't get 17 random users in the database")
-			return
-		}
+		// randomUsers, err := models.UserRepo.SelectRandomUsers(17)
+		// if err != nil {
+		// 	res.WriteHeader(http.StatusInternalServerError)
+		// 	log.Println("❌ Can't get 17 random users in the database")
+		// 	return
+		// }
 
 		posts, _ := models.PostRepo.GetAllPostsItems(limit)
 
@@ -362,7 +363,7 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 		homePageData := HomePageData{
 			IsLoggedIn:    isSessionOpen,
 			CurrentUser:   *user,
-			RandomUsers:   randomUsers,
+			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
 			TopUsers:      TopUsers,
@@ -381,4 +382,72 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 		lib.RenderPage(basePath, pagePath, string(jsonData), res)
 		log.Println("✅ Home page get with success")
 	}
+}
+func CheckAuthentication(res http.ResponseWriter, req *http.Request) {
+	isSessionOpen := models.ValidSession(req)
+
+	fmt.Println(isSessionOpen)
+	res.WriteHeader(400)
+	fmt.Fprintf(res, "ok")
+}
+func Registration(res http.ResponseWriter, req *http.Request) {
+	type UserData struct {
+		Nickname  string `json:"nickname"`
+		Age       int    `json:"age"`
+		Gender    string `json:"gender"`
+		FirstName string `json:"firstName"`
+		LastName  string `json:"lastName"`
+		Email     string `json:"email"`
+		Password  string `json:"password"`
+	}
+
+	// Parse JSON data from the request body
+	var userData UserData
+	responseData, err := io.ReadAll(req.Body)
+	json.Unmarshal(responseData, &userData)
+	if err != nil {
+		fmt.Println("ici")
+		http.Error(res, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+	fmt.Printf("Received user data: %+v\n", userData)
+
+	user := models.User{}
+
+	//ID, err := uuid.NewV4()
+	if err != nil {
+		fmt.Println("Failed to generate uuid")
+		return
+	}
+	//user.ID = ID.String()
+	user.Nickname = userData.Nickname
+	user.Password = userData.Password
+	user.FirstName = userData.FirstName
+	user.Gender = userData.Gender
+	user.LastName = userData.LastName
+	user.Age = strconv.Itoa((userData.Age))
+	user.Email = userData.Email
+
+	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist {
+		err := models.UserRepo.CreateUser(&user)
+		if err != nil {
+			log.Fatalf("❌ Failed to created account %v", err)
+		}
+
+		models.NewSessionToken(res, user.ID, userData.Nickname)
+
+		log.Println("✅ Account created with success")
+	}
+	http.SetCookie(res, &http.Cookie{
+		Name:  "user",
+		Value: "JohnDoe",
+		Path:  "/",
+	})
+
+	// Process the user data (you can save it to a database, perform validation, etc.)
+	res.WriteHeader(200)
+	// Send a JSON response (replace this with your actual response)
+	response := map[string]string{"message": "Registration successful"}
+	res.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(res).Encode(response)
 }

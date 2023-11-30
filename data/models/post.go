@@ -72,7 +72,7 @@ func (pr *PostRepository) GetPostByID(postID string) (*Post, error) {
 	return &post, nil
 }
 
-func (pr *PostRepository) GetUserOwnPosts(userId, userName string) ([]PostItem, error) {
+func (pr *PostRepository) GetUserOwnPosts(userId, Nickname string) ([]PostItem, error) {
 	var posts []*Post
 	var numberComments []int
 
@@ -111,7 +111,7 @@ func (pr *PostRepository) GetUserOwnPosts(userId, userName string) ([]PostItem, 
 			ID:                posts[i].ID,
 			Title:             posts[i].Title,
 			Slug:              posts[i].Slug,
-			AuthorName:        userName,
+			AuthorName:        Nickname,
 			ImageURL:          urlImage,
 			LastEditionDate:   lib.TimeSinceCreation(lastModificationDate),
 			NumberOfComments:  numberComments[i],
@@ -130,7 +130,7 @@ func (pr *PostRepository) GetUserLikedPosts(userId string) ([]PostItem, error) {
     p.id AS ID,
     p.title AS Title,
     p.slug AS Slug,
-    u.username AS AuthorName,
+    u.Nickname AS AuthorName,
     p.imageURL AS ImageURL,
     p.modifiedDate AS LastEditionDate,
     COALESCE(cmt.comment_count, 0) AS NumberOfComments,
@@ -141,7 +141,7 @@ LEFT JOIN (
     SELECT
         c.postID,
         COUNT(c.id) AS comment_count,
-        GROUP_CONCAT(u.username) AS commentators
+        GROUP_CONCAT(u.Nickname) AS commentators
     FROM "comment" c
     JOIN "user" u ON c.authorID = u.id
     GROUP BY c.postID
@@ -179,7 +179,7 @@ func (pr *PostRepository) GetUserDislikedPosts(userId string) ([]PostItem, error
     p.id AS ID,
     p.title AS Title,
     p.slug AS Slug,
-    u.username AS AuthorName,
+    u.Nickname AS AuthorName,
     p.imageURL AS ImageURL,
     p.modifiedDate AS LastEditionDate,
     COALESCE(cmt.comment_count, 0) AS NumberOfComments,
@@ -190,7 +190,7 @@ LEFT JOIN (
     SELECT
         c.postID,
         COUNT(c.id) AS comment_count,
-        GROUP_CONCAT(u.username) AS commentators
+        GROUP_CONCAT(u.Nickname) AS commentators
     FROM "comment" c
     JOIN "user" u ON c.authorID = u.id
     GROUP BY c.postID
@@ -228,7 +228,7 @@ func (pr *PostRepository) GetUserBookmarkedPosts(userId string) ([]PostItem, err
     p.id AS ID,
     p.title AS Title,
 	p.slug AS Slug,
-    u.username AS AuthorName,
+    u.Nickname AS AuthorName,
     p.imageURL AS ImageURL,
     p.modifiedDate AS LastEditionDate,
     COALESCE(cmt.comment_count, 0) AS NumberOfComments,
@@ -239,7 +239,7 @@ LEFT JOIN (
     SELECT
         c.postID,
         COUNT(c.id) AS comment_count,
-        GROUP_CONCAT(u.username) AS commentators
+        GROUP_CONCAT(u.Nickname) AS commentators
     FROM "comment" c
     JOIN "user" u ON c.authorID = u.id
     GROUP BY c.postID
@@ -345,7 +345,7 @@ func (pr *PostRepository) GetUserReaction(userID string) (map[Post][]Comment, er
 		if err != nil {
 			return nil, err
 		}
-		post.AuthorID = pos.Username
+		post.AuthorID = pos.Nickname
 
 		comment.ModifiedDate = lib.FormatDateDB(comment.ModifiedDate)
 		post.ModifiedDate = lib.FormatDateDB(post.ModifiedDate)
@@ -391,7 +391,7 @@ func (pr *PostRepository) GetAllPostsItems(morePost int) ([]PostItem, error) {
 		user := ""
 		for j := 0; j < len(tabUser); j++ {
 			if posts[i].AuthorID == tabUser[j].ID {
-				user = tabUser[j].Username
+				user = tabUser[j].Nickname
 				break
 			}
 		}
@@ -477,7 +477,7 @@ func (pr *PostRepository) GetAllNoValidedPosts() ([]PostItem, error) {
 			ID:                post.ID,
 			Title:             post.Title,
 			Slug:              post.Slug,
-			AuthorName:        user.Username,
+			AuthorName:        user.Nickname,
 			ImageURL:          user.AvatarURL,
 			LastEditionDate:   post.ModifiedDate,
 			NumberOfComments:  0,

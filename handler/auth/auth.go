@@ -24,7 +24,7 @@ func SignUp(res http.ResponseWriter, req *http.Request) {
 		}
 		user := models.User{}
 
-		if strings.TrimSpace(req.FormValue("email")) == "" || strings.TrimSpace(req.FormValue("username")) == "" || strings.TrimSpace(req.FormValue("password")) == "" || !strings.Contains(req.FormValue("email"), "@") || strings.Count(req.FormValue("email"), "@") != 1 {
+		if strings.TrimSpace(req.FormValue("email")) == "" || strings.TrimSpace(req.FormValue("Nickname")) == "" || strings.TrimSpace(req.FormValue("password")) == "" || !strings.Contains(req.FormValue("email"), "@") || strings.Count(req.FormValue("email"), "@") != 1 {
 			res.WriteHeader(http.StatusBadRequest)
 			randomUsers, err := models.UserRepo.SelectRandomUsers(15)
 			if err != nil {
@@ -41,7 +41,7 @@ func SignUp(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		user.Email = strings.ToLower(req.FormValue("email"))
-		user.Username = strings.ToLower(req.FormValue("username"))
+		user.Nickname = strings.ToLower(req.FormValue("Nickname"))
 		_password, err := lib.HashPassword(req.FormValue("password"))
 
 		if err != nil {
@@ -56,13 +56,13 @@ func SignUp(res http.ResponseWriter, req *http.Request) {
 			user.Role = models.RoleUser
 		}
 
-		if _, exist := models.UserRepo.IsExisted(user.Email, user.Username); !exist {
+		if _, exist := models.UserRepo.IsExisted(user.Email, user.Nickname); !exist {
 			err := models.UserRepo.CreateUser(&user)
 			if err != nil {
 				log.Fatalf("❌ Failed to created account %v", err)
 			}
 
-			models.NewSessionToken(res, user.ID, user.Username)
+			models.NewSessionToken(res, user.ID, user.Nickname)
 
 			http.Redirect(res, req, "/", http.StatusSeeOther)
 			log.Println("✅ Account created with success")
@@ -120,7 +120,7 @@ func SignUpPage(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func SignIn(res http.ResponseWriter, req *http.Request) {
+func signIn(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/sign-in", http.MethodPost) {
 		if err := req.ParseForm(); err != nil {
 			fmt.Fprintf(res, "❌ On Signing In %v", err)
@@ -154,7 +154,7 @@ func SignIn(res http.ResponseWriter, req *http.Request) {
 				}
 				user = *_user
 
-				models.NewSessionToken(res, user.ID, user.Username)
+				models.NewSessionToken(res, user.ID, user.Nickname)
 
 				http.Redirect(res, req, "/", http.StatusSeeOther)
 				log.Println("✅ Sign in with success")
@@ -222,3 +222,5 @@ func Logout(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 }
+
+

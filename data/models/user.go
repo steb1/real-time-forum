@@ -11,17 +11,22 @@ import (
 
 type User struct {
 	ID         string
-	Username   string
+	Nickname   string
 	IsLoggedIn string
+	Age string
+	Gender string
+	FirstName string
+	LastName string
 	Email      string
 	Password   string
 	AvatarURL  string
 	Role       ROLE
 }
 
+
 type TopUser struct {
 	ID               string
-	Username         string
+	Nickname         string
 	AvatarURL        string
 	NumberOfReaction int
 }
@@ -53,8 +58,8 @@ func (ur *UserRepository) CreateUser(user *User) error {
 		log.Fatalf("❌ Failed to generate UUID: %v", err)
 	}
 	user.ID = ID.String()
-	_, err = ur.db.Exec("INSERT INTO user (id, username, email, password, avatarURL, role) VALUES (?, ?, ?, ?, ?, ?)",
-		user.ID, user.Username, user.Email, user.Password, user.AvatarURL, user.Role)
+	_, err = ur.db.Exec("INSERT INTO user (id, nickname, age, gender, firstname, lastname, email, password, avatarURL, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		user.ID, user.Nickname, user.Age, user.Gender, user.FirstName, user.LastName, user.Email, user.Password, user.AvatarURL, user.Role)
 	return err
 }
 
@@ -68,14 +73,14 @@ func (ur *UserRepository) CreateGithubUser(user *User) error {
 
 	if existingUser != nil {
 		// User already exists, update the user details (if needed)
-		// For example, you might want to update the username or avatarURL
+		// For example, you might want to update the Nickname or avatarURL
 		user.ID = existingUser.ID
-		existingUser.Username = user.Username
+		existingUser.Nickname = user.Nickname
 		existingUser.AvatarURL = user.AvatarURL
 
 		// Update the existing user in the database
-		_, err := ur.db.Exec("UPDATE user SET username = ?, avatarURL = ? WHERE id = ?",
-			existingUser.Username, existingUser.AvatarURL, existingUser.ID)
+		_, err := ur.db.Exec("UPDATE user SET Nickname = ?, avatarURL = ? WHERE id = ?",
+			existingUser.Nickname, existingUser.AvatarURL, existingUser.ID)
 		return err
 	}
 
@@ -85,16 +90,16 @@ func (ur *UserRepository) CreateGithubUser(user *User) error {
 
 // Create a new user in the database
 func (ur *UserRepository) CreateGoogleUser(user *User) error {
-	_, err := ur.db.Exec("INSERT INTO user (id, username, email, password, avatarURL, role) VALUES (?, ?, ?, ?, ?, ?)",
-		user.ID, user.Username, user.Email, user.Password, user.AvatarURL, user.Role)
+	_, err := ur.db.Exec("INSERT INTO user (id, Nickname, email, password, avatarURL, role) VALUES (?, ?, ?, ?, ?, ?)",
+		user.ID, user.Nickname, user.Email, user.Password, user.AvatarURL, user.Role)
 	return err
 }
 
 // Get a user by ID from the database
 func (ur *UserRepository) GetUserByID(userID string) (*User, error) {
 	var user User
-	row := ur.db.QueryRow("SELECT id, username, email, password, avatarURL, role FROM user WHERE id = ?", userID)
-	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.AvatarURL, &user.Role)
+	row := ur.db.QueryRow("SELECT id, nickname, age, gender, firstname, lastname, email, password, avatarURL, role FROM user WHERE id = ?", userID)
+	err := row.Scan(&user.ID, &user.Nickname, &user.Email, &user.Age, &user.Gender, user.FirstName, &user.LastName, &user.Password, &user.AvatarURL, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil // User not found
@@ -107,8 +112,8 @@ func (ur *UserRepository) GetUserByID(userID string) (*User, error) {
 // Get a user by email from the database
 func (ur *UserRepository) GetUserByEmail(email string) (*User, error) {
 	var user User
-	row := ur.db.QueryRow("SELECT id, username, email, password, avatarURL, role FROM user WHERE email = ?", email)
-	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.AvatarURL, &user.Role)
+	row := ur.db.QueryRow("SELECT id, Nickname, email, password, avatarURL, role FROM user WHERE email = ?", email)
+	err := row.Scan(&user.ID, &user.Nickname, &user.Email, &user.Password, &user.AvatarURL, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil // User not found
@@ -119,10 +124,10 @@ func (ur *UserRepository) GetUserByEmail(email string) (*User, error) {
 }
 
 // Get a user by email from the database
-func (ur *UserRepository) GetUserByUsername(username string) (*User, error) {
+func (ur *UserRepository) GetUserByNickname(Nickname string) (*User, error) {
 	var user User
-	row := ur.db.QueryRow("SELECT id, username, email, password, avatarURL, role FROM user WHERE username = ?", username)
-	err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.AvatarURL, &user.Role)
+	row := ur.db.QueryRow("SELECT id, Nickname, email, password, avatarURL, role FROM user WHERE Nickname = ?", Nickname)
+	err := row.Scan(&user.ID, &user.Nickname, &user.Email, &user.Password, &user.AvatarURL, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil // User not found
@@ -142,12 +147,12 @@ func (ur *UserRepository) SelectAllUsers() ([]User, error) {
 	for row.Next() {
 		var ID string
 		var Email string
-		var Username string
+		var Nickname string
 		var Password string
 		var AvatarUrl string
 		var Role ROLE
 
-		err = row.Scan(&ID, &Username, &Email, &Password, &AvatarUrl, &Role)
+		err = row.Scan(&ID, &Nickname, &Email, &Password, &AvatarUrl, &Role)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -155,7 +160,7 @@ func (ur *UserRepository) SelectAllUsers() ([]User, error) {
 		var tab = User{
 			ID:        ID,
 			Email:     Email,
-			Username:  Username,
+			Nickname:  Nickname,
 			Password:  Password,
 			AvatarURL: AvatarUrl,
 			Role:      Role,
@@ -166,19 +171,18 @@ func (ur *UserRepository) SelectAllUsers() ([]User, error) {
 	return user, nil
 }
 
-// Select All users
 func (ur *UserRepository) SelectAllUsersByPost(postID string) ([]User, error) {
 	var user []User
-	row, err := ur.db.Query("SELECT u.id AS user_id, u.avatarURL AS user_avatar, u.username FROM \"comment\" c INNER JOIN \"user\" u ON c.authorID = u.id WHERE c.postID = ?;", postID)
+	row, err := ur.db.Query("SELECT u.id AS user_id, u.avatarURL AS user_avatar, u.Nickname FROM \"comment\" c INNER JOIN \"user\" u ON c.authorID = u.id WHERE c.postID = ?;", postID)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for row.Next() {
 		var ID string
 		var AvatarUrl string
-		var Username string
+		var Nickname string
 
-		err = row.Scan(&ID, &AvatarUrl, &Username)
+		err = row.Scan(&ID, &AvatarUrl, &Nickname)
 
 		if err != nil {
 			log.Fatal(err)
@@ -187,7 +191,7 @@ func (ur *UserRepository) SelectAllUsersByPost(postID string) ([]User, error) {
 		var tab = User{
 			ID:        ID,
 			AvatarURL: AvatarUrl,
-			Username:  Username,
+			Nickname:  Nickname,
 		}
 
 		user = append(user, tab)
@@ -209,7 +213,7 @@ func (ur *UserRepository) SelectRandomUsers(count int) ([]User, error) {
 		var user User
 		err := rows.Scan(
 			&user.ID,
-			&user.Username,
+			&user.Nickname,
 			&user.Email,
 			&user.Password,
 			&user.AvatarURL,
@@ -239,8 +243,8 @@ func (ur *UserRepository) SelectRandomUsers(count int) ([]User, error) {
 
 // Update a user in the database
 func (ur *UserRepository) UpdateUser(user *User) error {
-	_, err := ur.db.Exec("UPDATE user SET username = ?, email = ?, password = ?, avatarURL = ?, role = ? WHERE id = ?",
-		user.Username, user.Email, user.Password, user.AvatarURL, user.Role, user.ID)
+	_, err := ur.db.Exec("UPDATE user SET Nickname = ?, email = ?, password = ?, avatarURL = ?, role = ? WHERE id = ?",
+		user.Nickname, user.Email, user.Password, user.AvatarURL, user.Role, user.ID)
 	return err
 }
 
@@ -251,11 +255,11 @@ func (ur *UserRepository) DeleteUser(userID string) error {
 }
 
 // Check if user exists
-func (ur *UserRepository) IsExisted(email, username string) (*User, bool) {
+func (ur *UserRepository) IsExisted(email, Nickname string) (*User, bool) {
 	var user User
 	email = strings.ToLower(email)
-	username = strings.ToLower(username)
-	row := ur.db.QueryRow("SELECT password FROM user WHERE email = ? OR username = ?", email, username)
+	Nickname = strings.ToLower(Nickname)
+	row := ur.db.QueryRow("SELECT password FROM user WHERE email = ? OR Nickname = ?", email, Nickname)
 	err := row.Scan(&user.Password)
 	if err != nil {
 		log.Println("❌ ", err)
@@ -300,7 +304,7 @@ func (ur *UserRepository) IsExistedByID(ID string) (*User, bool) {
 func (ur *UserRepository) TopUsers() ([]TopUser, error) {
 	var user []TopUser
 	row, err := ur.db.Query(`SELECT u.id AS user_id,
-									u.username AS user_username,
+									u.Nickname AS user_Nickname,
 									u.avatarurl AS avatarurl,
 									COALESCE(COUNT(DISTINCT c.id),0) + COALESCE(COUNT(DISTINCT v.id),0) AS number_of_reactions
 							FROM "user" u
@@ -315,10 +319,10 @@ func (ur *UserRepository) TopUsers() ([]TopUser, error) {
 	}
 	for row.Next() {
 		var ID string
-		var Username string
+		var Nickname string
 		var AvatarUrl string
 		var NumberOfReaction int
-		err = row.Scan(&ID, &Username, &AvatarUrl, &NumberOfReaction)
+		err = row.Scan(&ID, &Nickname, &AvatarUrl, &NumberOfReaction)
 
 		if err != nil {
 			log.Fatal(err)
@@ -326,7 +330,7 @@ func (ur *UserRepository) TopUsers() ([]TopUser, error) {
 
 		var tab = TopUser{
 			ID:               ID,
-			Username:         Username,
+			Nickname:         Nickname,
 			AvatarURL:        AvatarUrl,
 			NumberOfReaction: NumberOfReaction,
 		}
