@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"strings"
 
@@ -13,16 +14,15 @@ type User struct {
 	ID         string
 	Nickname   string
 	IsLoggedIn string
-	Age string
-	Gender string
-	FirstName string
-	LastName string
+	Age        string
+	Gender     string
+	FirstName  string
+	LastName   string
 	Email      string
 	Password   string
 	AvatarURL  string
 	Role       ROLE
 }
-
 
 type TopUser struct {
 	ID               string
@@ -99,9 +99,10 @@ func (ur *UserRepository) CreateGoogleUser(user *User) error {
 func (ur *UserRepository) GetUserByID(userID string) (*User, error) {
 	var user User
 	row := ur.db.QueryRow("SELECT id, nickname, age, gender, firstname, lastname, email, password, avatarURL, role FROM user WHERE id = ?", userID)
-	err := row.Scan(&user.ID, &user.Nickname, &user.Email, &user.Age, &user.Gender, user.FirstName, &user.LastName, &user.Password, &user.AvatarURL, &user.Role)
+	err := row.Scan(&user.ID, &user.Nickname, &user.Age, &user.Gender, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.AvatarURL, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			fmt.Println("error HERE")
 			return nil, nil // User not found
 		}
 		return nil, err

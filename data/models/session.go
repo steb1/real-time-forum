@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -60,6 +61,7 @@ func NewSessionToken(res http.ResponseWriter, UserID, Username string) {
 		HttpOnly: true,
 		Expires:  ExpireAt,
 	})
+	fmt.Println("session IN")
 }
 
 func deleteSessionIfExist(username string) {

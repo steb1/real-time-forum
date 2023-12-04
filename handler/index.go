@@ -30,8 +30,8 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		basePath := "base"
 		pagePath := "index"
 
-		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := false
+		isSessionOpen := models.ValidSession(req)
+		// isSessionOpen := true
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -92,8 +92,8 @@ func Index(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		homePageData := HomePageData{
-			IsLoggedIn:    isSessionOpen,
-			CurrentUser:   *user,
+			IsLoggedIn:  isSessionOpen,
+			CurrentUser: *user,
 			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
@@ -119,8 +119,8 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		basePath := "base"
 		pagePath := "index"
 
-		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := false
+		isSessionOpen := models.ValidSession(req)
+		// isSessionOpen := true
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -181,8 +181,8 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		homePageData := HomePageData{
-			IsLoggedIn:    isSessionOpen,
-			CurrentUser:   *user,
+			IsLoggedIn:  isSessionOpen,
+			CurrentUser: *user,
 			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
@@ -209,8 +209,8 @@ func HandleSettings(res http.ResponseWriter, req *http.Request) {
 		basePath := "base"
 		pagePath := "index"
 
-		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := false
+		isSessionOpen := models.ValidSession(req)
+		// isSessionOpen := true
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -271,8 +271,8 @@ func HandleSettings(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		homePageData := HomePageData{
-			IsLoggedIn:    isSessionOpen,
-			CurrentUser:   *user,
+			IsLoggedIn:  isSessionOpen,
+			CurrentUser: *user,
 			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
@@ -299,8 +299,8 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 		basePath := "base"
 		pagePath := "index"
 
-		// isSessionOpen := models.ValidSession(req)
-		isSessionOpen := false
+		isSessionOpen := models.ValidSession(req)
+		// isSessionOpen := true
 		user := models.GetUserFromSession(req)
 		queryParams := req.URL.Query()
 		limit := 5
@@ -361,8 +361,8 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		homePageData := HomePageData{
-			IsLoggedIn:    isSessionOpen,
-			CurrentUser:   *user,
+			IsLoggedIn:  isSessionOpen,
+			CurrentUser: *user,
 			//RandomUsers:   randomUsers,
 			Post:          posts,
 			NumberOfPosts: numberOfPosts,
@@ -385,10 +385,27 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 }
 func CheckAuthentication(res http.ResponseWriter, req *http.Request) {
 	isSessionOpen := models.ValidSession(req)
-
 	fmt.Println(isSessionOpen)
-	res.WriteHeader(400)
-	fmt.Fprintf(res, "ok")
+	if isSessionOpen {
+		response := map[string]bool{"authenticated": true}
+		writeJSONResponse(res, response)
+		return
+	}
+	response := map[string]bool{"authenticated": false}
+	writeJSONResponse(res, response)
+	// res.WriteHeader(400)
+	// fmt.Fprintf(res, "ok")
+}
+func writeJSONResponse(w http.ResponseWriter, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	// Encode and write the JSON response
+	err := json.NewEncoder(w).Encode(data)
+	if err != nil {
+		http.Error(w, "Error encoding JSON response", http.StatusInternalServerError)
+		return
+	}
 }
 func Registration(res http.ResponseWriter, req *http.Request) {
 	type UserData struct {
@@ -427,6 +444,7 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 	user.LastName = userData.LastName
 	user.Age = strconv.Itoa((userData.Age))
 	user.Email = userData.Email
+	fmt.Println()
 
 	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist {
 		err := models.UserRepo.CreateUser(&user)
@@ -434,15 +452,17 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 			log.Fatalf("❌ Failed to created account %v", err)
 		}
 
+		fmt.Println(user.ID)
+		fmt.Println(userData.Nickname)
 		models.NewSessionToken(res, user.ID, userData.Nickname)
 
 		log.Println("✅ Account created with success")
 	}
-	http.SetCookie(res, &http.Cookie{
-		Name:  "user",
-		Value: "JohnDoe",
-		Path:  "/",
-	})
+	// http.SetCookie(res, &http.Cookie{
+	// 	Name:  "user",
+	// 	Value: "JohnDoe",
+	// 	Path:  "/",
+	// })
 
 	// Process the user data (you can save it to a database, perform validation, etc.)
 	res.WriteHeader(200)
@@ -450,4 +470,79 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 	response := map[string]string{"message": "Registration successful"}
 	res.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(res).Encode(response)
+}
+func Login(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("HERE")
+	if lib.ValidateRequest(req, res, "/login", http.MethodPost) {
+		type UserData1 struct {
+			Username string `json:"username"`
+			Password string `json:"password"`
+		}
+
+		// Parse JSON data from the request body
+		var userData1 UserData1
+		responseData, err := io.ReadAll(req.Body)
+		json.Unmarshal(responseData, &userData1)
+		if err != nil {
+			fmt.Println("ici")
+			http.Error(res, "Invalid request payload", http.StatusBadRequest)
+			return
+		}
+		fmt.Printf("Received user data: %+v\n", userData1)
+
+		user := models.User{}
+
+		if _user, exist := models.UserRepo.IsExistedSignIn(userData1.Username); exist {
+			fmt.Println("IN TO")
+			fmt.Println(userData1.Username)
+			fmt.Print(userData1.Password)
+			fmt.Print(_user.Password)
+			fmt.Print("s")
+			fmt.Println(lib.IsPasswordsMatch(_user.Password, userData1.Password))
+			if userData1.Password != _user.Password {
+				res.WriteHeader(http.StatusNotFound)
+				// randomUsers, err := models.UserRepo.SelectRandomUsers(15)
+				// if err != nil {
+				// 	log.Println("❌ Can't get 15 random users in the database")
+				// }
+
+				// signPageData := SignPageData{
+				// 	IsLoggedIn:  false,
+				// 	RandomUsers: randomUsers,
+				// 	Err:         "Email or Password Wrong ",
+				// }
+
+				// lib.RenderPage("base", "sign-in", signPageData, res)
+				log.Println("❌ User with the given email don't exist")
+				return
+			} else {
+				_user, err := models.UserRepo.GetUserByEmail(userData1.Username)
+				if err != nil {
+					log.Println("❌", err)
+				}
+				user = *_user
+
+				models.NewSessionToken(res, user.ID, user.Email)
+				response := map[string]bool{"login": true}
+				writeJSONResponse(res, response)
+				// http.Redirect(res, req, "/", http.StatusSeeOther)
+				log.Println("✅ Sign in with success")
+			}
+		}
+		// else {
+		// 	res.WriteHeader(http.StatusNotFound)
+		// 	randomUsers, err := models.UserRepo.SelectRandomUsers(15)
+		// 	if err != nil {
+		// 		log.Println("❌ Can't get 15 random users in the database")
+		// 	}
+		// 	signPageData := SignPageData{
+		// 		IsLoggedIn:  false,
+		// 		RandomUsers: randomUsers,
+		// 		Err:         "Email or password Invalid",
+		// 	}
+		// 	lib.RenderPage("base", "sign-in", signPageData, res)
+		// 	log.Println("❌ User with the given email don't exist")
+		// 	return
+		// }
+	}
 }

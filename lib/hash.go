@@ -1,6 +1,8 @@
 package lib
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"golang.org/x/crypto/bcrypt"
+)
 
 func HashPassword(pwd string) (string, error) {
 	var pwdBytes = []byte(pwd)

@@ -36,8 +36,7 @@ func main() {
 	http.Handle("/disconnect", rateLimiter.Wrap("api", handler.HandleDisconnect))
 	http.Handle("/CheckAuthentication", rateLimiter.Wrap("api", handler.CheckAuthentication))
 	http.Handle("/register", rateLimiter.Wrap("api", handler.Registration))
-
-
+	http.Handle("/login", rateLimiter.Wrap("api", handler.Login))
 
 	/* httpsServer := http.Server{
 		Addr: PORT,
