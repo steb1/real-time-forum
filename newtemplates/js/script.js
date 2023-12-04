@@ -21,7 +21,6 @@ function checkAuthentication() {
     });
 }
 
-
 document.addEventListener('DOMContentLoaded', function () {
   checkAuthentication()
 })
@@ -34,7 +33,6 @@ let rightBarContent = ["photo", "dashboard", "settings", "disconnect"]
 let container = document.getElementById("container-flex")
 const preventReloadLinks = container.querySelectorAll('.leftnav-link');
 const AllRoutes = ["", "photo", "dashboard", "settings", "disconnect"]
-var isLogged = false
 
 
 function generateAuthPage() {
@@ -47,8 +45,9 @@ function generateAuthPage() {
     <div class="shape"></div>
     </div>
     <form id="form" method="POST" action="/sign-in">
-        <h3>Login Here</h3>
 
+        <h3>Login Here</h3>
+        <p id="loginError" style="display: none;" >login Error</p>
         <label for="username">Username</label>
         <input type="text" placeholder="Email or Nickname" id="username">
 
@@ -164,16 +163,13 @@ function registerUser() {
     })
     .then(data => {
       // Registration successful, handle the response data
-      console.log('Registration successful:', data);
-      if (checkAuthentication()) {
+      console.log('Registration successful:', data.register);
+      if (data.register == true) {
         displayAccueil()
-        console.log('i');
       } else {
         generateAuthPage()
       }
 
-      // console.log('Cookies:', document.cookie);
-      // Redirect to a new page or perform other actions
     })
     .catch(error => {
       console.error('Registration error:', error);
@@ -216,7 +212,8 @@ function login() {
   let password = document.getElementById("password").value
 
   // var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\S]{8,}$/;
-  console.log("username : ", username.value);
+  console.log("username : ", username);
+  console.log("username : ", password);
 
   // var isValid = passwordRegex.test(password.value);
 
@@ -239,15 +236,17 @@ function login() {
       if (!response.ok) {
         throw new Error('Login failed');
       }
-      // return response.json();
+      return response.json();
     })
     .then(data => {
       // Registration successful, handle the response data
       console.log('Login successful:', data);
-      if (checkAuthentication()) {
+      if (data.login == true) {
         displayAccueil()
       } else {
         generateAuthPage()
+        let elem = document.getElementById("loginError")
+        elem.style.display = "block";
       }
 
       // console.log('Cookies:', document.cookie);

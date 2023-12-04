@@ -444,7 +444,6 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 	user.LastName = userData.LastName
 	user.Age = strconv.Itoa((userData.Age))
 	user.Email = userData.Email
-	fmt.Println()
 
 	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist {
 		err := models.UserRepo.CreateUser(&user)
@@ -456,20 +455,21 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 		fmt.Println(userData.Nickname)
 		models.NewSessionToken(res, user.ID, userData.Nickname)
 
-		log.Println("✅ Account created with success")
-	}
-	// http.SetCookie(res, &http.Cookie{
-	// 	Name:  "user",
-	// 	Value: "JohnDoe",
-	// 	Path:  "/",
-	// })
+		res.WriteHeader(200)
+		// Send a JSON response (replace this with your actual response)
+		response := map[string]bool{"register": true}
+		res.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(res).Encode(response)
 
-	// Process the user data (you can save it to a database, perform validation, etc.)
-	res.WriteHeader(200)
-	// Send a JSON response (replace this with your actual response)
-	response := map[string]string{"message": "Registration successful"}
-	res.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(res).Encode(response)
+		log.Println("✅ Account created with success")
+	} else {
+		res.WriteHeader(200)
+		// Send a JSON response (replace this with your actual response)
+		response := map[string]bool{"register": false}
+		res.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(res).Encode(response)
+	}
+
 }
 func Login(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("HERE")
@@ -500,19 +500,11 @@ func Login(res http.ResponseWriter, req *http.Request) {
 			fmt.Print("s")
 			fmt.Println(lib.IsPasswordsMatch(_user.Password, userData1.Password))
 			if userData1.Password != _user.Password {
-				res.WriteHeader(http.StatusNotFound)
-				// randomUsers, err := models.UserRepo.SelectRandomUsers(15)
-				// if err != nil {
-				// 	log.Println("❌ Can't get 15 random users in the database")
-				// }
+				// res.WriteHeader(http.StatusNotFound)
 
-				// signPageData := SignPageData{
-				// 	IsLoggedIn:  false,
-				// 	RandomUsers: randomUsers,
-				// 	Err:         "Email or Password Wrong ",
-				// }
-
-				// lib.RenderPage("base", "sign-in", signPageData, res)
+				models.NewSessionToken(res, user.ID, user.Email)
+				response := map[string]bool{"login": false}
+				writeJSONResponse(res, response)
 				log.Println("❌ User with the given email don't exist")
 				return
 			} else {
@@ -524,10 +516,15 @@ func Login(res http.ResponseWriter, req *http.Request) {
 
 				models.NewSessionToken(res, user.ID, user.Email)
 				response := map[string]bool{"login": true}
+				fmt.Println(response)
 				writeJSONResponse(res, response)
-				// http.Redirect(res, req, "/", http.StatusSeeOther)
+
 				log.Println("✅ Sign in with success")
 			}
+		} else {
+			response := map[string]bool{"login": false}
+			// fmt.Println(response)
+			writeJSONResponse(res, response)
 		}
 		// else {
 		// 	res.WriteHeader(http.StatusNotFound)
