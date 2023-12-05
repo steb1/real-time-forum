@@ -51,8 +51,8 @@ function generateAuthPage() {
         <label for="password">Password</label>
         <input type="password" placeholder="Password" id="password">
 
-        <button id="registerForm" onClick="login()" >Log In</button>
-        <button id="registerForm" onClick="registerForm()">Sign up</button>
+        <button class="registerForm" onClick="login()" >Log In</button>
+        <button class="registerForm" onClick="registerForm()">Sign up</button>
         </div>
     </form>
     `;
@@ -100,8 +100,8 @@ const registerForm = (e) => {
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
     
-        <button id="registerForm" type="button" onclick="registerUser()">Register</button>
-        <button id="registerForm" type="button" onclick="generateAuthPage()">Return</button>
+        <button class="registerForm" type="button" onclick="registerUser()">Register</button>
+        <button class="registerForm" type="button" onclick="generateAuthPage()">Return</button>
     </form>
     `;
 
@@ -317,6 +317,15 @@ const displayAllContent = (element) => {
   let posts = document.createElement("div")
   posts.id = "posts"
   posts.style.backgroundColor = 'red'
+  fetch('/dashboard')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return false
+    });
   posts.textContent = "All Posts"
   let onlineStatus = document.createElement("div")
   onlineStatus.id = "onlineStatus"
