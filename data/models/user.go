@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"fmt"
+	"forum/lib"
 	"log"
 	"strings"
 
@@ -272,11 +273,18 @@ func (ur *UserRepository) IsExisted(email, Nickname string) (*User, bool) {
 	return &user, true
 }
 
-func (ur *UserRepository) IsExistedSignIn(email string) (*User, bool) {
+func (ur *UserRepository) IsExistedSignIn(username string) (*User, bool) {
 	var user User
-	email = strings.ToLower(email)
-	row := ur.db.QueryRow("SELECT password FROM user WHERE email = ?", email)
-	err := row.Scan(&user.Password)
+	username = strings.ToLower(username)
+	// fmt.Println(lib.IsEmailValid(username))
+	req := ""
+	if lib.IsEmailValid(username) {
+		req = "SELECT password, email FROM user WHERE email = ?"
+	}else{
+		req = "SELECT password, email FROM user WHERE nickname = ?"
+	}
+	row := ur.db.QueryRow(req, username)
+	err := row.Scan(&user.Password, &user.Email)
 	if err != nil {
 		log.Println("❌1 ", err)
 		if err == sql.ErrNoRows {

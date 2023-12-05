@@ -472,7 +472,6 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 
 }
 func Login(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("HERE")
 	if lib.ValidateRequest(req, res, "/login", http.MethodPost) {
 		type UserData1 struct {
 			Username string `json:"username"`
@@ -493,22 +492,17 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		user := models.User{}
 
 		if _user, exist := models.UserRepo.IsExistedSignIn(userData1.Username); exist {
-			fmt.Println("IN TO")
-			fmt.Println(userData1.Username)
-			fmt.Print(userData1.Password)
-			fmt.Print(_user.Password)
-			fmt.Print("s")
 			fmt.Println(lib.IsPasswordsMatch(_user.Password, userData1.Password))
 			if userData1.Password != _user.Password {
 				// res.WriteHeader(http.StatusNotFound)
 
-				models.NewSessionToken(res, user.ID, user.Email)
+				// models.NewSessionToken(res, user.ID, user.Email)
 				response := map[string]bool{"login": false}
 				writeJSONResponse(res, response)
 				log.Println("❌ User with the given email don't exist")
 				return
 			} else {
-				_user, err := models.UserRepo.GetUserByEmail(userData1.Username)
+				_user, err := models.UserRepo.GetUserByEmail(_user.Email)
 				if err != nil {
 					log.Println("❌", err)
 				}

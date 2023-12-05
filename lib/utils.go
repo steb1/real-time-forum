@@ -294,3 +294,13 @@ func VerifyPassword(password string) bool {
 	}
 	return num >= 8
 }
+
+func IsEmailValid(email string) bool {
+	// Expression régulière pour valider un email simple
+	emailRegex := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+
+	// Utilisation de la fonction MatchString de regexp pour vérifier la correspondance
+	match, _ := regexp.MatchString(emailRegex, email)
+
+	return match
+}

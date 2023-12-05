@@ -47,7 +47,7 @@ function generateAuthPage() {
     <form id="form" method="POST" action="/sign-in">
 
         <h3>Login Here</h3>
-        <p id="loginError" style="display: none;" >login Error</p>
+        <p id="loginError" style="display: none; color: red;" >BAD credentials</p>
         <label for="username">Username</label>
         <input type="text" placeholder="Email or Nickname" id="username">
 
