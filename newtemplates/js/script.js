@@ -25,9 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
   checkAuthentication()
 })
 
-
-
-
 console.log("session = ", all.IsLoggedIn);
 let rightBarContent = ["photo", "dashboard", "settings", "disconnect"]
 let container = document.getElementById("container-flex")
@@ -54,8 +51,8 @@ function generateAuthPage() {
         <label for="password">Password</label>
         <input type="password" placeholder="Password" id="password">
 
-        <button onClick="login()" >Log In</button>
-        <button onClick="registerForm()">Sign up</button>
+        <button id="registerForm" onClick="login()" >Log In</button>
+        <button id="registerForm" onClick="registerForm()">Sign up</button>
         </div>
     </form>
     `;
@@ -103,8 +100,8 @@ const registerForm = (e) => {
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
     
-        <button type="button" onclick="registerUser()">Register</button>
-        <button type="button" onclick="generateAuthPage()">Return</button>
+        <button id="registerForm" type="button" onclick="registerUser()">Register</button>
+        <button id="registerForm" type="button" onclick="generateAuthPage()">Return</button>
     </form>
     `;
 
@@ -175,36 +172,6 @@ function registerUser() {
       console.error('Registration error:', error);
     });
 }
-
-// const login = (e) => {
-//     let username = document.getElementById("username")
-//     let password = document.getElementById("password")
-
-//     var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\S]{8,}$/;
-//     console.log("username : ", username.value);
-
-//     var isValid = passwordRegex.test(password.value);
-
-//     if (isValid) {
-//         var serverURL = `http://localhost:8080/sign-in?username=${username.value}&password=${password.value}`;
-
-//         // Send a GET request to the Go server
-//         fetch(serverURL)
-//           .then(response => {
-//             if (!response.ok) {
-//               throw new Error('Network response was not ok');
-//             }
-//             return response.text();
-//           })
-//           .then(data => {
-//             // Process the response data
-//             console.log('Server Response:', data);
-//           })
-//           .catch(error => {
-//             console.error('There was a problem with the fetch operation:', error);
-//           });
-//     }
-// }
 
 // Perform login
 function login() {
@@ -328,6 +295,7 @@ const displayAllContent = (element) => {
   let messageButton = document.createElement("button")
   messageButton.textContent = "Message"
   messageButton.id = "messageButton"
+  messageButton.className = "accueilButton"
   messageButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     elem.textContent = "All Message Here"
@@ -335,6 +303,7 @@ const displayAllContent = (element) => {
   let PostButton = document.createElement("button")
   PostButton.textContent = "Posts"
   PostButton.id = "PostButton"
+  PostButton.className = "accueilButton"
   PostButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     elem.textContent = "All Posts Here"
@@ -357,46 +326,6 @@ const displayAllContent = (element) => {
   bodyContent.appendChild(onlineStatus)
   element.appendChild(bodyContent)
 }
-
-// function checkAuthentication() {
-//   fetch('http://localhost:8080/CheckAuthentication', {
-//     method: 'GET',
-//     credentials: 'include',  // Include cookies in the request
-//   })
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error('Authentication failed');
-//       }
-//       return response.ok;
-//     })
-//     .then(data => {
-//       // The user is authenticated, handle the response data
-//       console.log('Authenticated:', data);
-//     })
-//     .catch(error => {
-//       // Redirect to the login page or handle the error accordingly
-//       console.error('Authentication error:', error);
-//       return false
-//     });
-// }
-
-
-// const handleRoutes = (route) => {
-//   if (all != "404" || AllRoutes.includes(window.location.href.split("/")[3])) {
-//     if (checkAuthentication()) {
-//       console.log(checkAuthentication());
-//       displayAccueil();
-//     } else {
-//       console.log("false")
-//       generateAuthPage();
-//     }
-//   } else {
-//     console.log("ok");
-//     generate404()
-//   }
-// }
-
-// handleRoutes()
 
 
 

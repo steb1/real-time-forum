@@ -422,6 +422,7 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 	var userData UserData
 	responseData, err := io.ReadAll(req.Body)
 	json.Unmarshal(responseData, &userData)
+
 	if err != nil {
 		fmt.Println("ici")
 		http.Error(res, "Invalid request payload", http.StatusBadRequest)
@@ -492,7 +493,7 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		user := models.User{}
 
 		if _user, exist := models.UserRepo.IsExistedSignIn(userData1.Username); exist {
-			fmt.Println(lib.IsPasswordsMatch(_user.Password, userData1.Password))
+			fmt.Println("Match :", lib.IsPasswordsMatch(_user.Password, userData1.Password))
 			if userData1.Password != _user.Password {
 				// res.WriteHeader(http.StatusNotFound)
 

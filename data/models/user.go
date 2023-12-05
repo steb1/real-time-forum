@@ -275,7 +275,7 @@ func (ur *UserRepository) IsExisted(email, Nickname string) (*User, bool) {
 
 func (ur *UserRepository) IsExistedSignIn(username string) (*User, bool) {
 	var user User
-	username = strings.ToLower(username)
+	//username = strings.ToLower(username)
 	// fmt.Println(lib.IsEmailValid(username))
 	req := ""
 	if lib.IsEmailValid(username) {
