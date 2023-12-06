@@ -51,8 +51,8 @@ function generateAuthPage() {
         <label for="password">Password</label>
         <input type="password" placeholder="Password" id="password">
 
-        <button class="registerForm" onClick="login()" >Log In</button>
-        <button class="registerForm" onClick="registerForm()">Sign up</button>
+        <button id="registerForm" onClick="login()" >Log In</button>
+        <button id="registerForm" onClick="registerForm()">Sign up</button>
         </div>
     </form>
     `;
@@ -100,8 +100,8 @@ const registerForm = (e) => {
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
     
-        <button class="registerForm" type="button" onclick="registerUser()">Register</button>
-        <button class="registerForm" type="button" onclick="generateAuthPage()">Return</button>
+        <button id="registerForm" type="button" onclick="registerUser()">Register</button>
+        <button id="registerForm" type="button" onclick="generateAuthPage()">Return</button>
     </form>
     `;
 
@@ -421,29 +421,9 @@ const displayAllContent = (element) => {
 
   let posts = document.createElement("div")
   posts.id = "posts"
-  posts.style.backgroundColor = 'red'
+  posts.className = "Allposts"
+  posts.textContent = "All Posts"
 
-  var bigData = ""
-
-  fetch('/dashboard')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      bigData = data.AllPosts
-      // data.AllPosts.forEach(post => {
-      //   let postElem = document.createElement("div")
-      //   postElem.classList.add("post")
-      //   postElem.textContent = post.Title;
-      //   posts.appendChild(postElem)
-      // });
-
-
-    })
-    .catch(error => {
-      console.error('Error checking authentication:', error);
-      return false
-    });
-  
   let onlineStatus = document.createElement("div")
   onlineStatus.id = "onlineStatus"
   onlineStatus.style.backgroundColor = 'grey'
@@ -455,7 +435,7 @@ const displayAllContent = (element) => {
   PostButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
-    bigData.forEach((element, i) => {
+    Posts.Post.forEach((element, i) => {
       let post = document.createElement("div")
      
       let content = `
@@ -473,7 +453,7 @@ const displayAllContent = (element) => {
             </div>
 
             <div class="PostBody">
-                <p class="text"> ${element.Title}</p>
+                <p class="text"> ${element.Content} </p>
             </div>
 
             <div class="PostFooter">
