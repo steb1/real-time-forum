@@ -21,7 +21,7 @@ type HomePageData struct {
 	Limit         int
 	TopUsers      []models.TopUser
 	Categories    []*models.Category
-	AllPosts      []*models.Post
+	AllPosts      []models.PostItems
 	AllNotifs     []*models.Notification
 }
 
@@ -83,7 +83,7 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		// if err != nil {
 		// 	return
 		// }
-		allPost, err := models.PostRepo.GetAllPosts("")
+		allPost, err := models.PostRepo.GetAllPost()
 		if err != nil {
 			return
 		}
@@ -163,7 +163,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		// if err != nil {
 		// 	return
 		// }
-		allPost, err := models.PostRepo.GetAllPosts("")
+		allPost, err := models.PostRepo.GetAllPost()
 		if err != nil {
 			return
 		}
@@ -171,6 +171,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		// if err != nil {
 		// 	return
 		// }
+
 		homePageData := HomePageData{
 			IsLoggedIn:  isSessionOpen,
 			CurrentUser: *user,
@@ -254,7 +255,7 @@ func HandleSettings(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			return
 		}
-		allPost, err := models.PostRepo.GetAllPosts("")
+		allPost, err := models.PostRepo.GetAllPost()
 		if err != nil {
 			return
 		}
@@ -344,7 +345,7 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			return
 		}
-		allPost, err := models.PostRepo.GetAllPosts("")
+		allPost, err := models.PostRepo.GetAllPost()
 		if err != nil {
 			return
 		}

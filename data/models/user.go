@@ -146,23 +146,33 @@ func (ur *UserRepository) SelectAllUsers() ([]User, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("6")
 	for row.Next() {
 		var ID string
-		var Email string
 		var Nickname string
+		var Age string
+		var Gender string
+		var FirstName string
+		var LastName string
+		var Email string
 		var Password string
 		var AvatarUrl string
 		var Role ROLE
 
-		err = row.Scan(&ID, &Nickname, &Email, &Password, &AvatarUrl, &Role)
+		err = row.Scan(&ID, &Nickname, &Age, &Gender, &FirstName, &LastName, &Email, &Password, &AvatarUrl, &Role)
 		if err != nil {
+			fmt.Println("7")
 			log.Fatal(err)
 		}
 
 		var tab = User{
 			ID:        ID,
-			Email:     Email,
 			Nickname:  Nickname,
+			Age:       Age,
+			Gender:    Gender,
+			FirstName: FirstName,
+			LastName:  LastName,
+			Email:     Email,
 			Password:  Password,
 			AvatarURL: AvatarUrl,
 			Role:      Role,
@@ -280,7 +290,7 @@ func (ur *UserRepository) IsExistedSignIn(username string) (*User, bool) {
 	req := ""
 	if lib.IsEmailValid(username) {
 		req = "SELECT password, email FROM user WHERE email = ?"
-	}else{
+	} else {
 		req = "SELECT password, email FROM user WHERE nickname = ?"
 	}
 	row := ur.db.QueryRow(req, username)

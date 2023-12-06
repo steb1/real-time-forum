@@ -22,6 +22,19 @@ type PostItem struct {
 	NumberOfComments  int
 	ListOfCommentator []string
 }
+type PostItems struct {
+	ID               string
+	Title            string
+	Slug             string
+	AuthorName       string
+	Description      string
+	ImageURL         string
+	LastEditionDate  string
+	Categories       []string
+	NumberOfComments int
+	NumberOfLikes    int
+	NumberOfDislikes int
+}
 
 type Post struct {
 	ID           string
@@ -420,6 +433,77 @@ func (pr *PostRepository) GetAllPostsItems(morePost int) ([]PostItem, error) {
 			ListOfCommentator: tabTopUser}
 		tabPostItem = append(tabPostItem, PostItemi)
 	}
+
+	return tabPostItem, nil
+}
+
+// Get all posts from database
+func (pr *PostRepository) GetAllPost() ([]PostItems, error) {
+	var posts []*Post
+	fmt.Println("1")
+
+	rows, err := pr.db.Query("SELECT id, title, slug, description, imageURL, authorID, isEdited, createDate, modifiedDate, validate FROM post WHERE validate = true ORDER BY createDate DESC")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var post Post
+		err := rows.Scan(&post.ID, &post.Title, &post.Slug, &post.Description, &post.ImageURL, &post.AuthorID, &post.IsEdited, &post.CreateDate, &post.ModifiedDate, &post.Validate)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, &post)
+	}
+	fmt.Println("2")
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	tabPostItem := []PostItems{}
+	fmt.Println("3")
+	for i := 0; i < len(posts); i++ {
+		fmt.Println("4")
+		tabUser, _ := UserRepo.SelectAllUsers()
+		fmt.Println("5")
+		nbrComments, _ := CommentRepo.GetNbrOfCommentsOfPost(posts[i].ID)
+		nbrLikes, _ := ViewRepo.GetLikesByPost(posts[i].ID)
+		nbrDislikes, _ := ViewRepo.GetDislikesByPost(posts[i].ID)
+		user := ""
+		for j := 0; j < len(tabUser); j++ {
+			if posts[i].AuthorID == tabUser[j].ID {
+				user = tabUser[j].Nickname
+				break
+			}
+		}
+
+		// TopUser, _ := UserRepo.SelectAllUsersByPost(posts[i].ID)
+		// tabTopUser := []string{}
+		// cpt := 0
+		// for l := 0; l < len(TopUser); l++ {
+		// 	if cpt < 3 {
+		// 		tabTopUser = append(tabTopUser, TopUser[l].AvatarURL)
+		// 	}
+		// 	cpt++
+		// }
+
+		lastmodif := strings.ReplaceAll(posts[i].ModifiedDate, "T", " ")
+		lastmodif = strings.ReplaceAll(lastmodif, "Z", "")
+		urlImage := strings.ReplaceAll(posts[i].ImageURL, "jpg", "jpg")
+		PostItemi := PostItems{
+			ID:               posts[i].ID,
+			Title:            posts[i].Title,
+			Slug:             posts[i].Slug,
+			AuthorName:       user,
+			Description:      posts[i].Description,
+			ImageURL:         urlImage,
+			LastEditionDate:  lib.TimeSinceCreation(lastmodif),
+			NumberOfComments: nbrComments,
+			NumberOfLikes:    nbrLikes,
+			NumberOfDislikes: nbrDislikes}
+		tabPostItem = append(tabPostItem, PostItemi)
+	}
+	
 
 	return tabPostItem, nil
 }

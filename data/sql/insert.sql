@@ -11,8 +11,8 @@ DELETE FROM category;
 -- Insertion dans la table "user"
 INSERT INTO "user" (id, nickname, age, gender, firstname, lastname, email, password, avatarURL, role)
 VALUES
-('1', 'john_doe', '25', 'Male', 'John', 'Doe', 'john.doe@email.com', 'hashed_password', 'avatar_url', 'user'),
-('2', 'jane_smith', '30', 'Female', 'Jane', 'Smith', 'jane.smith@email.com', 'hashed_password', 'avatar_url', 'user');
+('1', 'john_doe', '25', 'Male', 'John', 'Doe', 'john.doe@email.com', 'hashed_password', 'avatar_url', '0'),
+('2', 'jane_smith', '30', 'Female', 'Jane', 'Smith', 'jane.smith@email.com', 'hashed_password', 'avatar_url', '0');
 
 -- Insertion dans la table "post"
 INSERT INTO "post" (id, title, slug, description, imageURL, authorID, isEdited, createDate, modifiedDate, validate)

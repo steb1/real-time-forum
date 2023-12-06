@@ -80,6 +80,7 @@ function generateAuthPage() {
 }
 
 const registerForm = (e) => {
+  
   const authPage = document.createElement('div');
   var body = document.body;
   body.style.backgroundColor = "#080710"
@@ -129,6 +130,7 @@ const registerForm = (e) => {
     e.preventDefault();
     window.history.pushState({}, '', e.target.href)
   })
+
 }
 
 function registerUser() {
@@ -259,6 +261,7 @@ const generate404 = () => {
     `;
 }
 const displayAccueil = () => {
+
   let rightBar = document.createElement("div")
   rightBar.id = "rightBar"
 
@@ -371,8 +374,8 @@ let addPost = (posts) => {
                 <div class="PostContent">
                     <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
                     <div class="PostInfo">
-                        <div class="PostOwner">Gondia</div>
-                        <div class="PostTime">22s</div>
+                        <div class="PostOwner">${element.AuthorName}</div>
+                        <div class="PostTime">${element.LastEditionDate}</div>
                     </div>
                     <div class="categorie">
                         categorie
@@ -391,9 +394,9 @@ let addPost = (posts) => {
             </div>
             <div class="impressions">
                 <div class="likeDislike">
-                    <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                    <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                    <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+                    <div><span>${element.NumberOfLikes}</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                    <div><span>${element.NumberOfDislikes}</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                    <div><span>${element.NumberOfComments}</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
                 </div>
             </div>
     
@@ -467,12 +470,12 @@ const displayAllContent = (element) => {
   
         let content = `
           <div class="Post" onclick="seePost()">
-              <div class="PostTitle"><p class="Title">Title of the year</p></div>
+              <div class="PostTitle"><p class="Title">${element.Title}</p></div>
               <div class="PostContent">
                   <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
                   <div class="PostInfo">
-                      <div class="PostOwner">Gondia</div>
-                      <div class="PostTime">22s</div>
+                      <div class="PostOwner">${element.AuthorName}</div>
+                      <div class="PostTime">${element.LastEditionDate}</div>
                   </div>
                   <div class="categorie">
                       categorie
@@ -491,9 +494,9 @@ const displayAllContent = (element) => {
           </div>
           <div class="impressions">
               <div class="likeDislike">
-                  <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                  <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                  <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+                  <div><span>${element.NumberOfLikes}</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                  <div><span>${element.NumberOfDislikes}</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                  <div><span>${element.NumberOfComments}</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
               </div>
           </div>
   

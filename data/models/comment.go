@@ -73,6 +73,19 @@ func (cr *CommentRepository) GetCommentByID(commentID string) (*Comment, error) 
 	return &comment, nil
 }
 
+func (cr *CommentRepository) GetNbrOfCommentsOfPost(postID string) (int, error) {
+	var nbrComments int
+	row := cr.db.QueryRow("SELECT COUNT(*) FROM comment WHERE postID = ?", postID)
+	err := row.Scan(&nbrComments)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, nil // Rate not found
+		}
+		return 0, err
+	}
+	return nbrComments, nil
+}
+
 func (cr *CommentRepository) GetCommentsOfPost(postID, limit string) ([]*CommentItem, error) {
 	moreComment, err := strconv.Atoi(limit)
 	if err != nil {
