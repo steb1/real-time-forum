@@ -247,6 +247,7 @@ const generate404 = () => {
 const displayAccueil = () => {
   let rightBar = document.createElement("div")
   rightBar.id = "rightBar"
+
   rightBarContent.forEach((element, i) => {
     if (element == "photo") {
       let li = document.createElement("li")
@@ -271,6 +272,7 @@ const displayAccueil = () => {
     }
   })
 
+
   let content = document.createElement("div")
   content.id = "allContent"
 
@@ -282,6 +284,109 @@ const displayAccueil = () => {
   document.body.appendChild(container)
 
 }
+
+let Posts = {
+  "user": {
+    "nickname": "john_doe",
+    "age": 25,
+    "gender": "male",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@example.com",
+    "password": "securepassword"
+  },
+  "Post": [
+    {
+      "id": 1,
+      "name": "Post Name",
+      "categorie" : "public",
+      "time" : "22s",
+      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+    },
+    {
+      "id": 2,
+      "name": "Post Name",
+      "categorie" : "public",
+      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+    },
+    {
+      "id": 3,
+      "name": "Post Name",
+      "categorie" : "public",
+      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+    },
+    {
+      "id": 4,
+      "name": "Post Name",
+      "categorie" : "public",
+      "time" : "22s",
+      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+    },
+    {
+      "id": 5,
+      "name": "Post Name",
+      "categorie" : "public",
+      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+    },
+    {
+      "id": 6,
+      "name": "Post Name",
+      "categorie" : "public",
+      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+    }
+  ],
+  "settings": {
+    "theme": "dark",
+    "notifications": true
+  }
+}
+
+let addPost = (posts) => {
+  let elem = posts
+  elem.innerHTML = ""
+    Posts.Post.forEach((element, i) => {
+      let post = document.createElement("div")
+     
+      let content = `
+        <div class="Post" onclick="seePost()">
+            <div class="PostTitle"><p class="Title">Title of the year</p></div>
+            <div class="PostContent">
+                <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
+                <div class="PostInfo">
+                    <div class="PostOwner">Gondia</div>
+                    <div class="PostTime">22s</div>
+                </div>
+                <div class="categorie">
+                    categorie
+                </div>
+            </div>
+
+            <div class="PostBody">
+                <p class="text"> ${element.Content} </p>
+            </div>
+
+            <div class="PostFooter">
+                <div class="element">
+
+                </div>
+            </div>
+        </div>
+        <div class="impressions">
+            <div class="likeDislike">
+                <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+            </div>
+        </div>
+
+       `
+       post.innerHTML = content
+       elem.appendChild(post)
+    })
+
+}
+
+
 const displayAllContent = (element) => {
   let onlineDiv = document.createElement("div")
   onlineDiv.textContent = '3 people are online'
@@ -304,24 +409,74 @@ const displayAllContent = (element) => {
   PostButton.textContent = "Posts"
   PostButton.id = "PostButton"
   PostButton.className = "accueilButton"
-  PostButton.addEventListener("click", (e) => {
-    let elem = document.getElementById('posts')
-    elem.textContent = "All Posts Here"
-  })
+  
+
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
   element.appendChild(tabBar)
+
   let bodyContent = document.createElement("div")
-  bodyContent.style.backgroundColor = 'red'
+  bodyContent.style.backgroundColor = 'rgb(188, 174, 247)'
   bodyContent.id = "bodyContent"
+
   let posts = document.createElement("div")
   posts.id = "posts"
-  posts.style.backgroundColor = 'red'
+  posts.className = "Allposts"
   posts.textContent = "All Posts"
+
   let onlineStatus = document.createElement("div")
   onlineStatus.id = "onlineStatus"
   onlineStatus.style.backgroundColor = 'grey'
   onlineStatus.textContent = 'We are online'
+
+  addPost(posts)
+  
+
+  PostButton.addEventListener("click", (e) => {
+    let elem = document.getElementById('posts')
+    posts.innerHTML = ""
+    Posts.Post.forEach((element, i) => {
+      let post = document.createElement("div")
+     
+      let content = `
+        <div class="Post" onclick="seePost()">
+            <div class="PostTitle"><p class="Title">Title of the year</p></div>
+            <div class="PostContent">
+                <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
+                <div class="PostInfo">
+                    <div class="PostOwner">Gondia</div>
+                    <div class="PostTime">22s</div>
+                </div>
+                <div class="categorie">
+                    categorie
+                </div>
+            </div>
+
+            <div class="PostBody">
+                <p class="text"> ${element.Content} </p>
+            </div>
+
+            <div class="PostFooter">
+                <div class="element">
+
+                </div>
+            </div>
+        </div>
+        <div class="impressions">
+            <div class="likeDislike">
+                <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+            </div>
+        </div>
+
+       `
+       post.innerHTML = content
+       elem.appendChild(post)
+    })
+    
+  })
+
   bodyContent.appendChild(posts)
   bodyContent.appendChild(onlineStatus)
   element.appendChild(bodyContent)

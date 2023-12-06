@@ -25,6 +25,9 @@
 
 }
 #posts {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
 }
 #bodyContent {
     display: grid;
@@ -142,3 +145,129 @@ input{
   margin-right: 4px;
 }
 
+.Allposts {
+    display: flex;
+    flex-direction: column;
+}
+.likeDislike {
+    display: flex;
+    width: 40%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    
+}
+.impressions {
+    display: flex;
+    flex-direction: row;justify-content: left;
+    padding-top: 10px;
+    justify-content: space-evenly;
+    gap: 20px;
+    height: 35px;
+    width: 600px;
+    background-color: rgb(255, 255, 255);
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+    border-radius: 40px;
+    opacity: 0.5;
+}
+.element {
+    width: 15%;
+    height: 22%;
+    background-color: rgb(212, 207, 200);
+}
+.like {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+.PostOwner {
+    padding-left: 10px;
+    font-size: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.PostTime {
+    font-size: 10px;
+    padding-left: 10px;
+    color: rgb(99, 98, 98);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.image {
+    height: 50px;
+    width: 50px;
+    padding-left: 10%;
+    padding-top: 10%;
+    border-radius: 20px;
+}
+.Post {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 30px;
+    padding: 10px;
+    width: 600px;
+    height: auto;
+    border-radius: 40px;
+    background-color: white;
+    cursor: pointer;
+}
+.PostFooter {
+    width: 100%;
+    height: 10%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.text {
+    margin-right: 5%;
+    margin-left: 5%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(12, 55, 104);
+}
+.Title {
+    margin: 5%;
+    padding-top: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(0, 0, 0);
+}
+.PostInfo{
+    width: 80%;
+    padding-top: 1%;
+}
+.categorie {
+    width: 20%;
+    padding-top: 1%;
+    height: 30px;
+    background-color: bisque;
+    border-radius: 15px;
+    text-align: center;
+    color: rgb(153, 151, 151);
+}
+.PostTitle {
+    height: 50px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    font-size: 2rem;
+    width: 100%;
+    
+}
+.PostContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* background-color: rgb(0, 0, 0); */
+    width: 90%;
+    height: 12%;
+    padding-left: 20px;
+}
+.PostBody {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.imagePost {
+    width: 15%;
+    height: 100%;
+}
