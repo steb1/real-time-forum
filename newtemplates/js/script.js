@@ -20,10 +20,24 @@ function checkAuthentication() {
       return false
     });
 }
+// var bigData = {};
+function getData() {
+  fetch('/dashboard')
+    .then(response => response.json())
+    .then(data => {
+      return data
+    })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
-  checkAuthentication()
+  checkAuthentication();
 })
+
 
 console.log("session = ", all.IsLoggedIn);
 let rightBarContent = ["photo", "dashboard", "settings", "disconnect"]
@@ -51,8 +65,8 @@ function generateAuthPage() {
         <label for="password">Password</label>
         <input type="password" placeholder="Password" id="password">
 
-        <button id="registerForm" onClick="login()" >Log In</button>
-        <button id="registerForm" onClick="registerForm()">Sign up</button>
+        <button class="registerForm" onClick="login()" >Log In</button>
+        <button class="registerForm" onClick="registerForm()">Sign up</button>
         </div>
     </form>
     `;
@@ -100,8 +114,8 @@ const registerForm = (e) => {
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
     
-        <button id="registerForm" type="button" onclick="registerUser()">Register</button>
-        <button id="registerForm" type="button" onclick="generateAuthPage()">Return</button>
+        <button class="registerForm" type="button" onclick="registerUser()">Register</button>
+        <button class="registerForm" type="button" onclick="generateAuthPage()">Return</button>
     </form>
     `;
 
@@ -284,6 +298,7 @@ const displayAccueil = () => {
   document.body.appendChild(container)
 
 }
+getData()
 
 let Posts = {
   "user": {
@@ -299,40 +314,40 @@ let Posts = {
     {
       "id": 1,
       "name": "Post Name",
-      "categorie" : "public",
-      "time" : "22s",
+      "categorie": "public",
+      "time": "22s",
       "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
     },
     {
       "id": 2,
       "name": "Post Name",
-      "categorie" : "public",
-      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+      "categorie": "public",
+      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
     },
     {
       "id": 3,
       "name": "Post Name",
-      "categorie" : "public",
-      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+      "categorie": "public",
+      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
     },
     {
       "id": 4,
       "name": "Post Name",
-      "categorie" : "public",
-      "time" : "22s",
+      "categorie": "public",
+      "time": "22s",
       "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
     },
     {
       "id": 5,
       "name": "Post Name",
-      "categorie" : "public",
-      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+      "categorie": "public",
+      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
     },
     {
       "id": 6,
       "name": "Post Name",
-      "categorie" : "public",
-      "time" : "22s",      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
+      "categorie": "public",
+      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
     }
   ],
   "settings": {
@@ -344,45 +359,54 @@ let Posts = {
 let addPost = (posts) => {
   let elem = posts
   elem.innerHTML = ""
-    Posts.Post.forEach((element, i) => {
-      let post = document.createElement("div")
-     
-      let content = `
-        <div class="Post" onclick="seePost()">
-            <div class="PostTitle"><p class="Title">Title of the year</p></div>
-            <div class="PostContent">
-                <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
-                <div class="PostInfo">
-                    <div class="PostOwner">Gondia</div>
-                    <div class="PostTime">22s</div>
+  fetch('/dashboard')
+    .then(response => response.json())
+    .then(data => {
+      data.AllPosts.forEach((element, i) => {
+        let post = document.createElement("div")
+    
+        let content = `
+            <div class="Post" onclick="seePost()">
+                <div class="PostTitle"><p class="Title">${element.Title}</p></div>
+                <div class="PostContent">
+                    <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
+                    <div class="PostInfo">
+                        <div class="PostOwner">Gondia</div>
+                        <div class="PostTime">22s</div>
+                    </div>
+                    <div class="categorie">
+                        categorie
+                    </div>
                 </div>
-                <div class="categorie">
-                    categorie
+    
+                <div class="PostBody">
+                    <p class="text"> ${element.Description} </p>
+                </div>
+    
+                <div class="PostFooter">
+                    <div class="element">
+    
+                    </div>
                 </div>
             </div>
-
-            <div class="PostBody">
-                <p class="text"> ${element.Content} </p>
-            </div>
-
-            <div class="PostFooter">
-                <div class="element">
-
+            <div class="impressions">
+                <div class="likeDislike">
+                    <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                    <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                    <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
                 </div>
             </div>
-        </div>
-        <div class="impressions">
-            <div class="likeDislike">
-                <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
-            </div>
-        </div>
-
-       `
-       post.innerHTML = content
-       elem.appendChild(post)
+    
+           `
+        post.innerHTML = content
+        elem.appendChild(post)
+      })
     })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return
+    });
+  
 
 }
 
@@ -409,7 +433,7 @@ const displayAllContent = (element) => {
   PostButton.textContent = "Posts"
   PostButton.id = "PostButton"
   PostButton.className = "accueilButton"
-  
+
 
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
@@ -430,51 +454,60 @@ const displayAllContent = (element) => {
   onlineStatus.textContent = 'We are online'
 
   addPost(posts)
-  
+
 
   PostButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
-    Posts.Post.forEach((element, i) => {
-      let post = document.createElement("div")
-     
-      let content = `
-        <div class="Post" onclick="seePost()">
-            <div class="PostTitle"><p class="Title">Title of the year</p></div>
-            <div class="PostContent">
-                <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
-                <div class="PostInfo">
-                    <div class="PostOwner">Gondia</div>
-                    <div class="PostTime">22s</div>
-                </div>
-                <div class="categorie">
-                    categorie
-                </div>
-            </div>
-
-            <div class="PostBody">
-                <p class="text"> ${element.Content} </p>
-            </div>
-
-            <div class="PostFooter">
-                <div class="element">
-
-                </div>
-            </div>
-        </div>
-        <div class="impressions">
-            <div class="likeDislike">
-                <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
-            </div>
-        </div>
-
-       `
-       post.innerHTML = content
-       elem.appendChild(post)
+    fetch('/dashboard')
+    .then(response => response.json())
+    .then(data => {
+      data.AllPosts.forEach((element, i) => {
+        let post = document.createElement("div")
+  
+        let content = `
+          <div class="Post" onclick="seePost()">
+              <div class="PostTitle"><p class="Title">Title of the year</p></div>
+              <div class="PostContent">
+                  <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
+                  <div class="PostInfo">
+                      <div class="PostOwner">Gondia</div>
+                      <div class="PostTime">22s</div>
+                  </div>
+                  <div class="categorie">
+                      categorie
+                  </div>
+              </div>
+  
+              <div class="PostBody">
+                  <p class="text"> ${element.Description} </p>
+              </div>
+  
+              <div class="PostFooter">
+                  <div class="element">
+  
+                  </div>
+              </div>
+          </div>
+          <div class="impressions">
+              <div class="likeDislike">
+                  <div><span>24</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                  <div><span>12</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                  <div><span>22</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+              </div>
+          </div>
+  
+         `
+        post.innerHTML = content
+        elem.appendChild(post)
+      })
     })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return
+    });
     
+
   })
 
   bodyContent.appendChild(posts)
