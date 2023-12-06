@@ -321,12 +321,19 @@ const displayAllContent = (element) => {
     .then(response => response.json())
     .then(data => {
       console.log(data);
+      data.AllPosts.forEach(post => {
+        let postElem = document.createElement("div")
+        postElem.classList.add("post")
+        postElem.textContent = post.Title;
+        posts.appendChild(postElem)
+      });
+
     })
     .catch(error => {
       console.error('Error checking authentication:', error);
       return false
     });
-  posts.textContent = "All Posts"
+  
   let onlineStatus = document.createElement("div")
   onlineStatus.id = "onlineStatus"
   onlineStatus.style.backgroundColor = 'grey'
