@@ -33,24 +33,24 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		isSessionOpen := models.ValidSession(req)
 		// isSessionOpen := true
 		user := models.GetUserFromSession(req)
-		queryParams := req.URL.Query()
-		limit := 5
-		numberOfPosts := models.PostRepo.GetNumberOfPosts()
+		// queryParams := req.URL.Query()
+		// limit := 5
+		// numberOfPosts := models.PostRepo.GetNumberOfPosts()
 
-		if len(queryParams["limit"]) != 0 {
-			_limit, err := strconv.Atoi(queryParams.Get("limit"))
-			if limit <= 0 || err != nil {
-				res.WriteHeader(http.StatusBadRequest)
-				log.Println("❌ Can't convert index to int")
-				return
-			} else {
-				if _limit == numberOfPosts {
-					limit = -1
-				} else {
-					limit = _limit
-				}
-			}
-		}
+		// if len(queryParams["limit"]) != 0 {
+		// 	_limit, err := strconv.Atoi(queryParams.Get("limit"))
+		// 	if limit <= 0 || err != nil {
+		// 		res.WriteHeader(http.StatusBadRequest)
+		// 		log.Println("❌ Can't convert index to int")
+		// 		return
+		// 	} else {
+		// 		if _limit == numberOfPosts {
+		// 			limit = -1
+		// 		} else {
+		// 			limit = _limit
+		// 		}
+		// 	}
+		// }
 		// randomUsers, err := models.UserRepo.SelectRandomUsers(17)
 		// if err != nil {
 		// 	res.WriteHeader(http.StatusInternalServerError)
@@ -58,50 +58,50 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		// 	return
 		// }
 
-		posts, _ := models.PostRepo.GetAllPostsItems(limit)
+		// posts, _ := models.PostRepo.GetAllPostsItems(limit)
 
-		TopUsers, err := models.UserRepo.TopUsers()
-		if err != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			log.Println("❌ Can't get top users")
-			return
-		}
+		// TopUsers, err := models.UserRepo.TopUsers()
+		// if err != nil {
+		// 	res.WriteHeader(http.StatusInternalServerError)
+		// 	log.Println("❌ Can't get top users")
+		// 	return
+		// }
 
-		if limit != -1 {
-			if limit+5 > numberOfPosts {
-				limit = numberOfPosts
-			} else {
-				limit += 5
-			}
-		}
-		if posts != nil {
-			for j := 0; j < len(posts); j++ {
-				posts[j].Title = template.HTMLEscapeString(posts[j].Title)
-			}
-		}
-		cat, err := models.CategoryRepo.GetAllCategory()
-		if err != nil {
-			return
-		}
+		// if limit != -1 {
+		// 	if limit+5 > numberOfPosts {
+		// 		limit = numberOfPosts
+		// 	} else {
+		// 		limit += 5
+		// 	}
+		// }
+		// if posts != nil {
+		// 	for j := 0; j < len(posts); j++ {
+		// 		posts[j].Title = template.HTMLEscapeString(posts[j].Title)
+		// 	}
+		// }
+		// cat, err := models.CategoryRepo.GetAllCategory()
+		// if err != nil {
+		// 	return
+		// }
 		allPost, err := models.PostRepo.GetAllPosts("")
 		if err != nil {
 			return
 		}
-		notifications, err := models.NotifRepo.GetAllNotifs()
-		if err != nil {
-			return
-		}
+		// notifications, err := models.NotifRepo.GetAllNotifs()
+		// if err != nil {
+		// 	return
+		// }
 		homePageData := HomePageData{
 			IsLoggedIn:  isSessionOpen,
 			CurrentUser: *user,
 			//RandomUsers:   randomUsers,
-			Post:          posts,
-			NumberOfPosts: numberOfPosts,
-			TopUsers:      TopUsers,
-			Limit:         limit,
-			Categories:    cat,
-			AllPosts:      allPost,
-			AllNotifs:     notifications,
+			// Post:          posts,
+			// NumberOfPosts: numberOfPosts,
+			// TopUsers:      TopUsers,
+			// Limit:         limit,
+			// Categories:    cat,
+			AllPosts: allPost,
+			// AllNotifs:     notifications,
 		}
 
 		jsonData, err := json.Marshal(homePageData)
@@ -116,90 +116,82 @@ func Index(res http.ResponseWriter, req *http.Request) {
 }
 func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/dashboard", http.MethodGet) {
-		basePath := "base"
-		pagePath := "index"
 
 		isSessionOpen := models.ValidSession(req)
-		// isSessionOpen := true
 		user := models.GetUserFromSession(req)
-		queryParams := req.URL.Query()
-		limit := 5
-		numberOfPosts := models.PostRepo.GetNumberOfPosts()
+		// queryParams := req.URL.Query()
+		// limit := 5
+		// numberOfPosts := models.PostRepo.GetNumberOfPosts()
 
-		if len(queryParams["limit"]) != 0 {
-			_limit, err := strconv.Atoi(queryParams.Get("limit"))
-			if limit <= 0 || err != nil {
-				res.WriteHeader(http.StatusBadRequest)
-				log.Println("❌ Can't convert index to int")
-				return
-			} else {
-				if _limit == numberOfPosts {
-					limit = -1
-				} else {
-					limit = _limit
-				}
-			}
-		}
-		// randomUsers, err := models.UserRepo.SelectRandomUsers(17)
+		// if len(queryParams["limit"]) != 0 {
+		// 	_limit, err := strconv.Atoi(queryParams.Get("limit"))
+		// 	if limit <= 0 || err != nil {
+		// 		res.WriteHeader(http.StatusBadRequest)
+		// 		log.Println("❌ Can't convert index to int")
+		// 		return
+		// 	} else {
+		// 		if _limit == numberOfPosts {
+		// 			limit = -1
+		// 		} else {
+		// 			limit = _limit
+		// 		}
+		// 	}
+		// }
+
+		// posts, _ := models.PostRepo.GetAllPosts("1000")
+
+		// TopUsers, err := models.UserRepo.TopUsers()
 		// if err != nil {
 		// 	res.WriteHeader(http.StatusInternalServerError)
-		// 	log.Println("❌ Can't get 17 random users in the database")
+		// 	log.Println("❌ Can't get top users")
 		// 	return
 		// }
 
-		posts, _ := models.PostRepo.GetAllPostsItems(limit)
-
-		TopUsers, err := models.UserRepo.TopUsers()
-		if err != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			log.Println("❌ Can't get top users")
-			return
-		}
-
-		if limit != -1 {
-			if limit+5 > numberOfPosts {
-				limit = numberOfPosts
-			} else {
-				limit += 5
-			}
-		}
-		if posts != nil {
-			for j := 0; j < len(posts); j++ {
-				posts[j].Title = template.HTMLEscapeString(posts[j].Title)
-			}
-		}
-		cat, err := models.CategoryRepo.GetAllCategory()
-		if err != nil {
-			return
-		}
+		// if limit != -1 {
+		// 	if limit+5 > numberOfPosts {
+		// 		limit = numberOfPosts
+		// 	} else {
+		// 		limit += 5
+		// 	}
+		// }
+		// if posts != nil {
+		// 	for j := 0; j < len(posts); j++ {
+		// 		posts[j].Title = template.HTMLEscapeString(posts[j].Title)
+		// 	}
+		// }
+		// cat, err := models.CategoryRepo.GetAllCategory()
+		// if err != nil {
+		// 	return
+		// }
 		allPost, err := models.PostRepo.GetAllPosts("")
 		if err != nil {
 			return
 		}
-		notifications, err := models.NotifRepo.GetAllNotifs()
-		if err != nil {
-			return
-		}
+		// notifications, err := models.NotifRepo.GetAllNotifs()
+		// if err != nil {
+		// 	return
+		// }
 		homePageData := HomePageData{
 			IsLoggedIn:  isSessionOpen,
 			CurrentUser: *user,
-			//RandomUsers:   randomUsers,
-			Post:          posts,
-			NumberOfPosts: numberOfPosts,
-			TopUsers:      TopUsers,
-			Limit:         limit,
-			Categories:    cat,
-			AllPosts:      allPost,
-			AllNotifs:     notifications,
+			AllPosts:    allPost,
 		}
+		response := make(map[string]interface{})
+		response["CurrentUser"] = homePageData.CurrentUser
+		response["AllPosts"] = homePageData.AllPosts
+		fmt.Println(response)
+		res.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(res).Encode(response)
 
-		jsonData, err := json.Marshal(homePageData)
-		if err != nil {
-			fmt.Println("Erreur lors de la conversion en JSON:", err)
-			return
-		}
+		// log.Println("✅ Account created with success")
 
-		lib.RenderPage(basePath, pagePath, string(jsonData), res)
+		// jsonData, err := json.Marshal(homePageData)
+		// if err != nil {
+		// 	fmt.Println("Erreur lors de la conversion en JSON:", err)
+		// 	return
+		// }
+
+		// lib.RenderPage(basePath, pagePath, string(jsonData), res)
 		log.Println("✅ Home page get with success")
 	}
 }
