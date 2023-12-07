@@ -297,71 +297,39 @@ const displayAccueil = () => {
   container.innerHTML = ""
   container.appendChild(rightBar)
   container.appendChild(content)
-  console.log('ok')
   document.body.appendChild(container)
 
 }
 getData()
 
-let Posts = {
-  "user": {
-    "nickname": "john_doe",
-    "age": 25,
-    "gender": "male",
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john@example.com",
-    "password": "securepassword"
-  },
-  "Post": [
-    {
-      "id": 1,
-      "name": "Post Name",
-      "categorie": "public",
-      "time": "22s",
-      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
-    },
-    {
-      "id": 2,
-      "name": "Post Name",
-      "categorie": "public",
-      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
-    },
-    {
-      "id": 3,
-      "name": "Post Name",
-      "categorie": "public",
-      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
-    },
-    {
-      "id": 4,
-      "name": "Post Name",
-      "categorie": "public",
-      "time": "22s",
-      "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
-    },
-    {
-      "id": 5,
-      "name": "Post Name",
-      "categorie": "public",
-      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
-    },
-    {
-      "id": 6,
-      "name": "Post Name",
-      "categorie": "public",
-      "time": "22s", "Content": " rti about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.  Tech is synonymous with innovation. It's the spark that ignites creativity and disrupts the status quo. From artificial intelligence and blockchain to the Internet of Things (IoT) and augmented reality, our thirst for innovation knows no bounds. It's not just about embracing change; it's about leading the charge, pushing boundaries, and embracing the unknown.          "
-    }
-  ],
-  "settings": {
-    "theme": "dark",
-    "notifications": true
-  }
-}
+
 
 let addPost = (posts) => {
   let elem = posts
   elem.innerHTML = ""
+
+  let createPost = document.createElement("div")
+  createPost.id = "createPost"
+  createPost.className = "createPost"
+
+
+  let sort = document.createElement("div")
+  let createPostButton = document.createElement("div")
+
+  sort.id = "sortButton"
+  sort.innerHTML = '<p> Sort by </p>'
+
+  createPostButton.id = "createPostButton"
+  createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
+  createPostButton.style.marginRight = "10px"
+  createPostButton.style.cursor = "pointer"
+
+
+  createPost.appendChild(sort)
+  createPost.appendChild(createPostButton)
+
+  elem.appendChild(createPost)
+
   fetch('/dashboard')
     .then(response => response.json())
     .then(data => {
@@ -415,6 +383,11 @@ let addPost = (posts) => {
 
 }
 
+const createNewPost = (elem) => {
+  console.log("yes");
+  elem.innerHTML = ""
+}
+
 
 const displayAllContent = (element) => {
   let onlineDiv = document.createElement("div")
@@ -430,6 +403,7 @@ const displayAllContent = (element) => {
   messageButton.textContent = "Message"
   messageButton.id = "messageButton"
   messageButton.className = "accueilButton"
+
   messageButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     elem.textContent = "All Message Here"
@@ -438,7 +412,6 @@ const displayAllContent = (element) => {
   PostButton.textContent = "Posts"
   PostButton.id = "PostButton"
   PostButton.className = "accueilButton"
-
 
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
@@ -460,18 +433,34 @@ const displayAllContent = (element) => {
 
   addPost(posts)
 
-
   PostButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
+    
+    let createPost = document.createElement("div")
+    createPost.id = "createPost"
+    createPost.className = "createPost"
+
+    let sort = document.createElement("div")
+    sort.textContent = "iciiiiiiii"
+    let createPostButton = document.createElement("div")
+    createPostButton.textContent = "iccciiiiiiiii"
+
+    sort.id = "sortButton"
+    createPostButton.id = "createPostButton"
+
+    createPost.appendChild(sort)
+    createPost.appendChild(createPostButton) 
+
+    elem.appendChild(createPost)
+
     fetch('/dashboard')
     .then(response => response.json())
     .then(data => {
+      let post = document.createElement("div")
       data.AllPosts.forEach((element, i) => {
-        let post = document.createElement("div")
-  
         let content = `
-          <div class="Post" onclick="seePost()">
+          <div id=${element.id} class="Post" onclick="seePost()">
               <div class="PostTitle"><p class="Title">${element.Title}</p></div>
               <div class="PostContent">
                   <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
@@ -503,9 +492,9 @@ const displayAllContent = (element) => {
           </div>
   
          `
-        post.innerHTML = content
+         post.innerHTML += content
+        })
         elem.appendChild(post)
-      })
     })
     .catch(error => {
       console.error('Error checking authentication:', error);
