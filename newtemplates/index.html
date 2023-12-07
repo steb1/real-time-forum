@@ -9,6 +9,26 @@
 </head>
 
 <body>
+    <div id="myModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <form class="custom-form" action="#" method="post">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <label class="form-label" for="photo">Photo:</label>
+                <input class="form-input" type="file" id="photo" name="photo" accept="image/*">
+        
+                <label class="form-label" for="title">Titre:</label>
+                <input class="form-input" type="text" id="title" name="title" required>
+        
+                <label class="form-label" for="categories">Catégories:</label>
+                <input class="form-input" type="text" id="categories" name="categories" required>
+        
+                <label class="form-label" for="content">Contenu:</label>
+                <textarea class="form-input" id="content" name="content" rows="6" required></textarea>
+        
+                <button onclick="newPost()" class="form-button" type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
     <div class="container-flex" id="container-flex"></div>
     
     <script>
@@ -52,7 +72,7 @@
             bottom: -80px;
         }
 
-        form {
+        .formLogin {
             height: 500px;
             width: 400px;
             background-color: rgba(255, 255, 255, 0.13);
@@ -67,7 +87,7 @@
             padding: 50px 35px;
         }
 
-        form * {
+        .formLogin * {
             font-family: 'Poppins', sans-serif;
             color: #ffffff;
             letter-spacing: 0.5px;
@@ -75,21 +95,21 @@
             border: none;
         }
 
-        form h3 {
+        .formLogin h3 {
             font-size: 32px;
             font-weight: 500;
             line-height: 42px;
             text-align: center;
         }
 
-        label {
+        .formLogin label {
             display: block;
             margin-top: 30px;
             font-size: 16px;
             font-weight: 500;
         }
 
-        input {
+        .formLogin input {
             display: block;
             height: 50px;
             width: 100%;
@@ -101,11 +121,11 @@
             font-weight: 300;
         }
 
-        ::placeholder {
+        .formLogin ::placeholder {
             color: #e5e5e5;
         }
 
-        .registerForm {
+        .formLogin .registerForm {
             margin-top: 50px;
             width: 100%;
             background-color: #ffffff;

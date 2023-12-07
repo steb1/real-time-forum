@@ -20,6 +20,9 @@ function checkAuthentication() {
       return false
     });
 }
+document.addEventListener('DOMContentLoaded', () => {
+  closeModal()
+})
 // var bigData = {};
 function getData() {
   fetch('/dashboard')
@@ -55,7 +58,7 @@ function generateAuthPage() {
     <div class="shape"></div>
     <div class="shape"></div>
     </div>
-    <form id="form" method="POST" action="/sign-in">
+    <form class="formLogin" id="form" method="POST" action="/sign-in">
 
         <h3>Login Here</h3>
         <p id="loginError" style="display: none; color: red;" >BAD credentials</p>
@@ -282,8 +285,8 @@ const displayAccueil = () => {
       a.addEventListener('click', function (e) {
         e.preventDefault()
         window.history.pushState({}, '', e.target.href)
-        if (element == 'disconnect') {
-          window.location.href = `http://localhost:8080/${element}`
+        if (element == "disconnect") {
+          window.location.href = "http://localhost:8080/disconnect"
         }
         
       });
@@ -302,6 +305,7 @@ const displayAccueil = () => {
   document.body.appendChild(container)
 
 }
+getData()
 
 
 
@@ -328,8 +332,10 @@ let addPost = (posts) => {
 
   createPost.appendChild(sort)
   createPost.appendChild(createPostButton)
-
   elem.appendChild(createPost)
+
+  createPostButton.addEventListener("click", createNewPost)
+
 
   fetch('/dashboard')
     .then(response => response.json())
@@ -339,7 +345,7 @@ let addPost = (posts) => {
         let post = document.createElement("div")
     
         let content = `
-            <div class="Post" onclick="seePost()">
+            <div class="Post">
                 <div class="PostTitle"><p class="Title">${element.Title}</p></div>
                 <div class="PostContent">
                     <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
@@ -384,9 +390,20 @@ let addPost = (posts) => {
 
 }
 
-const createNewPost = (elem) => {
-  console.log("yes");
-  elem.innerHTML = ""
+const createNewPost = () => {
+  if (checkAuthentication) {
+    openModal();
+  }
+  
+}
+
+function openModal() {
+  document.getElementById("myModal").style.display = "block";
+}
+
+// Fonction pour fermer le modal
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
 }
 
 
@@ -461,7 +478,7 @@ const displayAllContent = (element) => {
       let post = document.createElement("div")
       data.AllPosts.forEach((element, i) => {
         let content = `
-          <div id=${element.id} class="Post" onclick="seePost()">
+          <div id=${element.id} class="Post" >
               <div class="PostTitle"><p class="Title">${element.Title}</p></div>
               <div class="PostContent">
                   <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
@@ -508,6 +525,10 @@ const displayAllContent = (element) => {
   bodyContent.appendChild(posts)
   bodyContent.appendChild(onlineStatus)
   element.appendChild(bodyContent)
+}
+
+const newPost = () => {
+  
 }
 
 
