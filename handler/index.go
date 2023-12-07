@@ -9,7 +9,9 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"text/template"
+	"time"
 )
 
 type HomePageData struct {
@@ -114,6 +116,7 @@ func Index(res http.ResponseWriter, req *http.Request) {
 		log.Println("✅ Home page get with success")
 	}
 }
+
 func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/dashboard", http.MethodGet) {
 
@@ -455,5 +458,78 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		// 	log.Println("❌ User with the given email don't exist")
 		// 	return
 		// }
+	}
+}
+
+func CreatePost(res http.ResponseWriter, req *http.Request) {
+	if lib.ValidateRequest(req, res, "/post", http.MethodPost) {
+		isSessionOpen := models.ValidSession(req)
+		if isSessionOpen {
+			// Parse form data
+			err := req.ParseMultipartForm(32 << 20) // 32 MB limit
+			if err != nil {
+				log.Println("❌ Failed to parse form data", err.Error())
+				return
+			}
+			creationDate := time.Now().Format("2006-01-02 15:04:05")
+			modificationDate := time.Now().Format("2006-01-02 15:04:05")
+			title := req.FormValue("title")
+			posts, err := models.PostRepo.GetAllPosts("")
+			if err != nil {
+				return
+			}
+			if posts != nil {
+				for j := 0; j < len(posts); j++ {
+					if strings.EqualFold(posts[j].Title, title) {
+						lib.RedirectToPreviousURL(res, req)
+						return
+					}
+				}
+			}
+			slug := lib.Slugify(title)
+			description := req.FormValue("content")
+			_categories := req.FormValue("categories")
+
+			imageUrl := lib.UploadImage(req)
+			authorID := models.GetUserFromSession(req).ID
+			categories := strings.Split(_categories, "#")
+
+			post := models.Post{
+				Title:        title,
+				Slug:         slug,
+				Description:  description,
+				ImageURL:     imageUrl,
+				AuthorID:     authorID,
+				IsEdited:     false,
+				CreateDate:   creationDate,
+				ModifiedDate: modificationDate,
+				Validate:     true,
+			}
+
+			err = models.PostRepo.CreatePost(&post)
+			if err != nil {
+				res.WriteHeader(http.StatusInternalServerError)
+				log.Println("❌ Can't create post")
+				return
+			}
+
+			for i := 1; i < len(categories); i++ {
+				name := strings.TrimSpace(categories[i])
+				category, _ := models.CategoryRepo.GetCategoryByName(name)
+				if category == nil {
+					category = &models.Category{
+						Name:         name,
+						CreateDate:   creationDate,
+						ModifiedDate: modificationDate,
+					}
+					models.CategoryRepo.CreateCategory(category)
+				}
+				models.PostCategoryRepo.CreatePostCategory(category.ID, post.ID)
+			}
+
+			log.Println("✅ Post created with success")
+			// http.Redirect(res, req, "/", http.StatusSeeOther)
+			lib.RedirectToPreviousURL(res, req)
+		}
 	}
 }

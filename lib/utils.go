@@ -151,7 +151,7 @@ func RenderPage(basePath, pagePath string, data any, res http.ResponseWriter) {
 } */
 
 func UploadImage(req *http.Request) string {
-	image, header, err := req.FormFile("image")
+	image, header, err := req.FormFile("photo")
 	if err != nil {
 		log.Println("❌ Request doesn't contain image", err)
 		return ""

@@ -83,7 +83,7 @@ function generateAuthPage() {
 }
 
 const registerForm = (e) => {
-  
+
   const authPage = document.createElement('div');
   var body = document.body;
   body.style.backgroundColor = "#080710"
@@ -288,7 +288,7 @@ const displayAccueil = () => {
         if (element == "disconnect") {
           window.location.href = "http://localhost:8080/disconnect"
         }
-        
+
       });
       rightBar.appendChild(a)
     }
@@ -343,7 +343,7 @@ let addPost = (posts) => {
       console.log(data);
       data.AllPosts.forEach((element, i) => {
         let post = document.createElement("div")
-    
+
         let content = `
             <div class="Post">
                 <div class="PostTitle"><p class="Title">${element.Title}</p></div>
@@ -386,7 +386,7 @@ let addPost = (posts) => {
       console.error('Error checking authentication:', error);
       return
     });
-  
+
 
 }
 
@@ -394,7 +394,7 @@ const createNewPost = () => {
   if (checkAuthentication) {
     openModal();
   }
-  
+
 }
 
 function openModal() {
@@ -454,7 +454,7 @@ const displayAllContent = (element) => {
   PostButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
-    
+
     let createPost = document.createElement("div")
     createPost.id = "createPost"
     createPost.className = "createPost"
@@ -468,16 +468,16 @@ const displayAllContent = (element) => {
     createPostButton.id = "createPostButton"
 
     createPost.appendChild(sort)
-    createPost.appendChild(createPostButton) 
+    createPost.appendChild(createPostButton)
 
     elem.appendChild(createPost)
 
     fetch('/dashboard')
-    .then(response => response.json())
-    .then(data => {
-      let post = document.createElement("div")
-      data.AllPosts.forEach((element, i) => {
-        let content = `
+      .then(response => response.json())
+      .then(data => {
+        let post = document.createElement("div")
+        data.AllPosts.forEach((element, i) => {
+          let content = `
           <div id=${element.id} class="Post" >
               <div class="PostTitle"><p class="Title">${element.Title}</p></div>
               <div class="PostContent">
@@ -510,15 +510,15 @@ const displayAllContent = (element) => {
           </div>
   
          `
-         post.innerHTML += content
+          post.innerHTML += content
         })
         elem.appendChild(post)
-    })
-    .catch(error => {
-      console.error('Error checking authentication:', error);
-      return
-    });
-    
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        return
+      });
+
 
   })
 
@@ -528,6 +528,31 @@ const displayAllContent = (element) => {
 }
 
 const newPost = () => {
+  console.log('heeeeeeeeeeeeeereeeeeeeeeeeeeeeeeeee');
+  // // Récupérer les données du formulaire
+  // var formData = new FormData(document.getElementById('postForm'));
+
+  // // Effectuer une requête AJAX avec fetch
+  // fetch('/post', {
+  //   method: 'POST',
+  //   body: formData,
+  // })
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       throw new Error('Erreur lors de la création du post');
+  //     }
+  //     return response.json(); // Supposons que le serveur renvoie une réponse JSON
+  //   })
+  //   .then(data => {
+  //     // La requête a réussi
+  //     console.log('Post créé avec succès!', data);
+  //     // Ajoutez ici la logique pour mettre à jour l'interface utilisateur, par exemple, afficher un message de succès.
+  //   })
+  //   .catch(error => {
+  //     // La requête a échoué
+  //     console.error('Erreur lors de la création du post:', error.message);
+  //     // Ajoutez ici la logique pour gérer les erreurs, par exemple, afficher un message d'erreur.
+  //   });
   
 }
 

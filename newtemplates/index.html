@@ -11,7 +11,7 @@
 <body>
     <div id="myModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <form class="custom-form" action="#" method="post">
+            <form class="custom-form" method="POST" action="/post" enctype="multipart/form-data">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <label class="form-label" for="photo">Photo:</label>
                 <input class="form-input" type="file" id="photo" name="photo" accept="image/*">
@@ -32,6 +32,9 @@
     <div class="container-flex" id="container-flex"></div>
     
     <script>
+        function newPost1() {
+            console.log('li');
+        }
         var all = {{ .}}
     </script>
     <script src="./js/script.js"></script>
