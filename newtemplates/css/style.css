@@ -191,6 +191,7 @@ input{
 }
 .PostTime {
     font-size: 10px;
+    padding-top: 5px;
     padding-left: 10px;
     color: rgb(99, 98, 98);
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -238,7 +239,7 @@ input{
 .categorie {
     width: 20%;
     padding-top: 1%;
-    height: 30px;
+    height: fit-content;
     background-color: bisque;
     border-radius: 15px;
     text-align: center;

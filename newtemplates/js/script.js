@@ -379,12 +379,13 @@ let addPost = (posts) => {
                         <div class="PostTime">${element.LastEditionDate}</div>
                     </div>
                     <div class="categorie">
-                        ${element.Categories.map(category => category.Name).join(', ')}
+                        ${element.Categories.map(category => category.Name).join('<br>')}
                     </div>
                 </div>
     
                 <div class="PostBody">
                     <p class="text"> ${element.Description} </p>
+                    <img class="image" src="../..${element.ImageURL}" alt="">
                 </div>
     
                 <div class="PostFooter">
@@ -479,7 +480,7 @@ const displayAllContent = (element) => {
                       <div class="PostTime">${element.LastEditionDate}</div>
                   </div>
                   <div class="categorie">
-                      ${element.Categories.map(category => category.Name).join(', ')}
+                      ${element.Categories.map(category => category.Name).join('<br>')}
                   </div>
               </div>
   
