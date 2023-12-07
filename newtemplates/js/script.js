@@ -365,6 +365,7 @@ let addPost = (posts) => {
   fetch('/dashboard')
     .then(response => response.json())
     .then(data => {
+      console.log(data);
       data.AllPosts.forEach((element, i) => {
         let post = document.createElement("div")
     
@@ -378,7 +379,7 @@ let addPost = (posts) => {
                         <div class="PostTime">${element.LastEditionDate}</div>
                     </div>
                     <div class="categorie">
-                        categorie
+                        ${element.Categories.map(category => category.Name).join(', ')}
                     </div>
                 </div>
     
@@ -478,12 +479,12 @@ const displayAllContent = (element) => {
                       <div class="PostTime">${element.LastEditionDate}</div>
                   </div>
                   <div class="categorie">
-                      categorie
+                      ${element.Categories.map(category => category.Name).join(', ')}
                   </div>
               </div>
   
               <div class="PostBody">
-                  <p class="text"> ${element.Description} </p>
+                  <p class="text"> ${element.Description} </p> 
               </div>
   
               <div class="PostFooter">

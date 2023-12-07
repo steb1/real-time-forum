@@ -30,7 +30,7 @@ type PostItems struct {
 	Description      string
 	ImageURL         string
 	LastEditionDate  string
-	Categories       []string
+	Categories       []Category
 	NumberOfComments int
 	NumberOfLikes    int
 	NumberOfDislikes int
@@ -440,7 +440,6 @@ func (pr *PostRepository) GetAllPostsItems(morePost int) ([]PostItem, error) {
 // Get all posts from database
 func (pr *PostRepository) GetAllPost() ([]PostItems, error) {
 	var posts []*Post
-	fmt.Println("1")
 
 	rows, err := pr.db.Query("SELECT id, title, slug, description, imageURL, authorID, isEdited, createDate, modifiedDate, validate FROM post WHERE validate = true ORDER BY createDate DESC")
 	if err != nil {
@@ -456,19 +455,16 @@ func (pr *PostRepository) GetAllPost() ([]PostItems, error) {
 		}
 		posts = append(posts, &post)
 	}
-	fmt.Println("2")
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 	tabPostItem := []PostItems{}
-	fmt.Println("3")
 	for i := 0; i < len(posts); i++ {
-		fmt.Println("4")
 		tabUser, _ := UserRepo.SelectAllUsers()
-		fmt.Println("5")
 		nbrComments, _ := CommentRepo.GetNbrOfCommentsOfPost(posts[i].ID)
 		nbrLikes, _ := ViewRepo.GetLikesByPost(posts[i].ID)
 		nbrDislikes, _ := ViewRepo.GetDislikesByPost(posts[i].ID)
+		cats, _ := PostCategoryRepo.GetCategoriesOfPost(posts[i].ID)
 		user := ""
 		for j := 0; j < len(tabUser); j++ {
 			if posts[i].AuthorID == tabUser[j].ID {
@@ -498,12 +494,12 @@ func (pr *PostRepository) GetAllPost() ([]PostItems, error) {
 			Description:      posts[i].Description,
 			ImageURL:         urlImage,
 			LastEditionDate:  lib.TimeSinceCreation(lastmodif),
+			Categories:       cats,
 			NumberOfComments: nbrComments,
 			NumberOfLikes:    nbrLikes,
 			NumberOfDislikes: nbrDislikes}
 		tabPostItem = append(tabPostItem, PostItemi)
 	}
-	
 
 	return tabPostItem, nil
 }

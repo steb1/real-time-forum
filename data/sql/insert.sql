@@ -18,7 +18,9 @@ VALUES
 INSERT INTO "post" (id, title, slug, description, imageURL, authorID, isEdited, createDate, modifiedDate, validate)
 VALUES
 ('1', 'Sample Post 1', 'sample-post-1', 'Description for post 1', 'image_url_1', '1', false, '2023-01-01', '2023-01-01', true),
-('2', 'Sample Post 2', 'sample-post-2', 'Description for post 2', 'image_url_2', '2', false, '2023-01-02', '2023-01-02', true);
+('2', 'Sample Post 2', 'sample-post-2', 'Description for post 2', 'image_url_2', '2', false, '2023-01-02', '2023-01-02', true),
+('3', 'Sample Post 3', 'sample-post-3', 'Description for post 3', 'image_url_2', '2', false, '2023-01-02', '2023-01-02', true),
+('4', 'Sample Post 4', 'sample-post-4', 'Description for post 4', 'image_url_2', '2', false, '2023-01-02', '2023-01-02', true);
 
 -- Insertion dans la table "report"
 INSERT INTO "report" (id, authorID, reportedID, reportedName, cause, type, createDate, modifiedDate, reported, imageURL)
@@ -54,22 +56,26 @@ VALUES
 INSERT INTO "post_category" (id, categoryID, postID)
 VALUES
 ('1', '1', '1'),
-('2', '2', '2');
+('2', '2', '2'),
+('3', '3', '1'),
+('4', '4', '2'),
+('5', '5', '1'),
+('6', '6', '2'),
+('7', '7', '1'),
+('8', '8', '2'),
+('9', '8', '3'),
+('10', '8', '4');
 
 -- Insertion dans la table "category"
 INSERT INTO "category" (id, name, createDate, modifiedDate)
 VALUES
 ('1', 'Technology', '2023-01-09', '2023-01-09'),
-('2', 'Travel', '2023-01-10', '2023-01-10');
+('2', 'Travel', '2023-01-10', '2023-01-10'),
+('3', 'Science', '2023-01-09', '2023-01-09'),
+('4', 'Art', '2023-01-09', '2023-01-09'),
+('5', 'Culture', '2023-01-09', '2023-01-09'),
+('6', 'Politique', '2023-01-09', '2023-01-09'),
+('7', 'Entreprise', '2023-01-09', '2023-01-09'),
+('8', 'Embauche', '2023-01-09', '2023-01-09');
 
--- Insertion dans la table "notification"
-INSERT INTO "notification" (id, authorID, author_name, postID, ownerID, notif_type, slug, time, Readed)
-VALUES
-('1', '1', 'john_doe', '1', '2', 'comment', 'post-1-comment', '2023-01-11', false),
-('2', '2', 'jane_smith', '2', '1', 'rate', 'post-2-rate', '2023-01-12', false);
 
--- Insertion dans la table "request"
-INSERT INTO "request" (id, authorID, time, username, imageurl, role)
-VALUES
-('1', '1', '2023-01-13', 'user1', 'image_url_user1', 'admin'),
-('2', '2', '2023-01-14', 'user2', 'image_url_user2', 'moderator');
