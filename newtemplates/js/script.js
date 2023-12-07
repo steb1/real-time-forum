@@ -282,8 +282,10 @@ const displayAccueil = () => {
       a.addEventListener('click', function (e) {
         e.preventDefault()
         window.history.pushState({}, '', e.target.href)
-        //console.log(e.target.href)
-        handleRoutes(e)
+        if (element == 'disconnect') {
+          window.location.href = `http://localhost:8080/${element}`
+        }
+        
       });
       rightBar.appendChild(a)
     }
@@ -300,7 +302,6 @@ const displayAccueil = () => {
   document.body.appendChild(container)
 
 }
-getData()
 
 
 

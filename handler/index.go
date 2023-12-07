@@ -289,91 +289,17 @@ func HandleSettings(res http.ResponseWriter, req *http.Request) {
 
 func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/disconnect", http.MethodGet) {
-		basePath := "base"
-		pagePath := "index"
-
-		isSessionOpen := models.ValidSession(req)
-		// isSessionOpen := true
-		user := models.GetUserFromSession(req)
-		queryParams := req.URL.Query()
-		limit := 5
-		numberOfPosts := models.PostRepo.GetNumberOfPosts()
-
-		if len(queryParams["limit"]) != 0 {
-			_limit, err := strconv.Atoi(queryParams.Get("limit"))
-			if limit <= 0 || err != nil {
-				res.WriteHeader(http.StatusBadRequest)
-				log.Println("❌ Can't convert index to int")
-				return
-			} else {
-				if _limit == numberOfPosts {
-					limit = -1
-				} else {
-					limit = _limit
-				}
-			}
+		if ok := models.DeleteSession(req); ok {
+			http.Redirect(res, req, "/", http.StatusSeeOther)
+			log.Println("✅ Logout done with success")
+		} else {
+			log.Println("❌ Logout failure")
 		}
-		// randomUsers, err := models.UserRepo.SelectRandomUsers(17)
-		// if err != nil {
-		// 	res.WriteHeader(http.StatusInternalServerError)
-		// 	log.Println("❌ Can't get 17 random users in the database")
-		// 	return
-		// }
-
-		posts, _ := models.PostRepo.GetAllPostsItems(limit)
-
-		TopUsers, err := models.UserRepo.TopUsers()
-		if err != nil {
-			res.WriteHeader(http.StatusInternalServerError)
-			log.Println("❌ Can't get top users")
-			return
-		}
-
-		if limit != -1 {
-			if limit+5 > numberOfPosts {
-				limit = numberOfPosts
-			} else {
-				limit += 5
-			}
-		}
-		if posts != nil {
-			for j := 0; j < len(posts); j++ {
-				posts[j].Title = template.HTMLEscapeString(posts[j].Title)
-			}
-		}
-		cat, err := models.CategoryRepo.GetAllCategory()
-		if err != nil {
-			return
-		}
-		allPost, err := models.PostRepo.GetAllPost()
-		if err != nil {
-			return
-		}
-		notifications, err := models.NotifRepo.GetAllNotifs()
-		if err != nil {
-			return
-		}
-		homePageData := HomePageData{
-			IsLoggedIn:  isSessionOpen,
-			CurrentUser: *user,
-			//RandomUsers:   randomUsers,
-			Post:          posts,
-			NumberOfPosts: numberOfPosts,
-			TopUsers:      TopUsers,
-			Limit:         limit,
-			Categories:    cat,
-			AllPosts:      allPost,
-			AllNotifs:     notifications,
-		}
-
-		jsonData, err := json.Marshal(homePageData)
-		if err != nil {
-			fmt.Println("Erreur lors de la conversion en JSON:", err)
-			return
-		}
-
-		lib.RenderPage(basePath, pagePath, string(jsonData), res)
-		log.Println("✅ Home page get with success")
+	} else {
+		res.WriteHeader(http.StatusNotFound)
+		lib.RenderPage("base", "404", nil, res)
+		log.Println("404 ❌ - Page not found ", req.URL)
+		return
 	}
 }
 func CheckAuthentication(res http.ResponseWriter, req *http.Request) {
