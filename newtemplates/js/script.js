@@ -335,6 +335,8 @@ let addPost = (posts) => {
   elem.appendChild(createPost)
   createPostButton.addEventListener("click", createNewPost)
 
+  
+
   //createPostButton.addEventListener("click", createNewPost)
   fetch('/dashboard')
     .then(response => response.json())
@@ -344,7 +346,7 @@ let addPost = (posts) => {
         let post = document.createElement("div")
 
         let content = `
-            <div class="Post">
+            <div id=${element.id} class="Post">
               
                 <div class="PostContent">
                     <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
@@ -358,8 +360,8 @@ let addPost = (posts) => {
                 </div>
     
                 <div class="PostBody">
+                <img class="imagePost1" src="../..${element.ImageURL}" alt="">
                     <p class="text"> ${element.Description} </p>
-              <img class="imagePost" src="../..${element.ImageURL}" alt="">
                 </div>
     
                 <div class="PostFooter">
@@ -370,9 +372,9 @@ let addPost = (posts) => {
             </div>
             <div class="impressions">
                 <div class="likeDislike">
-                    <div><span>${element.NumberOfLikes}</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                    <div><span>${element.NumberOfDislikes}</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                    <div><span>${element.NumberOfComments}</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+                    <div><span>${element.NumberOfLikes}</span><img id=${element.id} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                    <div><span>${element.NumberOfDislikes}</span> <img id=${element.id} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                    <div><span>${element.NumberOfComments}</span> <img id=${element.id} onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
                 </div>
             </div>
     
@@ -385,8 +387,11 @@ let addPost = (posts) => {
       console.error('Error checking authentication:', error);
       return
     });
+}
 
-
+let like = (e) => {
+  let id = e
+  console.log(id);
 }
 
 const createNewPost = () => {
@@ -524,8 +529,8 @@ const displayAllContent = (element) => {
               </div>
   
               <div class="PostBody">
+              <img class="imagePost1" src="../..${element.ImageURL}" alt="">
               <p class="text"> ${element.Description} </p> 
-              <img class="image" src="../..${element.ImageURL}" alt="">
               </div>
   
               <div class="PostFooter">
@@ -536,9 +541,9 @@ const displayAllContent = (element) => {
           </div>
           <div class="impressions">
               <div class="likeDislike">
-                  <div><span>${element.NumberOfLikes}</span><img onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                  <div><span>${element.NumberOfDislikes}</span> <img onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                  <div><span>${element.NumberOfComments}</span> <img onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+              <div><span>${element.NumberOfLikes}</span><img id=${element.id} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+              <div><span>${element.NumberOfDislikes}</span> <img id=${element.id} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+              <div><span>${element.NumberOfComments}</span> <img id=${element.id} onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
               </div>
           </div>
   
