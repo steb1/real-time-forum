@@ -335,7 +335,7 @@ let addPost = (posts) => {
   elem.appendChild(createPost)
   createPostButton.addEventListener("click", createNewPost)
 
-  
+
 
   //createPostButton.addEventListener("click", createNewPost)
   fetch('/dashboard')
@@ -357,13 +357,13 @@ let addPost = (posts) => {
                     
                 </div>
     
-                <div class="PostBody">
+                <div class="PostBody" onClick="seePost('${element.ID}')">
                 <img class="imagePost1" src="../..${element.ImageURL}" alt="">
                     <p class="text"> ${element.Description} </p>
                     <div class="categorie">
                         <p>${(element.Categories && element.Categories.length > 0)
-                          ? element.Categories.map(category => category.Name).join('<br>')
-                          : 'Aucune catégorie'}</p>
+            ? element.Categories.map(category => category.Name).join('<br>')
+            : 'Aucune catégorie'}</p>
                   
                     </div>
                 </div>
@@ -399,7 +399,7 @@ let addPost = (posts) => {
 }
 
 let comment = () => {
-  
+
 }
 
 let like = (e) => {
@@ -441,8 +441,8 @@ const getAllPosts = () => {
       })
       .then(data => {
         //  successful
-        
-  
+
+
         // console.log('Cookies:', document.cookie);
         // Redirect to a new page or perform other actions
       })
@@ -541,13 +541,13 @@ const displayAllContent = (element) => {
                   
               </div>
   
-              <div class="PostBody">
+              <div class="PostBody" onClick="seePost('${element.ID}')">
               <img class="imagePost1" src="../..${element.ImageURL}" alt="">
                   <p class="text"> ${element.Description} </p>
                   <div class="categorie">
                       ${(element.Categories && element.Categories.length > 0)
-                        ? element.Categories.map(category => category.Name).join('<br>')
-                        : 'Aucune catégorie'}
+              ? element.Categories.map(category => category.Name).join('<br>')
+              : 'Aucune catégorie'}
                 
                   </div>
               </div>
@@ -589,6 +589,57 @@ const displayAllContent = (element) => {
   element.appendChild(bodyContent)
 }
 
+const seePost = (id) => {
+  // alert('CLick on post')
+  // window.history.replaceState({},'', '/post')
+  let centralDiv = document.getElementById('posts')
+  centralDiv.innerHTML = ''
+  centralDiv.innerHTML = `
+  <div class="papa">
+  <div class="post-container">
+  <div class="post-header">
+        <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
+        <div class="post-owner-info">
+            <span class="post-owner-name">John Doe</span>
+            <span class="post-time">2 hours ago</span>
+        </div>
+    </div>
+    <div class="post-content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis lorem ut libero malesuada dapibus.
+            Quisque aliquam tincidunt nisi, nec lacinia nulla eleifend vel.</p>
+        <img class="post-image" src="../../uploads/gif.gif" alt="Post Image">
+    </div>
+
+    <div class="comments-container">
+        <div class="comment">
+            <p><strong>User1:</strong> Nice post!</p>
+        </div>
+        <div class="comment">
+            <p><strong>User2:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="comment">
+            <p><strong>User3:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="comment">
+            <p><strong>User4:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="comment">
+            <p><strong>User5:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="comment">
+            <p><strong>User6:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+    </div>
+  </div>
+    <form class="comment-form" id="cf">
+      <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
+      <button type="button" class="comment-button" id="cb" >Comment</button>
+    </form>
+</div>`
+
+  console.log(id);
+}
+
 const newPost = () => {
   console.log('heeeeeeeeeeeeeereeeeeeeeeeeeeeeeeeee');
   // // Récupérer les données du formulaire
@@ -615,7 +666,7 @@ const newPost = () => {
   //     console.error('Erreur lors de la création du post:', error.message);
   //     // Ajoutez ici la logique pour gérer les erreurs, par exemple, afficher un message d'erreur.
   //   });
-  
+
 }
 
 
