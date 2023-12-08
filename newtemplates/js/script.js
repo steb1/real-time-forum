@@ -346,7 +346,7 @@ let addPost = (posts) => {
         let post = document.createElement("div")
 
         let content = `
-            <div id=${element.id} class="Post">
+            <div id=${element.ID} class="Post">
               
                 <div class="PostContent">
                     <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
@@ -354,17 +354,18 @@ let addPost = (posts) => {
                         <div class="PostOwner">${element.AuthorName}</div>
                         <div class="PostTime">${element.LastEditionDate}</div>
                     </div>
-                    <div class="categorie">
-                        ${(element.Categories && element.Categories.length > 0)
-                          ? element.Categories.map(category => category.Name).join('<br>')
-                          : 'Aucune catégorie'}
-                  
-                    </div>
+                    
                 </div>
     
                 <div class="PostBody">
                 <img class="imagePost1" src="../..${element.ImageURL}" alt="">
                     <p class="text"> ${element.Description} </p>
+                    <div class="categorie">
+                        <p>${(element.Categories && element.Categories.length > 0)
+                          ? element.Categories.map(category => category.Name).join('<br>')
+                          : 'Aucune catégorie'}</p>
+                  
+                    </div>
                 </div>
     
                 <div class="PostFooter">
@@ -372,12 +373,17 @@ let addPost = (posts) => {
     
                     </div>
                 </div>
-            </div>
-            <div class="impressions">
-                <div class="likeDislike">
-                    <div><span>${element.NumberOfLikes}</span><img id=${element.id} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                    <div><span>${element.NumberOfDislikes}</span> <img id=${element.id} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                    <div><span>${element.NumberOfComments}</span> <img id=${element.id} onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+                <div class="impressions">
+                    <div class="likeDislike">
+                        <div><span>${element.NumberOfLikes}</span><img id=${element.ID} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                        <div><span>${element.NumberOfDislikes}</span> <img id=${element.ID} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                        <div><span>${element.NumberOfComments}</span> <img id=${element.ID} onclick="comment()" class="like" img src="../../uploads/comment.png" alt=""></div>
+                        <div id="comment${element.ID}" class="commentPart hidden">
+                          <input class="inputComment" placeholder="add a comment" type="email" class="form__field" placeholder="Your E-Mail Address" />
+                          <button class="commentButton" type="button" class="btn btn--primary btn--inside uppercase">Comment</button>
+                        </div>
+                        <div><div>
+                    </div>
                 </div>
             </div>
     
@@ -390,6 +396,10 @@ let addPost = (posts) => {
       console.error('Error checking authentication:', error);
       return
     });
+}
+
+let comment = () => {
+  
 }
 
 let like = (e) => {
@@ -515,18 +525,25 @@ const displayAllContent = (element) => {
     fetch('/dashboard')
       .then(response => response.json())
       .then(data => {
-        console.log("yeeeppp");
+        console.log("");
         let post = document.createElement("div")
         data.AllPosts.forEach((element, i) => {
+          console.log(element.ID);
           let content = `
-          <div id=${element.id} class="Post" >
-              
+          <div id=${element.ID} class="Post">
+            
               <div class="PostContent">
                   <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
                   <div class="PostInfo">
                       <div class="PostOwner">${element.AuthorName}</div>
                       <div class="PostTime">${element.LastEditionDate}</div>
                   </div>
+                  
+              </div>
+  
+              <div class="PostBody">
+              <img class="imagePost1" src="../..${element.ImageURL}" alt="">
+                  <p class="text"> ${element.Description} </p>
                   <div class="categorie">
                       ${(element.Categories && element.Categories.length > 0)
                         ? element.Categories.map(category => category.Name).join('<br>')
@@ -535,26 +552,22 @@ const displayAllContent = (element) => {
                   </div>
               </div>
   
-              <div class="PostBody">
-              <img class="imagePost1" src="../..${element.ImageURL}" alt="">
-              <p class="text"> ${element.Description} </p> 
-<<<<<<< HEAD
-=======
-              <img class="imagePost" src="../..${element.ImageURL}" alt="">
->>>>>>> 769ce766aaae944a5c9beaf08c2bdddff51a570a
-              </div>
-  
               <div class="PostFooter">
                   <div class="element">
   
                   </div>
               </div>
-          </div>
-          <div class="impressions">
-              <div class="likeDislike">
-              <div><span>${element.NumberOfLikes}</span><img id=${element.id} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-              <div><span>${element.NumberOfDislikes}</span> <img id=${element.id} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-              <div><span>${element.NumberOfComments}</span> <img id=${element.id} onclick="comment()" class="like" img src="../../uploads/Quote.png" alt=""></div> 
+              <div class="impressions">
+                  <div class="likeDislike">
+                      <div><span>${element.NumberOfLikes}</span><img id=${element.ID} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
+                      <div><span>${element.NumberOfDislikes}</span> <img id=${element.ID} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
+                      <div><span>${element.NumberOfComments}</span> <img id=${element.ID} onclick="comment()" class="like" img src="../../uploads/comment.png" alt=""></div>
+                      <div id="comment${element.ID}" class="commentPart hidden">
+                        <input class="inputComment" placeholder="add a comment" type="email" class="form__field" placeholder="Your E-Mail Address" />
+                        <button class="commentButton" type="button" class="btn btn--primary btn--inside uppercase">Comment</button>
+                      </div>
+                      <div><div>
+                  </div>
               </div>
           </div>
   

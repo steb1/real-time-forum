@@ -154,7 +154,8 @@ input{
 }
 .likeDislike {
     display: flex;
-    width: 40%;
+    width: fit-content;
+    
     float: left;
     font-size: 10px;
     flex-direction: row;
@@ -164,17 +165,16 @@ input{
     
 }
 .impressions {
+    display: flex;
+    flex-direction: column;
     float: left;
     padding-top: 10px;
     justify-content: space-evenly;
-    padding-left: 30px;
-   
     height: fit-content;
     width: 600px;
     background-color: none;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 5px;
+    /* margin-right: auto;
+    margin-left: auto; */
     border-radius: 40px;
     opacity: 0.5;
 }
@@ -207,10 +207,14 @@ input{
     border-radius: 50%;
 }
 .Post {
+    display: flex;
+    flex-direction: column;
     margin-right: auto;
-    margin-left: auto;
-    margin-top: 30px;
-    padding: 10px;
+     margin-left: auto;
+    /* margin-top: 30px;
+    padding: 10px;  */
+    margin-top: 20px;
+    margin-bottom: 20px;
     width: 600px;
     height: auto;
     border-radius:30px;
@@ -235,17 +239,21 @@ input{
     color: rgb(0, 0, 0);
 }
 .PostInfo{
-    width: 80%;
+    float: left;
+    width: auto;
     padding-top: 1%;
 }
 .categorie {
+    display: flex;
     width: 20%;
-    padding-top: 1%;
     height: fit-content;
-    background-color: bisque;
+    background-color: rgb(160, 188, 211);
     border-radius: 15px;
     text-align: center;
-    color: rgb(153, 151, 151);
+    color: rgb(255, 255, 255);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    align-items: center;
+    justify-content: center;
 }
 .PostTitle {
     height: 50px;
@@ -258,11 +266,11 @@ input{
 .PostContent {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: left;
     /* background-color: rgb(0, 0, 0); */
     width: 90%;
     height: 12%;
-    padding-left: 20px;
+    /* padding-left: 20px; */
 }
 .PostBody {
     width: 100%;
@@ -384,6 +392,36 @@ cursor: pointer;
 font-size: 16px;
 }
 
+.commentPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+    visibility: hidden;
+}
+
 .form-button:hover {
 background-color: #45a049;
+}
+
+.inputComment {
+    width: 400px;
+    border-radius: 10px;
+    color: #000000;
+    height: 40px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.commentButton {
+    height: 30px;
+    color: #050c2b;
+    width: 80px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.hidden {
+    visibility: none;
 }
