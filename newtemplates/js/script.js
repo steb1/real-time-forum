@@ -311,6 +311,9 @@ getData()
 
 let addPost = (posts) => {
   let elem = posts
+  if (!elem) {
+     elem = document.getElementById('posts')
+  }
   elem.innerHTML = ""
 
   let createPost = document.createElement("div")
@@ -531,16 +534,13 @@ const displayAllContent = (element) => {
           console.log(element.ID);
           let content = `
           <div id=${element.ID} class="Post">
-            
               <div class="PostContent">
                   <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
                   <div class="PostInfo">
                       <div class="PostOwner">${element.AuthorName}</div>
                       <div class="PostTime">${element.LastEditionDate}</div>
                   </div>
-                  
               </div>
-  
               <div class="PostBody" onClick="seePost('${element.ID}')">
               <img class="imagePost1" src="../..${element.ImageURL}" alt="">
                   <p class="text"> ${element.Description} </p>
@@ -592,82 +592,53 @@ const displayAllContent = (element) => {
 const seePost = (id) => {
   // alert('CLick on post')
   // window.history.replaceState({},'', '/post')
-  let centralDiv = document.getElementById('posts')
-  centralDiv.innerHTML = ''
-  centralDiv.innerHTML = `
-  <div class="papa">
-  <div class="post-container">
-  <div class="post-header">
-        <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
-        <div class="post-owner-info">
-            <span class="post-owner-name">John Doe</span>
-            <span class="post-time">2 hours ago</span>
-        </div>
-    </div>
-    <div class="post-content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis lorem ut libero malesuada dapibus.
-            Quisque aliquam tincidunt nisi, nec lacinia nulla eleifend vel.</p>
-        <img class="post-image" src="../../uploads/gif.gif" alt="Post Image">
-    </div>
+  fetch('/dashboard')
+      .then(response => response.json())
+      .then(data => {
+        data.AllPosts.forEach((element, i) => {
+          if (element.ID == id) {
+            let centralDiv = document.getElementById('posts')
+              centralDiv.innerHTML = ''
+              centralDiv.innerHTML = `
+              <div class="detail">
+              <div class="post-container">
+              
+              <div id="back" onclick="addPost()"> <img class="back" src="../../uploads/back.png">Back</div>
+              <div class="post-header">
+                    <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
+                    <div class="post-owner-info">
+                        <span class="post-owner-name">${element.AuthorName}</span>
+                        <span class="post-time">${element.LastEditionDate}</span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>${element.Description}</p>
+                    <img class="post-image" src="../..${element.ImageURL}" alt="Post Image">
+                </div>
 
-    <div class="comments-container">
-        <div class="comment">
-            <p><strong>User1:</strong> Nice post!</p>
-        </div>
-        <div class="comment">
-            <p><strong>User2:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="comment">
-            <p><strong>User3:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="comment">
-            <p><strong>User4:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="comment">
-            <p><strong>User5:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-        <div class="comment">
-            <p><strong>User6:</strong> Thanks, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-    </div>
-  </div>
-    <form class="comment-form" id="cf">
-      <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
-      <button type="button" class="comment-button" id="cb" >Comment</button>
-    </form>
-</div>`
+                <div class="comments-container">
+                    <div class="comment">
+                        <p><strong>User1:</strong> Nice post!</p>
+                    </div>
+                  </div>
+                  </div>
+                    <form class="comment-form" id="cf">
+                      <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
+                      <button type="button" class="comment-button" id="cb" >Comment</button>
+                    </form>
+                  </div>`
+          }
+        })
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        return
+      });
+  
 
   console.log(id);
 }
 
-const newPost = () => {
-  console.log('heeeeeeeeeeeeeereeeeeeeeeeeeeeeeeeee');
-  // // Récupérer les données du formulaire
-  // var formData = new FormData(document.getElementById('postForm'));
-
-  // // Effectuer une requête AJAX avec fetch
-  // fetch('/post', {
-  //   method: 'POST',
-  //   body: formData,
-  // })
-  //   .then(response => {
-  //     if (!response.ok) {
-  //       throw new Error('Erreur lors de la création du post');
-  //     }
-  //     return response.json(); // Supposons que le serveur renvoie une réponse JSON
-  //   })
-  //   .then(data => {
-  //     // La requête a réussi
-  //     console.log('Post créé avec succès!', data);
-  //     // Ajoutez ici la logique pour mettre à jour l'interface utilisateur, par exemple, afficher un message de succès.
-  //   })
-  //   .catch(error => {
-  //     // La requête a échoué
-  //     console.error('Erreur lors de la création du post:', error.message);
-  //     // Ajoutez ici la logique pour gérer les erreurs, par exemple, afficher un message d'erreur.
-  //   });
-
-}
 
 
 
