@@ -333,10 +333,9 @@ let addPost = (posts) => {
   createPost.appendChild(sort)
   createPost.appendChild(createPostButton)
   elem.appendChild(createPost)
-
   createPostButton.addEventListener("click", createNewPost)
 
-
+  //createPostButton.addEventListener("click", createNewPost)
   fetch('/dashboard')
     .then(response => response.json())
     .then(data => {
@@ -346,7 +345,7 @@ let addPost = (posts) => {
 
         let content = `
             <div class="Post">
-                <div class="PostTitle"><p class="Title">${element.Title}</p></div>
+              
                 <div class="PostContent">
                     <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
                     <div class="PostInfo">
@@ -354,13 +353,13 @@ let addPost = (posts) => {
                         <div class="PostTime">${element.LastEditionDate}</div>
                     </div>
                     <div class="categorie">
-                        ${element.Categories.map(category => category.Name).join('<br>')}
+                        
                     </div>
                 </div>
     
                 <div class="PostBody">
                     <p class="text"> ${element.Description} </p>
-                    <img class="image" src="../..${element.ImageURL}" alt="">
+              <img class="imagePost" src="../..${element.ImageURL}" alt="">
                 </div>
     
                 <div class="PostFooter">
@@ -406,12 +405,41 @@ function closeModal() {
   document.getElementById("myModal").style.display = "none";
 }
 
+const getAllPosts = () => {
+  if (checkAuthentication) {
+
+    fetch('http://localhost:8080/getAllPosts', {
+      method: 'POST',
+      credentials: 'include',  // Include cookies in the request
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Login failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        //  successful
+        
+  
+        // console.log('Cookies:', document.cookie);
+        // Redirect to a new page or perform other actions
+      })
+      .catch(error => {
+        console.error('Registration error:', error);
+      });
+  }
+}
+
 
 const displayAllContent = (element) => {
   let onlineDiv = document.createElement("div")
   onlineDiv.textContent = '3 people are online'
   onlineDiv.id = "onlineDiv"
-  onlineDiv.style.backgroundColor = "blue"
+  //onlineDiv.style.backgroundColor = "blue"
   element.appendChild(onlineDiv)
   let tabBar = document.createElement("div")
   tabBar.id = "tabBar"
@@ -436,7 +464,7 @@ const displayAllContent = (element) => {
   element.appendChild(tabBar)
 
   let bodyContent = document.createElement("div")
-  bodyContent.style.backgroundColor = 'rgb(188, 174, 247)'
+  //bodyContent.style.backgroundColor = 'rgb(188, 174, 247)'
   bodyContent.id = "bodyContent"
 
   let posts = document.createElement("div")
@@ -460,26 +488,31 @@ const displayAllContent = (element) => {
     createPost.className = "createPost"
 
     let sort = document.createElement("div")
-    sort.textContent = "iciiiiiiii"
     let createPostButton = document.createElement("div")
-    createPostButton.textContent = "iccciiiiiiiii"
 
     sort.id = "sortButton"
+    sort.innerHTML = '<p> Sort by </p>'
+
     createPostButton.id = "createPostButton"
+    createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
+    createPostButton.style.marginRight = "10px"
+    createPostButton.style.cursor = "pointer"
 
     createPost.appendChild(sort)
     createPost.appendChild(createPostButton)
 
     elem.appendChild(createPost)
+    createPostButton.addEventListener("click", createNewPost)
 
     fetch('/dashboard')
       .then(response => response.json())
       .then(data => {
+        console.log("yeeeppp");
         let post = document.createElement("div")
         data.AllPosts.forEach((element, i) => {
           let content = `
           <div id=${element.id} class="Post" >
-              <div class="PostTitle"><p class="Title">${element.Title}</p></div>
+              
               <div class="PostContent">
                   <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
                   <div class="PostInfo">
@@ -487,12 +520,12 @@ const displayAllContent = (element) => {
                       <div class="PostTime">${element.LastEditionDate}</div>
                   </div>
                   <div class="categorie">
-                      ${element.Categories.map(category => category.Name).join('<br>')}
                   </div>
               </div>
   
               <div class="PostBody">
-                  <p class="text"> ${element.Description} </p> 
+              <p class="text"> ${element.Description} </p> 
+              <img class="image" src="../..${element.ImageURL}" alt="">
               </div>
   
               <div class="PostFooter">

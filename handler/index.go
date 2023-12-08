@@ -183,7 +183,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		response := make(map[string]interface{})
 		response["CurrentUser"] = homePageData.CurrentUser
 		response["AllPosts"] = homePageData.AllPosts
-		fmt.Println(response)
+		//fmt.Println(response)
 		res.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(res).Encode(response)
 
@@ -528,8 +528,47 @@ func CreatePost(res http.ResponseWriter, req *http.Request) {
 			}
 
 			log.Println("✅ Post created with success")
-			// http.Redirect(res, req, "/", http.StatusSeeOther)
+			 //http.Redirect(res, req, "/", http.StatusSeeOther)
+			//http.Redirect(res, req, "/", http.StatusPermanentRedirect)
 			lib.RedirectToPreviousURL(res, req)
+		}
+	}
+}
+
+func GetAllPosts(res http.ResponseWriter, req *http.Request)  {
+	if lib.ValidateRequest(req, res, "/post", http.MethodPost) {
+		basePath := "base"
+		pagePath := "index"
+		user := models.GetUserFromSession(req)
+		isSessionOpen := models.ValidSession(req)
+		if isSessionOpen { 
+			 allPost, err := models.PostRepo.GetAllPost()
+			if err != nil {
+				log.Println("No Posts")			
+			}
+
+			homePageData := HomePageData{
+				IsLoggedIn:  isSessionOpen,
+				CurrentUser: *user,
+				//RandomUsers:   randomUsers,
+				// Post:          posts,
+				// NumberOfPosts: numberOfPosts,
+				// TopUsers:      TopUsers,
+				// Limit:         limit,
+				// Categories:    cat,
+				AllPosts: allPost,
+				// AllNotifs:     notifications,
+			}
+
+			jsonData, err := json.Marshal(homePageData)
+			if err != nil {
+				fmt.Println("Erreur lors de la conversion en JSON:", err)
+				return
+			}
+
+			lib.RenderPage(basePath, pagePath, string(jsonData), res)
+			log.Println("✅ Home page get with success")
+
 		}
 	}
 }

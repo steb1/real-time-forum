@@ -146,7 +146,6 @@ func (ur *UserRepository) SelectAllUsers() ([]User, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("6")
 	for row.Next() {
 		var ID string
 		var Nickname string

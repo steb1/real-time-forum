@@ -33,6 +33,7 @@
 #bodyContent {
     display: grid;
     grid-template-columns: 70% 30%;
+    background-color: #e9e8e8d8;
     height: auto;
     border: none;
 }
@@ -154,6 +155,8 @@ input{
 .likeDislike {
     display: flex;
     width: 40%;
+    float: left;
+    font-size: 10px;
     flex-direction: row;
     justify-content: center;
     gap: 10px;
@@ -161,17 +164,17 @@ input{
     
 }
 .impressions {
-    display: flex;
-    flex-direction: row;justify-content: left;
+    float: left;
     padding-top: 10px;
     justify-content: space-evenly;
-    gap: 20px;
-    height: 35px;
+    padding-left: 30px;
+   
+    height: fit-content;
     width: 600px;
-    background-color: rgb(255, 255, 255);
+    background-color: none;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 10px;
+    margin-top: 5px;
     border-radius: 40px;
     opacity: 0.5;
 }
@@ -201,9 +204,7 @@ input{
 .image {
     height: 50px;
     width: 50px;
-    padding-left: 10%;
-    padding-top: 10%;
-    border-radius: 20px;
+    border-radius: 50%;
 }
 .Post {
     margin-right: auto;
@@ -212,7 +213,7 @@ input{
     padding: 10px;
     width: 600px;
     height: auto;
-    border-radius: 40px;
+    border-radius:30px;
     background-color: white;
     cursor: pointer;
 }
