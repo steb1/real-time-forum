@@ -353,7 +353,10 @@ let addPost = (posts) => {
                         <div class="PostTime">${element.LastEditionDate}</div>
                     </div>
                     <div class="categorie">
-                        
+                        ${(element.Categories && element.Categories.length > 0)
+                          ? element.Categories.map(category => category.Name).join('<br>')
+                          : 'Aucune catégorie'}
+                  
                     </div>
                 </div>
     
@@ -520,12 +523,16 @@ const displayAllContent = (element) => {
                       <div class="PostTime">${element.LastEditionDate}</div>
                   </div>
                   <div class="categorie">
+                      ${(element.Categories && element.Categories.length > 0)
+                        ? element.Categories.map(category => category.Name).join('<br>')
+                        : 'Aucune catégorie'}
+                
                   </div>
               </div>
   
               <div class="PostBody">
               <p class="text"> ${element.Description} </p> 
-              <img class="image" src="../..${element.ImageURL}" alt="">
+              <img class="imagePost" src="../..${element.ImageURL}" alt="">
               </div>
   
               <div class="PostFooter">

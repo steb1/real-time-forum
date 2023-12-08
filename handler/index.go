@@ -489,10 +489,24 @@ func CreatePost(res http.ResponseWriter, req *http.Request) {
 			slug := lib.Slugify(title)
 			description := req.FormValue("content")
 			_categories := req.FormValue("categories")
+			cates := strings.TrimSpace(_categories)
+			if len(cates) == 0 {
+				_categories = "No Cactegory"
+			}
 
 			imageUrl := lib.UploadImage(req)
 			authorID := models.GetUserFromSession(req).ID
 			categories := strings.Split(_categories, "#")
+			init := 1
+			if len(categories) == 1 {
+				init = 0
+				mot := ""
+				lll := strings.Fields(categories[0])
+				for _, word := range lll {
+					mot = mot + word
+				}
+				categories[0] = mot
+			}
 
 			post := models.Post{
 				Title:        title,
@@ -513,8 +527,11 @@ func CreatePost(res http.ResponseWriter, req *http.Request) {
 				return
 			}
 
-			for i := 1; i < len(categories); i++ {
+			for i := init; i < len(categories); i++ {
 				name := strings.TrimSpace(categories[i])
+				if len(name) == 0 {
+					name = "NoCactegory"
+				}
 				category, _ := models.CategoryRepo.GetCategoryByName(name)
 				if category == nil {
 					category = &models.Category{
@@ -528,23 +545,23 @@ func CreatePost(res http.ResponseWriter, req *http.Request) {
 			}
 
 			log.Println("✅ Post created with success")
-			 //http.Redirect(res, req, "/", http.StatusSeeOther)
+			//http.Redirect(res, req, "/", http.StatusSeeOther)
 			//http.Redirect(res, req, "/", http.StatusPermanentRedirect)
 			lib.RedirectToPreviousURL(res, req)
 		}
 	}
 }
 
-func GetAllPosts(res http.ResponseWriter, req *http.Request)  {
+func GetAllPosts(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/post", http.MethodPost) {
 		basePath := "base"
 		pagePath := "index"
 		user := models.GetUserFromSession(req)
 		isSessionOpen := models.ValidSession(req)
-		if isSessionOpen { 
-			 allPost, err := models.PostRepo.GetAllPost()
+		if isSessionOpen {
+			allPost, err := models.PostRepo.GetAllPost()
 			if err != nil {
-				log.Println("No Posts")			
+				log.Println("No Posts")
 			}
 
 			homePageData := HomePageData{
