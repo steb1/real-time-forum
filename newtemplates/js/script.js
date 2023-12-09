@@ -92,7 +92,7 @@ const registerForm = (e) => {
         <div class="shape"></div>
         <div class="shape"></div>
         </div>
-    <form id="form" method="POST" action="/sign-in">
+    <form id="form" class="formLogin" method="POST" action="/sign-in">
         <label for="nickname">Nickname:</label>
         <input type="text" id="nickname" name="nickname" required>
     
@@ -311,9 +311,6 @@ getData()
 
 let addPost = (posts) => {
   let elem = posts
-  if (!elem) {
-     elem = document.getElementById('posts')
-  }
   elem.innerHTML = ""
 
   let createPost = document.createElement("div")
@@ -347,51 +344,48 @@ let addPost = (posts) => {
       console.log(data);
       data.AllPosts.forEach((element, i) => {
         let post = document.createElement("div")
-
-        let content = `
-            <div id=${element.ID} class="Post">
-              
-                <div class="PostContent">
-                    <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
-                    <div class="PostInfo">
-                        <div class="PostOwner">${element.AuthorName}</div>
-                        <div class="PostTime">${element.LastEditionDate}</div>
-                    </div>
-                    
-                </div>
-    
-                <div class="PostBody" onClick="seePost('${element.ID}')">
-                <img class="imagePost1" src="../..${element.ImageURL}" alt="">
-                    <p class="text"> ${element.Description} </p>
-                    <div class="categorie">
-                        <p>${(element.Categories && element.Categories.length > 0)
-            ? element.Categories.map(category => category.Name).join('<br>')
-            : 'Aucune catégorie'}</p>
-                  
-                    </div>
-                </div>
-    
-                <div class="PostFooter">
-                    <div class="element">
-    
-                    </div>
-                </div>
-                <div class="impressions">
-                    <div class="likeDislike">
-                        <div><span>${element.NumberOfLikes}</span><img id=${element.ID} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                        <div><span>${element.NumberOfDislikes}</span> <img id=${element.ID} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                        <div><span>${element.NumberOfComments}</span> <img id=${element.ID} onclick="comment()" class="like" img src="../../uploads/comment.png" alt=""></div>
-                        <div id="comment${element.ID}" class="commentPart hidden">
-                          <input class="inputComment" placeholder="add a comment" type="email" class="form__field" placeholder="Your E-Mail Address" />
-                          <button class="commentButton" type="button" class="btn btn--primary btn--inside uppercase">Comment</button>
-                        </div>
-                        <div><div>
-                    </div>
+        let c = `<div class="pBody"><div class="post-container5">
+        <div class="post5" onClick="seePost('${element.Slug}')">
+            <div class="post-header5">
+                <img class="post-owner-image5" src="../../uploads/icon.webp" alt="Owner Image">
+                <div class="post-owner-info5">
+                    <span class="post-owner-name5">${element.AuthorName}</span>
+                    <span class="post-time5">${element.LastEditionDate}</span>
                 </div>
             </div>
+
+            <h2 class="post-title">${element.Title}</h2>
     
-           `
-        post.innerHTML = content
+            <div class="post-content5">
+            ${element.Description}
+            </div>
+    
+            <img class="post-image5" src="../..${element.ImageURL}" alt="Post Image">
+    
+            <div class="post-stats5">
+                <span>
+                    <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> ${element.NumberOfLikes}
+                </span>
+                <span>
+                    <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> ${element.NumberOfDislikes}
+                </span>
+                <span>
+                    <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
+                </span>
+            </div>
+    
+            <div class="post-hashtags5">
+                ${(element.Categories && element.Categories.length > 0)
+            ? element.Categories.map(category => `#${category.Name}`).join('<br>')
+            : 'Aucune catégorie'}
+            </div>
+        </div>
+    
+        
+    </div></div>`
+
+
+        post.innerHTML = c
         elem.appendChild(post)
       })
     })
@@ -532,47 +526,47 @@ const displayAllContent = (element) => {
         let post = document.createElement("div")
         data.AllPosts.forEach((element, i) => {
           console.log(element.ID);
-          let content = `
-          <div id=${element.ID} class="Post">
-              <div class="PostContent">
-                  <div class="imagePost"><img class="image" src="../../uploads/icon.webp" alt=""></div>
-                  <div class="PostInfo">
-                      <div class="PostOwner">${element.AuthorName}</div>
-                      <div class="PostTime">${element.LastEditionDate}</div>
+          let c = `<div class="pBody"><div class="post-container5">
+          <div class="post5" onClick="seePost('${element.Slug}')">
+              <div class="post-header5">
+                  <img class="post-owner-image5" src="../../uploads/icon.webp" alt="Owner Image">
+                  <div class="post-owner-info5">
+                      <span class="post-owner-name5">${element.AuthorName}</span>
+                      <span class="post-time5">${element.LastEditionDate}</span>
                   </div>
               </div>
-              <div class="PostBody" onClick="seePost('${element.ID}')">
-              <img class="imagePost1" src="../..${element.ImageURL}" alt="">
-                  <p class="text"> ${element.Description} </p>
-                  <div class="categorie">
-                      ${(element.Categories && element.Categories.length > 0)
-              ? element.Categories.map(category => category.Name).join('<br>')
+
+              <h2 class="post-title">${element.Title}</h2>
+      
+              <div class="post-content5">
+              ${element.Description}
+              </div>
+      
+              <img class="post-image5" src="../..${element.ImageURL}" alt="Post Image">
+      
+              <div class="post-stats5">
+                  <span>
+                      <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> ${element.NumberOfLikes}
+                  </span>
+                  <span>
+                      <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> ${element.NumberOfDislikes}
+                  </span>
+                  <span>
+                      <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
+                  </span>
+              </div>
+      
+              <div class="post-hashtags5">
+                  ${(element.Categories && element.Categories.length > 0)
+              ? element.Categories.map(category => `#${category.Name}`).join('<br>')
               : 'Aucune catégorie'}
-                
-                  </div>
-              </div>
-  
-              <div class="PostFooter">
-                  <div class="element">
-  
-                  </div>
-              </div>
-              <div class="impressions">
-                  <div class="likeDislike">
-                      <div><span>${element.NumberOfLikes}</span><img id=${element.ID} onclick="like()" class="like" src="../../uploads/like.png" alt=""></div>
-                      <div><span>${element.NumberOfDislikes}</span> <img id=${element.ID} onclick="dislike()" class="like" src="../../uploads/unlike.png" alt=""></div>
-                      <div><span>${element.NumberOfComments}</span> <img id=${element.ID} onclick="comment()" class="like" img src="../../uploads/comment.png" alt=""></div>
-                      <div id="comment${element.ID}" class="commentPart hidden">
-                        <input class="inputComment" placeholder="add a comment" type="email" class="form__field" placeholder="Your E-Mail Address" />
-                        <button class="commentButton" type="button" class="btn btn--primary btn--inside uppercase">Comment</button>
-                      </div>
-                      <div><div>
-                  </div>
               </div>
           </div>
-  
-         `
-          post.innerHTML += content
+      
+          
+      </div></div>`
+
+          post.innerHTML += c
         })
         elem.appendChild(post)
       })
@@ -589,56 +583,89 @@ const displayAllContent = (element) => {
   element.appendChild(bodyContent)
 }
 
-const seePost = (id) => {
+const seePost = (slug) => {
+
   // alert('CLick on post')
   // window.history.replaceState({},'', '/post')
-  fetch('/dashboard')
-      .then(response => response.json())
-      .then(data => {
-        data.AllPosts.forEach((element, i) => {
-          if (element.ID == id) {
-            let centralDiv = document.getElementById('posts')
-              centralDiv.innerHTML = ''
-              centralDiv.innerHTML = `
-              <div class="detail">
-              <div class="post-container">
-              
-              <div id="back" onclick="addPost()"> <img class="back" src="../../uploads/back.png">Back</div>
-              <div class="post-header">
-                    <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
-                    <div class="post-owner-info">
-                        <span class="post-owner-name">${element.AuthorName}</span>
-                        <span class="post-time">${element.LastEditionDate}</span>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <p>${element.Description}</p>
-                    <img class="post-image" src="../..${element.ImageURL}" alt="Post Image">
-                </div>
-
-                <div class="comments-container">
-                    <div class="comment">
-                        <p><strong>User1:</strong> Nice post!</p>
-                    </div>
+  let centralDiv = document.getElementById('posts')
+  centralDiv.innerHTML = ''
+  fetch('/post/' + slug)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.UserPoster.Nickname);
+      centralDiv.innerHTML = `
+  <div class="cBody">
+  <div class="post-container">
+  <div class="post-header">
+        <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
+        <div class="post-owner-info">
+            <span class="post-owner-name">${data.UserPoster.Nickname}</span>
+            <span class="post-time">${data.Post.ModifiedDate}</span>
+        </div>
+    </div>
+    <div class="post-content">
+        <p>${data.Post.Description}</p>
+        <img class="post-image" src="../..${data.Post.ImageURL}" alt="Post Image">
+    </div>
+    <div class="comments-container">
+    ${data.Comments && data.Comments.length > 0
+          ? data.Comments.map(comment => `
+          <div class="comment">
+              <div class="comment-header">
+                  <img class="comment-owner-image" src="${comment.AuthorAvatar}" alt="Commenter Image">
+                  <div class="comment-owner-info">
+                      <span class="comment-owner-name">${comment.AuthorName}</span>
+                      <span class="comment-time">${comment.LastModifiedDate}</span>
                   </div>
-                  </div>
-                    <form class="comment-form" id="cf">
-                      <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
-                      <button type="button" class="comment-button" id="cb" >Comment</button>
-                    </form>
-                  </div>`
-          }
-        })
-      })
-      .catch(error => {
-        console.error('Error checking authentication:', error);
-        return
-      });
-  
+              </div>
+              <p>${comment.Text}</p>
+          </div>
+      `).join('')
+          : 'No comments available.'}
+      <form class="comment-form" id="cf" method="POST" action="/comment/${data.Post.ID}">
+      <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
+      <button type="submit" class="comment-button" id="cb">Comment</button>
+    </form>`
 
-  console.log(id);
+
+    })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return
+    });
+
+
+  console.log(slug);
 }
 
+const newPost = () => {
+  console.log('heeeeeeeeeeeeeereeeeeeeeeeeeeeeeeeee');
+  // // Récupérer les données du formulaire
+  // var formData = new FormData(document.getElementById('postForm'));
+
+  // // Effectuer une requête AJAX avec fetch
+  // fetch('/post', {
+  //   method: 'POST',
+  //   body: formData,
+  // })
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       throw new Error('Erreur lors de la création du post');
+  //     }
+  //     return response.json(); // Supposons que le serveur renvoie une réponse JSON
+  //   })
+  //   .then(data => {
+  //     // La requête a réussi
+  //     console.log('Post créé avec succès!', data);
+  //     // Ajoutez ici la logique pour mettre à jour l'interface utilisateur, par exemple, afficher un message de succès.
+  //   })
+  //   .catch(error => {
+  //     // La requête a échoué
+  //     console.error('Erreur lors de la création du post:', error.message);
+  //     // Ajoutez ici la logique pour gérer les erreurs, par exemple, afficher un message d'erreur.
+  //   });
+
+}
 
 
 

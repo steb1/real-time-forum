@@ -39,6 +39,8 @@ func main() {
 	http.Handle("/login", rateLimiter.Wrap("api", handler.Login))
 	http.Handle("/post", rateLimiter.Wrap("api", handler.CreatePost))
 	http.Handle("/getAllPosts", rateLimiter.Wrap("api", handler.GetAllPosts))
+	http.Handle("/post/", rateLimiter.Wrap("api", handler.GetPostDetail))
+	http.Handle("/comment/", rateLimiter.Wrap("api", handler.Comment))
 
 	/* httpsServer := http.Server{
 		Addr: PORT,

@@ -49,8 +49,8 @@ VALUES
 -- Insertion dans la table "comment"
 INSERT INTO "comment" (id, text, authorID, postID, parentID, createDate, modifiedDate)
 VALUES
-('1', 'Comment on post 1', '1', '1', NULL, '2023-01-07', '2023-01-07'),
-('2', 'Comment on post 2', '2', '2', NULL, '2023-01-08', '2023-01-08');
+('1', 'Comment on post 1', '1', '1', '1', '2023-01-07', '2023-01-07'),
+('2', 'Comment on post 2', '2', '2', '1', '2023-01-08', '2023-01-08');
 
 -- Insertion dans la table "post_category"
 INSERT INTO "post_category" (id, categoryID, postID)

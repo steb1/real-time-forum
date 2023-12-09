@@ -4,11 +4,13 @@
     grid-template-rows: 50px 3fr;
     height: 100vh;
 }
+
 #allContent {
     display: grid;
-    grid-template-rows:50px 50px 2fr ;
+    grid-template-rows: 50px 50px 2fr;
     gap: 10px;
 }
+
 #rightBar {
     display: flex;
     flex-direction: column;
@@ -19,17 +21,17 @@
     border-top-left-radius: 10px;
     height: 100vh;
 }
-#tabBar {
-    
-}
-#onlineStatus {
 
-}
+#tabBar {}
+
+#onlineStatus {}
+
 #posts {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
 }
+
 #bodyContent {
     display: grid;
     grid-template-columns: 70% 30%;
@@ -37,114 +39,124 @@
     height: auto;
     border: none;
 }
+
 li {
     list-style: none;
 }
+
 #photo0 {
     width: 50%;
 }
 
-.background{
+.background {
     width: 430px;
     height: 520px;
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
 }
-.background .shape{
+
+.background .shape {
     height: 200px;
     width: 200px;
     position: absolute;
     border-radius: 50%;
 }
-.shape:first-child{
-    background: linear-gradient(
-        #1845ad,
-        #23a2f6
-    );
+
+.shape:first-child {
+    background: linear-gradient(#1845ad,
+            #23a2f6);
     left: -80px;
     top: -80px;
 }
-.shape:last-child{
-    background: linear-gradient(
-        to right,
-        #ff512f,
-        #f09819
-    );
+
+.shape:last-child {
+    background: linear-gradient(to right,
+            #ff512f,
+            #f09819);
     right: -30px;
     bottom: -80px;
 }
-.formLogins{
+
+.formLogins {
     height: 520px;
     width: 400px;
     background-color: white;
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
     border-radius: 10px;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
     padding: 50px 35px;
 }
-form *{
-    font-family: 'Poppins',sans-serif;
+
+form * {
+    font-family: 'Poppins', sans-serif;
     color: #ffffff;
     letter-spacing: 0.5px;
     outline: none;
     border: none;
 }
-form h3{
+
+form h3 {
     font-size: 32px;
     font-weight: 500;
     line-height: 42px;
     text-align: center;
 }
 
-label{
+label {
     display: block;
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
 }
-input{
+
+input {
     display: block;
     height: 50px;
     width: 100%;
-    background-color: rgba(255,255,255,0.07);
+    background-color: rgba(255, 255, 255, 0.07);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;
     font-size: 14px;
     font-weight: 300;
 }
-::placeholder{
+
+::placeholder {
     color: #e5e5e5;
 }
 
-.social{
-  margin-top: 30px;
-  display: flex;
+.social {
+    margin-top: 30px;
+    display: flex;
 }
-.social div{
-  background: red;
-  width: 150px;
-  border-radius: 3px;
-  padding: 5px 10px 10px 5px;
-  background-color: rgba(255,255,255,0.27);
-  color: #eaf0fb;
-  text-align: center;
+
+.social div {
+    background: red;
+    width: 150px;
+    border-radius: 3px;
+    padding: 5px 10px 10px 5px;
+    background-color: rgba(255, 255, 255, 0.27);
+    color: #eaf0fb;
+    text-align: center;
 }
-.social div:hover{
-  background-color: rgba(255,255,255,0.47);
+
+.social div:hover {
+    background-color: rgba(255, 255, 255, 0.47);
 }
-.social .fb{
-  margin-left: 25px;
+
+.social .fb {
+    margin-left: 25px;
 }
-.social i{
-  margin-right: 4px;
+
+.social i {
+    margin-right: 4px;
 }
 
 .Allposts {
@@ -152,18 +164,20 @@ input{
     flex-direction: column;
     height: 100vh;
 }
+
 .likeDislike {
     display: flex;
     width: fit-content;
-    
+
     float: left;
     font-size: 10px;
     flex-direction: row;
     justify-content: center;
     gap: 10px;
     z-index: 0;
-    
+
 }
+
 .impressions {
     display: flex;
     flex-direction: column;
@@ -178,22 +192,26 @@ input{
     border-radius: 40px;
     opacity: 0.5;
 }
+
 .element {
     width: 15%;
     height: 22%;
     background-color: rgb(212, 207, 200);
 }
+
 .like {
     height: 25px;
     width: 25px;
     cursor: pointer;
     z-index: 0;
 }
+
 .PostOwner {
     padding-left: 10px;
     font-size: 20px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
 .PostTime {
     font-size: 10px;
     padding-top: 5px;
@@ -201,48 +219,85 @@ input{
     color: rgb(99, 98, 98);
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.comment-owner-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.comment-owner-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-owner-name {
+    font-weight: bold;
+}
+
+.comment-time {
+    color: #777;
+}
+
+.comment-content {
+    font-size: 14px;
+}
+
 .image {
     height: 50px;
     width: 50px;
     border-radius: 50%;
 }
+
 .Post {
     display: flex;
     flex-direction: column;
     margin-right: auto;
-     margin-left: auto;
+    margin-left: auto;
     /* margin-top: 30px;
     padding: 10px;  */
-    margin-top: 5px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     width: 600px;
     height: auto;
-    border-radius:30px;
+    border-radius: 30px;
     cursor: pointer;
 }
+
 .PostFooter {
     width: 100%;
     height: 10%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
+
 .text {
     margin-right: 5%;
     margin-left: 5%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: rgb(255, 255, 255);
 }
+
 .Title {
     margin: 5%;
     padding-top: 10px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: rgb(0, 0, 0);
 }
-.PostInfo{
+
+.PostInfo {
     float: left;
     width: auto;
     padding-top: 1%;
 }
+
 .categorie {
     display: flex;
     width: 20%;
@@ -255,14 +310,16 @@ input{
     align-items: center;
     justify-content: center;
 }
+
 .PostTitle {
     height: 50px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     font-size: 2rem;
     width: 100%;
-    
+
 }
+
 .PostContent {
     display: flex;
     flex-direction: row;
@@ -272,20 +329,28 @@ input{
     height: 12%;
     /* padding-left: 20px; */
 }
+
 .PostBody {
     width: 100%;
     height: auto;
     padding: 20px;
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
     color: #fff;
     background-color: #050c2b;
     border-radius: 20px;
     margin-top: 10px;
 }
-.detail {
+
+.post-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.cBody {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     margin: 0;
@@ -296,7 +361,7 @@ input{
 }
 
 .post-image {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -325,10 +390,8 @@ input{
 }
 
 .post-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     max-width: 600px;
+    width: 100%;
     margin: 20px auto;
     background-color: #fff;
     border-radius: 8px;
@@ -387,15 +450,15 @@ input{
     padding: 8px 12px;
     cursor: pointer;
 }
+
 .imagePost1 {
     width: 15%;
     height: 70%;
     border-radius: 50px;
     margin-left: 50px;
 }
-.image {
 
-}
+.image {}
 
 #createPost {
     padding: auto;
@@ -455,43 +518,43 @@ input{
 }
 
 .custom-form {
-background-color: #fff;
-padding: 20px;
-border-radius: 8px;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-height: fit-content;
-z-index: 1000;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    z-index: 1000;
 }
 
 .form-label {
-display: block;
-margin-bottom: 8px;
-color:rgb(8, 8, 70);
+    display: block;
+    margin-bottom: 8px;
+    color: rgb(8, 8, 70);
 }
 
 .form-input {
-width: 100%;
-padding: 8px;
-margin-bottom: 16px;
-box-sizing: border-box;
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 14px;
-color: rgb(8, 8, 70);
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    color: rgb(8, 8, 70);
 }
 
 .form-input[type="file"] {
-padding: 12px;
+    padding: 12px;
 }
 
 .form-button {
-background-color: #4caf50;
-color: #fff;
-padding: 10px 15px;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .commentPart {
@@ -504,7 +567,7 @@ font-size: 16px;
 }
 
 .form-button:hover {
-background-color: #45a049;
+    background-color: #45a049;
 }
 
 .inputComment {
@@ -524,21 +587,89 @@ background-color: #45a049;
     border-radius: 10px;
     cursor: pointer;
 }
+
 .hidden {
     visibility: none;
 }
 
-.back {
-    float: left;
-    width: 20px;
-    height: 20px;
-    padding: 5px;
+.pBody {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 10vh;
 }
 
-#back {
+.post-container5 {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+}
+
+.post5 {
+    margin-bottom: 2px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.post-header5 {
     display: flex;
-    flex-direction: row;
-    justify-content: left;
     align-items: center;
-    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.post-owner-image5 {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-owner-info5 {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-owner-name5 {
+    font-weight: bold;
+}
+
+.post-time5 {
+    color: #777;
+}
+
+.post-content5 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.post-image5 {
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.post-stats5 {
+    display: flex;
+    justify-content: space-between;
+    color: #777;
+}
+
+.post-hashtags5 {
+    color: #4CAF50;
+    margin-top: 8px;
+}
+
+.heart-icon5 {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
 }

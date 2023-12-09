@@ -12,14 +12,14 @@ import (
 )
 
 type Comment struct {
-	ID           string
-	Text         string
-	AuthorID     string
-	PostID       string
-	ParentID     string
-	CreateDate   string
-	ModifiedDate string
-	Notifications      []*Notification
+	ID            string
+	Text          string
+	AuthorID      string
+	PostID        string
+	ParentID      string
+	CreateDate    string
+	ModifiedDate  string
+	Notifications []*Notification
 }
 
 type CommentItem struct {
@@ -34,7 +34,6 @@ type CommentItem struct {
 	LastModifiedDate   string
 	NbrLikesComment    int
 	NbrDislikesComment int
-	
 }
 
 type CommentRepository struct {
@@ -94,7 +93,7 @@ func (cr *CommentRepository) GetCommentsOfPost(postID, limit string) ([]*Comment
 
 	var comments []*CommentItem
 
-	rows, err := cr.db.Query("SELECT c.id, c.text, c.authorID, c.parentID, c.modifiedDate, u.userName, u.avatarURL FROM comment c LEFT JOIN user u ON c.authorID = u.ID WHERE c.PostID = ? LIMIT ?", postID, moreComment)
+	rows, err := cr.db.Query("SELECT c.id, c.text, c.authorID, c.modifiedDate, u.nickname, u.avatarURL FROM comment c LEFT JOIN user u ON c.authorID = u.ID WHERE c.PostID = ? LIMIT ?", postID, moreComment)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +101,7 @@ func (cr *CommentRepository) GetCommentsOfPost(postID, limit string) ([]*Comment
 
 	for rows.Next() {
 		var comment CommentItem
-		err := rows.Scan(&comment.ID, &comment.Text, &comment.AuthorID, &comment.ParentID, &comment.LastModifiedDate, &comment.AuthorName, &comment.AuthorAvatar)
+		err := rows.Scan(&comment.ID, &comment.Text, &comment.AuthorID, &comment.LastModifiedDate, &comment.AuthorName, &comment.AuthorAvatar)
 		if err != nil {
 			return nil, err
 		}
