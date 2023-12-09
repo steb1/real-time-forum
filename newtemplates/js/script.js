@@ -595,24 +595,24 @@ const seePost = (slug) => {
       console.log(data.UserPoster.Nickname);
       centralDiv.innerHTML = `
   <div class="cBody">
-  <div class="post-container">
-  <div class="post-header">
+    <div class="post-container">
+      <div class="post-header">
         <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
         <div class="post-owner-info">
             <span class="post-owner-name">${data.UserPoster.Nickname}</span>
             <span class="post-time">${data.Post.ModifiedDate}</span>
         </div>
-    </div>
-    <div class="post-content">
+      </div>
+      <div class="post-content">
         <p>${data.Post.Description}</p>
         <img class="post-image" src="../..${data.Post.ImageURL}" alt="Post Image">
-    </div>
+      </div>
     <div class="comments-container">
     ${data.Comments && data.Comments.length > 0
           ? data.Comments.map(comment => `
           <div class="comment">
               <div class="comment-header">
-                  <img class="comment-owner-image" src="${comment.AuthorAvatar}" alt="Commenter Image">
+                  <img class="comment-owner-image" src="../../uploads/icon.webp" alt="Commenter Image">
                   <div class="comment-owner-info">
                       <span class="comment-owner-name">${comment.AuthorName}</span>
                       <span class="comment-time">${comment.LastModifiedDate}</span>
@@ -622,10 +622,38 @@ const seePost = (slug) => {
           </div>
       `).join('')
           : 'No comments available.'}
-      <form class="comment-form" id="cf" method="POST" action="/comment/${data.Post.ID}">
+      <form class="comment-form" id="cf">
       <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
       <button type="submit" class="comment-button" id="cb">Comment</button>
-    </form>`
+    </form></div></div>`
+
+      const commentForm = document.getElementById('cf');
+      const commentInput = document.getElementById('ci');
+
+      commentForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const commentText = commentInput.value;
+        console.log(commentText);
+
+        fetch('/comment/' + data.Post.ID, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: commentText }),
+        })
+          .then(response => response.json())
+          .then(newComment => {
+            if (newComment.commented == true) {
+              seePost(slug)
+              console.log('New comment added:', newComment);
+            }
+          })
+          .catch(error => {
+            console.error('Error adding comment:', error);
+          });
+      });
 
 
     })

@@ -717,20 +717,37 @@ func GetPostDetail(res http.ResponseWriter, req *http.Request) {
 func Comment(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("C BONNNNNNNNNNNNN")
 	if lib.ValidateRequest(req, res, "/comment/*", http.MethodPost) {
-		err := req.ParseForm()
+		// err := req.ParseForm()
+		// if err != nil {
+		// 	http.Error(res, err.Error(), http.StatusBadRequest)
+		// 	return
+		// }
+		// text := strings.TrimSpace(req.FormValue("ci"))
+		// fmt.Print("YOUR COMMENT : ")
+		// fmt.Println(req.Form)
+		// fmt.Println(text)
+		// fmt.Println(len(text))
+
+		type UserData struct {
+			Text string `json:"text"`
+		}
+
+		// Parse JSON data from the request body
+		var userData UserData
+		responseData, err := io.ReadAll(req.Body)
+		json.Unmarshal(responseData, &userData)
+
 		if err != nil {
-			http.Error(res, err.Error(), http.StatusBadRequest)
+			fmt.Println("ici")
+			http.Error(res, "Invalid request payload", http.StatusBadRequest)
 			return
 		}
-		text := strings.TrimSpace(req.FormValue("ci"))
-		fmt.Print("YOUR COMMENT : ")
-		fmt.Println(req.Form)
-		fmt.Println(text)
-		fmt.Println(len(text))
+		fmt.Printf("Received user data: %+v\n", userData)
+
 		// parentID := strings.TrimSpace(req.FormValue("parentID"))
 		path := req.URL.Path
 		pathPart := strings.Split(path, "/")
-		if text != "" {
+		if userData.Text != "" {
 			if len(pathPart) == 3 && pathPart[1] == "comment" {
 				creationDate := time.Now().Format("2006-01-02 15:04:05")
 				modifDate := time.Now().Format("2006-01-02 15:04:05")
@@ -739,7 +756,7 @@ func Comment(res http.ResponseWriter, req *http.Request) {
 				postID := pathPart[2]
 
 				commentStruct := models.Comment{
-					Text:         text,
+					Text:         userData.Text,
 					AuthorID:     authorID,
 					PostID:       postID,
 					ParentID:     postID,
@@ -748,6 +765,8 @@ func Comment(res http.ResponseWriter, req *http.Request) {
 				}
 
 				models.CommentRepo.CreateComment(&commentStruct)
+				response := map[string]bool{"commented": true}
+				writeJSONResponse(res, response)
 				// lib.RedirectToPreviousURL(res, req)
 			}
 		} else {
