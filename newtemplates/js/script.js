@@ -359,8 +359,8 @@ let addPost = (posts) => {
             <div class="post-content5">
             ${element.Description}
             </div>
-    
-            <img class="post-image5" src="../..${element.ImageURL}" alt="Post Image">
+            ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>' } 
+            
     
             <div class="post-stats5">
                 <span>
