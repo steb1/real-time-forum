@@ -595,6 +595,7 @@ const seePost = (slug) => {
       console.log(data.UserPoster.Nickname);
       centralDiv.innerHTML = `
   <div class="cBody">
+  <img class="back-button" src="../../uploads/back.png" alt="Back" onclick="goBack()">
     <div class="post-container">
       <div class="post-header">
         <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
@@ -622,6 +623,7 @@ const seePost = (slug) => {
           </div>
       `).join('')
           : 'No comments available.'}
+          
       <form class="comment-form" id="cf">
       <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
       <button type="submit" class="comment-button" id="cb">Comment</button>
@@ -666,33 +668,8 @@ const seePost = (slug) => {
   console.log(slug);
 }
 
-const newPost = () => {
-  console.log('heeeeeeeeeeeeeereeeeeeeeeeeeeeeeeeee');
-  // // Récupérer les données du formulaire
-  // var formData = new FormData(document.getElementById('postForm'));
-
-  // // Effectuer une requête AJAX avec fetch
-  // fetch('/post', {
-  //   method: 'POST',
-  //   body: formData,
-  // })
-  //   .then(response => {
-  //     if (!response.ok) {
-  //       throw new Error('Erreur lors de la création du post');
-  //     }
-  //     return response.json(); // Supposons que le serveur renvoie une réponse JSON
-  //   })
-  //   .then(data => {
-  //     // La requête a réussi
-  //     console.log('Post créé avec succès!', data);
-  //     // Ajoutez ici la logique pour mettre à jour l'interface utilisateur, par exemple, afficher un message de succès.
-  //   })
-  //   .catch(error => {
-  //     // La requête a échoué
-  //     console.error('Erreur lors de la création du post:', error.message);
-  //     // Ajoutez ici la logique pour gérer les erreurs, par exemple, afficher un message d'erreur.
-  //   });
-
+const goBack = () => {
+  displayAccueil();
 }
 
 
