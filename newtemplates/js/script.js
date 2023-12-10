@@ -584,7 +584,7 @@ const displayAllContent = (element) => {
 }
 
 const seePost = (slug) => {
-
+  
   // alert('CLick on post')
   // window.history.replaceState({},'', '/post')
   let centralDiv = document.getElementById('posts')
@@ -594,22 +594,22 @@ const seePost = (slug) => {
     .then(data => {
       console.log(data.UserPoster.Nickname);
       centralDiv.innerHTML = `
-  <div class="cBody">
-  <img class="back-button" src="../../uploads/back.png" alt="Back" onclick="goBack()">
-    <div class="post-container">
-      <div class="post-header">
-        <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
-        <div class="post-owner-info">
-            <span class="post-owner-name">${data.UserPoster.Nickname}</span>
-            <span class="post-time">${data.Post.ModifiedDate}</span>
-        </div>
-      </div>
-      <div class="post-content">
-        <p>${data.Post.Description}</p>
-        <img class="post-image" src="../..${data.Post.ImageURL}" alt="Post Image">
-      </div>
-    <div class="comments-container">
-    ${data.Comments && data.Comments.length > 0
+        <div id="cBody" class="cBody">
+        <img class="back-button" src="../../uploads/back.png" alt="Back" onclick="goBack()">
+          <div id="post-container" class="post-container">
+            <div class="post-header">
+              <img class="post-owner-image" src="../../uploads/gif.gif" alt="Owner Image">
+              <div class="post-owner-info">
+                  <span class="post-owner-name">${data.UserPoster.Nickname}</span>
+                  <span class="post-time">${data.Post.ModifiedDate}</span>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>${data.Post.Description}</p>
+              <img class="post-image" src="../..${data.Post.ImageURL}" alt="Post Image">
+            </div>
+          <div class="comments-container">
+          ${data.Comments && data.Comments.length > 0
           ? data.Comments.map(comment => `
           <div class="comment">
               <div class="comment-header">
@@ -629,11 +629,19 @@ const seePost = (slug) => {
       <button type="submit" class="comment-button" id="cb">Comment</button>
     </form></div></div>`
 
+    let coordonnaes = centralDiv.getBoundingClientRect()
+    
+    centralDiv.scrollTo({
+      top: coordonnaes.bottom + 1000,
+      behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
+    });
+
       const commentForm = document.getElementById('cf');
       const commentInput = document.getElementById('ci');
 
       commentForm.addEventListener('submit', (event) => {
         event.preventDefault();
+
 
         const commentText = commentInput.value;
         console.log(commentText);
@@ -667,6 +675,13 @@ const seePost = (slug) => {
 
   console.log(slug);
 }
+
+var messageContainer = document.getElementById('posts');
+console.log('messageContainer', messageContainer);
+// messageContainer.addEventListener("scroll", () => {
+//   console.log("scrolling");
+// })
+
 
 const goBack = () => {
   displayAccueil();
