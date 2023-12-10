@@ -344,6 +344,14 @@ input {
     margin-top: 10px;
 }
 
+.back-button {
+    width: 25px; 
+    height: 25px; 
+    cursor: pointer;
+    margin: 8px;
+    align-self: flex-start; /* Ajout pour aligner l'image à gauche */
+}
+
 .post-title {
     font-size: 20px;
     font-weight: bold;
