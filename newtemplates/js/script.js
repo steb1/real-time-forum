@@ -265,6 +265,8 @@ const generate404 = () => {
 }
 const displayAccueil = () => {
 
+  document.body.style.backgroundColor = "white";
+
   let rightBar = document.createElement("div")
   rightBar.id = "rightBar"
 

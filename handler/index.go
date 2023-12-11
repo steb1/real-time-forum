@@ -631,7 +631,7 @@ func GetPostDetail(res http.ResponseWriter, req *http.Request) {
 				log.Println("❌ error DB", err.Error())
 				return
 			}
-			PostComments, err := models.CommentRepo.GetCommentsOfPost(post.ID, "15")
+			PostComments, err := models.CommentRepo.GetCommentsOfPost(post.ID)
 			if err != nil {
 				res.WriteHeader(http.StatusInternalServerError)
 				log.Println("❌ error DB", err.Error())

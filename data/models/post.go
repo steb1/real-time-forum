@@ -400,7 +400,7 @@ func (pr *PostRepository) GetAllPostsItems(morePost int) ([]PostItem, error) {
 
 	for i := 0; i < len(posts); i++ {
 		tabUser, _ := UserRepo.SelectAllUsers()
-		tabAllComments, _ := CommentRepo.GetCommentsOfPost(posts[i].ID, "15")
+		tabAllComments, _ := CommentRepo.GetCommentsOfPost(posts[i].ID)
 		user := ""
 		for j := 0; j < len(tabUser); j++ {
 			if posts[i].AuthorID == tabUser[j].ID {
