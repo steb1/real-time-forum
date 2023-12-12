@@ -624,6 +624,7 @@ input {
     margin-bottom: 2px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
+    cursor: pointer;
 }
 
 .post-header5 {
@@ -679,4 +680,19 @@ input {
     height: 20px;
     margin-right: 5px;
     vertical-align: middle;
+}
+
+#messageButton, #PostButton{
+    width: 100px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+
+#tabBar {
+    display: flex;
+    flex-direction: row;
+    align-items: last baseline;
+    gap: 10px;
 }

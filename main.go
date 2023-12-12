@@ -42,6 +42,9 @@ func main() {
 	http.Handle("/post/", rateLimiter.Wrap("api", handler.GetPostDetail))
 	http.Handle("/comment/", rateLimiter.Wrap("api", handler.Comment))
 
+	///
+	http.HandleFunc("/ws", handler.Message)
+
 	/* httpsServer := http.Server{
 		Addr: PORT,
 		TLSConfig: &tls.Config{

@@ -6,6 +6,7 @@ function checkAuthentication() {
       if (data.authenticated) {
         console.log('User is authenticated');
         displayAccueil();
+        connectWebSocket()
         return true
 
       } else {
@@ -23,7 +24,7 @@ function checkAuthentication() {
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
 })
-// var bigData = {};
+ //var bigData = {};
 function getData() {
   fetch('/dashboard')
     .then(response => response.json())
@@ -182,6 +183,7 @@ function registerUser() {
       console.log('Registration successful:', data.register);
       if (data.register == true) {
         displayAccueil()
+        connectWebSocket()
       } else {
         generateAuthPage()
       }
@@ -229,6 +231,7 @@ function login() {
       console.log('Login successful:', data);
       if (data.login == true) {
         displayAccueil()
+        connectWebSocket()
       } else {
         generateAuthPage()
         let elem = document.getElementById("loginError")
@@ -300,6 +303,7 @@ const displayAccueil = () => {
 
   displayAllContent(content)
   container.innerHTML = ""
+  container.style.backgroundColor = "white"
   container.appendChild(rightBar)
   container.appendChild(content)
   document.body.appendChild(container)
@@ -467,12 +471,21 @@ const displayAllContent = (element) => {
 
   messageButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
-    elem.textContent = "All Message Here"
+    messageButton.style.borderBottom =  "2px solid black";
+    PostButton.style.borderBottom =  "none";
+    elem.innerHTML = `<div id="chat"></div>
+    <div>
+        <input type="text" id="messageInput" placeholder="Type your message">
+        <input type="text" id="recipientInput" placeholder="Recipient (leave empty for public)">
+        <input type="text" id="sender" placeholder="sender">
+        <button onclick="sendMessage()">Send</button>
+    </div>`
   })
   let PostButton = document.createElement("button")
   PostButton.textContent = "Posts"
   PostButton.id = "PostButton"
   PostButton.className = "accueilButton"
+  PostButton.style.borderBottom =  "2px solid black";
 
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
@@ -495,6 +508,8 @@ const displayAllContent = (element) => {
   addPost(posts)
 
   PostButton.addEventListener("click", (e) => {
+    PostButton.style.borderBottom =  "2px solid black";
+    messageButton.style.borderBottom =  "none";
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
 
@@ -687,5 +702,117 @@ const goBack = () => {
   displayAccueil();
 }
 
+let socket;
+
+function connectWebSocket() {
+    socket = new WebSocket("ws://localhost:8080/ws");
+
+    socket.addEventListener("open", (event) => {
+      console.log("Connected to WebSocket");
+      fetch('/dashboard')
+          .then(response => response.json())
+          .then(data => {
+              console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
+    
+              // Check if the WebSocket connection is still open before sending data
+              if (socket.readyState === WebSocket.OPEN) {
+                  const initialData = {
+                      username: data.CurrentUser.Nickname,
+                      // Other initial data if necessary
+                  };
+                  socket.send(JSON.stringify(initialData));
+              } else {
+                  console.error('WebSocket is not in OPEN state.');
+              }
+          })
+          .catch(error => {
+              console.error('Error checking authentication:', error);
+              return;
+          });
+    })
+
+    socket.addEventListener("message", (event) => {
+      const chatDiv = document.getElementById("chat");
+      chatDiv.innerHTML += `<p> ${event.data}</p>`;
+    });
+    
+    socket.addEventListener("close", (event) => {
+        console.log("Connection closed");
+    });
+}
 
 
+
+
+// const socket = new WebSocket("ws://localhost:8080/ws");
+
+// socket.addEventListener("open", (event) => {
+//   console.log("checkAuthentication : ", checkAuthentication);
+//   if (!checkAuthentication){
+//     return
+//   } else {
+//     console.log("Connected to WebSocket");
+//     fetch('/dashboard')
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
+  
+//             // Check if the WebSocket connection is still open before sending data
+//             if (socket.readyState === WebSocket.OPEN) {
+//                 const initialData = {
+//                     username: data.CurrentUser.Nickname,
+//                     // Other initial data if necessary
+//                 };
+//                 socket.send(JSON.stringify(initialData));
+//             } else {
+//                 console.error('WebSocket is not in OPEN state.');
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error checking authentication:', error);
+//             return;
+//         });
+//   }
+// });
+
+// socket.addEventListener("message", (event) => {
+//     const chatDiv = document.getElementById("chat");
+//     chatDiv.innerHTML += `<p> ${event.data}</p>`;
+// });
+
+// socket.addEventListener("close", (event) => {
+//     console.log("Connection closed");
+// });
+
+function sendMessage() {
+    const messageInput = document.getElementById("messageInput");
+    const recipientInput = document.getElementById("recipientInput");
+    const sender = document.getElementById("sender");
+    const message = messageInput.value;
+    const recipient = recipientInput.value;
+
+    //{"message": "Hello", "sender": "Alice", "recipient": "Bob"}
+
+    fetch('/dashboard')
+        .then(response => response.json())
+        .then(data => {
+         console.log('data.CurrentUser.Nickname : ' , data.CurrentUser.Nickname);
+            const datam = {
+              message: message,
+              recipient: recipient,
+              sender: data.CurrentUser.Nickname,
+          };
+
+          console.log("data : ", datam);
+  
+          socket.send(JSON.stringify(datam));
+        })
+        .catch(error => {
+          console.error('Error checking authentication:', error);
+          return
+        });
+
+    // Clear input fields
+    messageInput.value = "";
+    recipientInput.value = "";
+}
