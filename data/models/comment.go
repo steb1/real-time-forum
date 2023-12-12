@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"forum/lib"
 	"log"
-	"strconv"
 	"strings"
 
 	uuid "github.com/gofrs/uuid"
@@ -85,15 +84,15 @@ func (cr *CommentRepository) GetNbrOfCommentsOfPost(postID string) (int, error) 
 	return nbrComments, nil
 }
 
-func (cr *CommentRepository) GetCommentsOfPost(postID, limit string) ([]*CommentItem, error) {
-	moreComment, err := strconv.Atoi(limit)
-	if err != nil {
-		return nil, err
-	}
+func (cr *CommentRepository) GetCommentsOfPost(postID string) ([]*CommentItem, error) {
+	// moreComment, err := strconv.Atoi(limit)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	var comments []*CommentItem
 
-	rows, err := cr.db.Query("SELECT c.id, c.text, c.authorID, c.modifiedDate, u.nickname, u.avatarURL FROM comment c LEFT JOIN user u ON c.authorID = u.ID WHERE c.PostID = ? LIMIT ?", postID, moreComment)
+	rows, err := cr.db.Query("SELECT c.id, c.text, c.authorID, c.modifiedDate, u.nickname, u.avatarURL FROM comment c LEFT JOIN user u ON c.authorID = u.ID WHERE c.PostID = ?", postID)
 	if err != nil {
 		return nil, err
 	}

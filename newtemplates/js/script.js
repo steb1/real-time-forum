@@ -268,6 +268,8 @@ const generate404 = () => {
 }
 const displayAccueil = () => {
 
+  document.body.style.backgroundColor = "white";
+
   let rightBar = document.createElement("div")
   rightBar.id = "rightBar"
 
@@ -367,12 +369,12 @@ let addPost = (posts) => {
             
     
             <div class="post-stats5">
-                <span>
-                    <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> ${element.NumberOfLikes}
-                </span>
-                <span>
-                    <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> ${element.NumberOfDislikes}
-                </span>
+                <span onClick="like(event, '${element.Slug}')">
+                      <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> <span id="likeCount-${element.Slug}">${element.NumberOfLikes}</span>
+                  </span>
+                  <span onClick="dislike(event, '${element.Slug}')">
+                      <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> <span id="dislikeCount-${element.Slug}">${element.NumberOfDislikes}</span>
+                  </span>
                 <span>
                     <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
                 </span>
@@ -403,9 +405,48 @@ let comment = () => {
 
 }
 
-let like = (e) => {
-  let id = e
-  console.log(id);
+let like = (event, slug) => {
+
+  event.stopPropagation()
+  fetch('http://localhost:8080/like/'+slug, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        // console.log(event.target.parentNode);
+        document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
+        document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  console.log(slug);
+}
+
+let dislike = (event, slug) => {
+
+  event.stopPropagation()
+  fetch('http://localhost:8080/dislike/'+slug, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        // console.log(event.target.parentNode);
+        document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
+        document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  console.log(slug);
 }
 
 const createNewPost = () => {
@@ -560,11 +601,11 @@ const displayAllContent = (element) => {
               <img class="post-image5" src="../..${element.ImageURL}" alt="Post Image">
       
               <div class="post-stats5">
-                  <span>
-                      <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> ${element.NumberOfLikes}
+                  <span onClick="like(event, '${element.Slug}')">
+                      <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> <span id="likeCount-${element.Slug}">${element.NumberOfLikes}</span>
                   </span>
-                  <span>
-                      <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> ${element.NumberOfDislikes}
+                  <span onClick="dislike(event, '${element.Slug}')">
+                      <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> <span id="dislikeCount-${element.Slug}">${element.NumberOfDislikes}</span>
                   </span>
                   <span>
                       <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
@@ -701,6 +742,7 @@ console.log('messageContainer', messageContainer);
 const goBack = () => {
   displayAccueil();
 }
+
 
 let socket;
 
