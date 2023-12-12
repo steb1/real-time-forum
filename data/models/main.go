@@ -20,6 +20,7 @@ var (
 	RequestRepo      *RequestRepository
 	ReportRepo       *ReportRepository
 	ResponseRepo     *ResponseRepository
+	MessageRepo      *MessageRepository
 )
 
 func init() {
@@ -53,6 +54,7 @@ func init() {
 	RequestRepo = NewRequestRepository(db)
 	ReportRepo = NewReportRepository(db)
 	ResponseRepo = NewResponseRepository(db)
+	MessageRepo = NewMessageRepository(db)
 
 	log.Println("✅ Database init with success")
 }

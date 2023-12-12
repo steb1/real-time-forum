@@ -12,6 +12,14 @@ CREATE TABLE IF NOT EXISTS "user" (
     avatarURL VARCHAR,
     role VARCHAR
 );
+
+CREATE TABLE IF NOT EXISTS "message" (
+    id VARCHAR PRIMARY KEY,
+    message VARCHAR,
+    author VARCHAR,
+    receiver VARCHAR,
+    time VARCHAR
+);
 -- Table for 'post'
 CREATE TABLE IF NOT EXISTS "post" (
     id VARCHAR PRIMARY KEY,

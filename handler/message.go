@@ -3,7 +3,10 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"forum/data/models"
+	"forum/lib"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -24,10 +27,10 @@ type User struct {
 var users = make(map[string]*User)
 
 func printUsers() {
-    fmt.Println("List of Users:")
-    for username, user := range users {
-        fmt.Printf("Username: %s, Connection: %v\n", username, user.conn)
-    }
+	fmt.Println("List of Users:")
+	for username, user := range users {
+		fmt.Printf("Username: %s, Connection: %v\n", username, user.conn)
+	}
 }
 
 func Message(w http.ResponseWriter, r *http.Request) {
@@ -56,9 +59,6 @@ func Message(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-
-	fmt.Println("username :", initialData.Username)
-
 	username := initialData.Username
 
 	user := &User{
@@ -66,9 +66,6 @@ func Message(w http.ResponseWriter, r *http.Request) {
 		username: username,
 	}
 
-	printUsers()
-
-	fmt.Println("New User : ", &user)
 	users[username] = user
 
 	// Informer les autres utilisateurs de la nouvelle connexion
@@ -83,7 +80,6 @@ func Message(w http.ResponseWriter, r *http.Request) {
 			broadcast(fmt.Sprintf("%s left the chat", username))
 			return
 		}
-	
 
 		// Vous devriez recevoir un objet JSON du frontend avec les champs "message", "sender", et "recipient"
 		// Voici un exemple basique :
@@ -102,6 +98,18 @@ func Message(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Printf("After adding user. Users count: %d\n", len(users))
 
+		var messageStruct models.Message
+
+		messageStruct.Author = username
+		messageStruct.Message = messageData["message"]
+		messageStruct.Receiver = recipientUsername
+		messageStruct.Time = time.Now().Format("2006-01-02 15:04:05")
+
+		_, err = models.MessageRepo.CreateMessage(messageStruct)
+
+		if err != nil {
+			fmt.Println(err)
+		}
 
 		if ok {
 			recipientUser.conn.WriteMessage(websocket.TextMessage, p)
