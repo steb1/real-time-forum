@@ -24,7 +24,7 @@ function checkAuthentication() {
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
 })
- //var bigData = {};
+//var bigData = {};
 function getData() {
   fetch('/dashboard')
     .then(response => response.json())
@@ -365,7 +365,7 @@ let addPost = (posts) => {
             <div class="post-content5">
             ${element.Description}
             </div>
-            ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>' } 
+            ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>'} 
             
     
             <div class="post-stats5">
@@ -408,44 +408,44 @@ let comment = () => {
 let like = (event, slug) => {
 
   event.stopPropagation()
-  fetch('http://localhost:8080/like/'+slug, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        // console.log(event.target.parentNode);
-        document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
-        document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+  fetch('http://localhost:8080/like/' + slug, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // console.log(event.target.parentNode);
+      document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
+      document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   console.log(slug);
 }
 
 let dislike = (event, slug) => {
 
   event.stopPropagation()
-  fetch('http://localhost:8080/dislike/'+slug, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        // console.log(event.target.parentNode);
-        document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
-        document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+  fetch('http://localhost:8080/dislike/' + slug, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // console.log(event.target.parentNode);
+      document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
+      document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   console.log(slug);
 }
 
@@ -512,8 +512,8 @@ const displayAllContent = (element) => {
 
   messageButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
-    messageButton.style.borderBottom =  "2px solid black";
-    PostButton.style.borderBottom =  "none";
+    messageButton.style.borderBottom = "2px solid black";
+    PostButton.style.borderBottom = "none";
     elem.innerHTML = `<div id="chat"></div>
     <div>
         <input type="text" id="messageInput" placeholder="Type your message">
@@ -526,7 +526,7 @@ const displayAllContent = (element) => {
   PostButton.textContent = "Posts"
   PostButton.id = "PostButton"
   PostButton.className = "accueilButton"
-  PostButton.style.borderBottom =  "2px solid black";
+  PostButton.style.borderBottom = "2px solid black";
 
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
@@ -549,8 +549,8 @@ const displayAllContent = (element) => {
   addPost(posts)
 
   PostButton.addEventListener("click", (e) => {
-    PostButton.style.borderBottom =  "2px solid black";
-    messageButton.style.borderBottom =  "none";
+    PostButton.style.borderBottom = "2px solid black";
+    messageButton.style.borderBottom = "none";
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
 
@@ -640,7 +640,7 @@ const displayAllContent = (element) => {
 }
 
 const seePost = (slug) => {
-  
+
   // alert('CLick on post')
   // window.history.replaceState({},'', '/post')
   let centralDiv = document.getElementById('posts')
@@ -685,12 +685,12 @@ const seePost = (slug) => {
       <button type="submit" class="comment-button" id="cb">Comment</button>
     </form></div></div>`
 
-    let coordonnaes = centralDiv.getBoundingClientRect()
-    
-    centralDiv.scrollTo({
-      top: coordonnaes.bottom + 1000,
-      behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
-    });
+      let coordonnaes = centralDiv.getBoundingClientRect()
+
+      centralDiv.scrollTo({
+        top: coordonnaes.bottom + 1000,
+        behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
+      });
 
       const commentForm = document.getElementById('cf');
       const commentInput = document.getElementById('ci');
@@ -747,43 +747,50 @@ const goBack = () => {
 let socket;
 
 function connectWebSocket() {
-    socket = new WebSocket("ws://localhost:8080/ws");
+  socket = new WebSocket("ws://localhost:8080/ws");
 
-    socket.addEventListener("open", (event) => {
-      console.log("Connected to WebSocket");
-      fetch('/dashboard')
-          .then(response => response.json())
-          .then(data => {
-              console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
-    
-              // Check if the WebSocket connection is still open before sending data
-              if (socket.readyState === WebSocket.OPEN) {
-                  const initialData = {
-                      username: data.CurrentUser.Nickname,
-                      // Other initial data if necessary
-                  };
-                  socket.send(JSON.stringify(initialData));
-              } else {
-                  console.error('WebSocket is not in OPEN state.');
-              }
-          })
-          .catch(error => {
-              console.error('Error checking authentication:', error);
-              return;
-          });
-    })
+  socket.addEventListener("open", (event) => {
+    console.log("Connected to WebSocket");
+    fetch('/dashboard')
+      .then(response => response.json())
+      .then(data => {
+        console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
 
-    socket.addEventListener("message", (event) => {
+        // Check if the WebSocket connection is still open before sending data
+        if (socket.readyState === WebSocket.OPEN) {
+          const initialData = {
+            username: data.CurrentUser.Nickname,
+            // Other initial data if necessary
+          };
+          socket.send(JSON.stringify(initialData));
+          // document.getElementById("onlineStatus").textContent = data.tabOnline
+        } else {
+          console.error('WebSocket is not in OPEN state.');
+        }
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        return;
+      });
+  })
+
+  socket.addEventListener("message", (event) => {
+    const [command, payload] = event.data.split('|');
+    if (command === 'updateUsers') {
+      const onlineUsers = payload.split(',');
+      const onlineUsersDiv = document.getElementById('onlineStatus');
+      onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
+    }else{
       const chatDiv = document.getElementById("chat");
       chatDiv.innerHTML += `<p> ${event.data}</p>`;
-    });
+    }
     
-    socket.addEventListener("close", (event) => {
-        console.log("Connection closed");
-    });
+  });
+
+  socket.addEventListener("close", (event) => {
+    console.log("Connection closed");
+  });
 }
-
-
 
 
 // const socket = new WebSocket("ws://localhost:8080/ws");
@@ -798,7 +805,7 @@ function connectWebSocket() {
 //         .then(response => response.json())
 //         .then(data => {
 //             console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
-  
+
 //             // Check if the WebSocket connection is still open before sending data
 //             if (socket.readyState === WebSocket.OPEN) {
 //                 const initialData = {
@@ -827,34 +834,34 @@ function connectWebSocket() {
 // });
 
 function sendMessage() {
-    const messageInput = document.getElementById("messageInput");
-    const recipientInput = document.getElementById("recipientInput");
-    const sender = document.getElementById("sender");
-    const message = messageInput.value;
-    const recipient = recipientInput.value;
+  const messageInput = document.getElementById("messageInput");
+  const recipientInput = document.getElementById("recipientInput");
+  const sender = document.getElementById("sender");
+  const message = messageInput.value;
+  const recipient = recipientInput.value;
 
-    //{"message": "Hello", "sender": "Alice", "recipient": "Bob"}
+  //{"message": "Hello", "sender": "Alice", "recipient": "Bob"}
 
-    fetch('/dashboard')
-        .then(response => response.json())
-        .then(data => {
-         console.log('data.CurrentUser.Nickname : ' , data.CurrentUser.Nickname);
-            const datam = {
-              message: message,
-              recipient: recipient,
-              sender: data.CurrentUser.Nickname,
-          };
+  fetch('/dashboard')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
+      const datam = {
+        message: message,
+        recipient: recipient,
+        sender: data.CurrentUser.Nickname,
+      };
 
-          console.log("data : ", datam);
-  
-          socket.send(JSON.stringify(datam));
-        })
-        .catch(error => {
-          console.error('Error checking authentication:', error);
-          return
-        });
+      console.log("data : ", datam);
 
-    // Clear input fields
-    messageInput.value = "";
-    recipientInput.value = "";
+      socket.send(JSON.stringify(datam));
+    })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return
+    });
+
+  // Clear input fields
+  messageInput.value = "";
+  recipientInput.value = "";
 }

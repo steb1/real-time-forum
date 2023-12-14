@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"forum/data/models"
-	"forum/lib"
 	"net/http"
 	"time"
 
@@ -32,6 +31,8 @@ func printUsers() {
 		fmt.Printf("Username: %s, Connection: %v\n", username, user.conn)
 	}
 }
+
+var tab = []string{}
 
 func Message(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -70,6 +71,10 @@ func Message(w http.ResponseWriter, r *http.Request) {
 
 	// Informer les autres utilisateurs de la nouvelle connexion
 	broadcast(fmt.Sprintf("%s joined the chat", username))
+	users[username] = user
+	onlineUsers := GetOnlineUsers()
+	broadcast(fmt.Sprintf("updateUsers|%v", onlineUsers))
+	// broadcast <- fmt.Sprintf("updateUsers|%v", onlineUsers)
 
 	// Gérer les messages
 	for {
@@ -127,4 +132,12 @@ func broadcast(message string) {
 			return
 		}
 	}
+}
+
+func GetOnlineUsers() []string {
+	onlineUsers := make([]string, 0, len(users))
+	for username := range users {
+		onlineUsers = append(onlineUsers, username)
+	}
+	return onlineUsers
 }
