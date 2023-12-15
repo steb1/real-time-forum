@@ -70,7 +70,7 @@ func Message(w http.ResponseWriter, r *http.Request) {
 	users[username] = user
 
 	// Informer les autres utilisateurs de la nouvelle connexion
-	broadcast(fmt.Sprintf("%s joined the chat", username))
+	// broadcast(fmt.Sprintf("%s joined the chat", username))
 	users[username] = user
 	onlineUsers := GetOnlineUsers()
 	broadcast(fmt.Sprintf("updateUsers|%v", onlineUsers))
@@ -78,11 +78,12 @@ func Message(w http.ResponseWriter, r *http.Request) {
 
 	// Gérer les messages
 	for {
+		fmt.Println("ON MESSAGE")
 		_, p, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
 			delete(users, username)
-			broadcast(fmt.Sprintf("%s left the chat", username))
+			// broadcast(fmt.Sprintf("%s left the chat", username))
 			return
 		}
 

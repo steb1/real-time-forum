@@ -544,7 +544,7 @@ const displayAllContent = (element) => {
   let onlineStatus = document.createElement("div")
   onlineStatus.id = "onlineStatus"
   // onlineStatus.style.backgroundColor = 'grey'
-  
+
   // onlineStatus.textContent = 'We are online'
 
   addPost(posts)
@@ -778,13 +778,13 @@ function connectWebSocket() {
   socket.addEventListener("message", (event) => {
     const [command, payload] = event.data.split('|');
     if (command === 'updateUsers') {
-      const k = payload.replace("[","")
-      const l = k.replace("]","")
+      const k = payload.replace("[", "")
+      const l = k.replace("]", "")
       const onlineUsers = l.split(' ');
       const onlineUsersDiv = document.getElementById('onlineStatus');
       onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
       console.log(onlineUsers);
-      
+
       onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
         <h2>Users Online</h2>
         <ul id="user-list">
@@ -798,11 +798,15 @@ function connectWebSocket() {
         </li>`
 
       });
-    }else{
-      const chatDiv = document.getElementById("chat");
-      chatDiv.innerHTML += `<p> ${event.data}</p>`;
+    } else {
+      console.log('magui fi, ',event.data);
+      const chatDiv = document.getElementById("discuss");
+      chatDiv.innerHTML += `<div class="message user2">
+          <p>${event.data}</p>
+      </div>`
+      // chatDiv.innerHTML += `<p> ${event.data}</p>`;
     }
-    
+
   });
 
   socket.addEventListener("close", (event) => {
@@ -851,12 +855,13 @@ function connectWebSocket() {
 //     console.log("Connection closed");
 // });
 
-function sendMessage() {
-  const messageInput = document.getElementById("messageInput");
-  const recipientInput = document.getElementById("recipientInput");
-  const sender = document.getElementById("sender");
+function sendMessage(receiver) {
+  const messageInput = document.getElementById("ci");
+  // const recipientInput = document.getElementById("recipientInput");
+  // const sender = document.getElementById("sender");
   const message = messageInput.value;
-  const recipient = recipientInput.value;
+  let recipient = receiver;
+  console.log('recipientttttt = ', recipient);
 
   //{"message": "Hello", "sender": "Alice", "recipient": "Bob"}
 
@@ -881,7 +886,7 @@ function sendMessage() {
 
   // Clear input fields
   messageInput.value = "";
-  recipientInput.value = "";
+  // recipientInput.value = "";
 }
 
 function seeMessages(friend) {
@@ -897,19 +902,19 @@ function seeMessages(friend) {
   </div>
   <form class="comment-form" id="cf">
       <input type="text" class="comment-input" id="ci" placeholder="Write your message...">
-      <button type="submit" class="comment-button" id="cb">Send</button>
+      <button class="comment-button" id="cb" onclick="sendMessage('${friend}')">Send</button>
     </form>
 </div></div>`
-let fff = document.getElementById('discuss')
-  fetch('http://localhost:8080/discussion/'+friend)
+  let fff = document.getElementById('discuss')
+  fetch('http://localhost:8080/discussion/' + friend)
     .then(response => response.json())
     .then(data => {
       data.Messages.forEach(message => {
-        if (message.Receiver == friend) {
+        if (message.Receiver != friend) {
           fff.innerHTML += `<div class="message user2">
           <p>${message.Message}</p>
       </div>`
-        }else{
+        } else {
           fff.innerHTML += `<div class="message user1">
           <p>${message.Message}</p>
       </div>`
@@ -922,4 +927,31 @@ let fff = document.getElementById('discuss')
       console.error('Error checking authentication:', error);
       return
     });
+}
+
+function send(receiver) {
+  console.log('sennnnnnnddd');
+  let mess = document.getElementById('ci').value
+  console.log(mess);
+  const recipient = receiver;
+
+  // fetch('/dashboard')
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
+      const datam = {
+        message: mess,
+        recipient: recipient,
+        sender: 'Gondia',
+      };
+
+      if (message.trim() !== "") {
+        socket.send(JSON.stringify(datam));
+      }
+      
+    // })
+    // .catch(error => {
+    //   console.error('Error checking authentication:', error);
+    //   return
+    // });
 }
