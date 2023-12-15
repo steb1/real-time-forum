@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+
 	"github.com/gofrs/uuid"
 )
 
@@ -87,4 +88,25 @@ func (r *MessageRepository) DeleteMessage(id uuid.UUID) error {
 	}
 
 	return nil
+}
+
+func (mr *MessageRepository) GetMessagesBySenderAndReceiver(sender string, receiver string) ([]Message, error) {
+
+	rows, err := mr.db.Query("SELECT id, message, author, receiver, time FROM message WHERE (author = ? AND receiver = ?) OR (author = ? AND receiver = ?)", sender, receiver, receiver, sender)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var messages []Message
+	for rows.Next() {
+		var message Message
+		err := rows.Scan(&message.ID, &message.Message, &message.Author, &message.Receiver, &message.Time)
+		if err != nil {
+			return nil, err
+		}
+		messages = append(messages, message)
+	}
+
+	return messages, nil
 }

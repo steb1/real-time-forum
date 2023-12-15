@@ -22,6 +22,53 @@
     height: 100vh;
 }
 
+.obody {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.user-list-container {
+    width: 300px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+}
+
+#user-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.user-status {
+    color: #4CAF50; /* Green color for online status */
+}
+
+
 #tabBar {}
 
 #onlineStatus {}
@@ -696,3 +743,71 @@ input {
     align-items: last baseline;
     gap: 10px;
 }
+
+.mbody {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+} */
+
+.chat-container {
+    width: 800px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.chat-header {
+    text-align: center;
+}
+
+.messages {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.user1 {
+    background-color: #e6f7ff; /* Light blue for User 1's messages */
+    text-align: left;
+}
+
+.user2 {
+    background-color: #ffe6e6; /* Light pink for User 2's messages */
+    text-align: right;
+}
+/* Ajoutez ces styles à votre fichier CSS existant */
+
+.chat-header {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+h2 {
+    margin: 0;
+}
+

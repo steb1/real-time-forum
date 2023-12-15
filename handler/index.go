@@ -947,8 +947,6 @@ func LikePost(res http.ResponseWriter, req *http.Request) {
 					response["NbrLike"] = homePageData.NbrLike
 					response["NbrDislike"] = homePageData.NbrDislike
 
-					fmt.Println(response)
-
 					writeJSONResponse(res, response)
 					// lib.RedirectToPreviousURL(res, req)
 				}
@@ -1165,6 +1163,42 @@ func DislikePost(res http.ResponseWriter, req *http.Request) {
 			res.WriteHeader(http.StatusNotFound)
 			// lib.RenderPage("base", "404", nil, res)
 			log.Println("404 ❌ - Page not found ", req.URL.Path)
+		}
+	}
+}
+
+func Discussion(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("djdhdhjdhdhjsjdjsdhjsdddsdj=============")
+	if lib.ValidateRequest(req, res, "/discussion/*", http.MethodGet) {
+		err := req.ParseForm()
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusBadRequest)
+			return
+		}
+		path := req.URL.Path
+		pathPart := strings.Split(path, "/")
+		if len(pathPart) == 3 && pathPart[1] == "discussion" && pathPart[2] != "" {
+			friendName := pathPart[2]
+			friend, err := models.UserRepo.GetUserByNickname(friendName)
+			if err != nil {
+				return
+			}
+			user := models.GetUserFromSession(req)
+			if user == nil {
+				res.WriteHeader(http.StatusNotFound)
+				log.Println("404 ❌ - Page not found ", req.URL.Path)
+				return
+			}
+			mess, err := models.MessageRepo.GetMessagesBySenderAndReceiver(user.Nickname, friend.Nickname)
+			if err != nil {
+				return
+			}
+
+			response := make(map[string]interface{})
+			response["Messages"] = mess
+
+			writeJSONResponse(res, response)
+
 		}
 	}
 }

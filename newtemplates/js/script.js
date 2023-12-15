@@ -543,8 +543,9 @@ const displayAllContent = (element) => {
 
   let onlineStatus = document.createElement("div")
   onlineStatus.id = "onlineStatus"
-  onlineStatus.style.backgroundColor = 'grey'
-  onlineStatus.textContent = 'We are online'
+  // onlineStatus.style.backgroundColor = 'grey'
+  
+  // onlineStatus.textContent = 'We are online'
 
   addPost(posts)
 
@@ -777,9 +778,26 @@ function connectWebSocket() {
   socket.addEventListener("message", (event) => {
     const [command, payload] = event.data.split('|');
     if (command === 'updateUsers') {
-      const onlineUsers = payload.split(',');
+      const k = payload.replace("[","")
+      const l = k.replace("]","")
+      const onlineUsers = l.split(' ');
       const onlineUsersDiv = document.getElementById('onlineStatus');
       onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
+      console.log(onlineUsers);
+      
+      onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
+        <h2>Users Online</h2>
+        <ul id="user-list">
+        </ul>
+      </div></div>`
+      const userList = document.getElementById("user-list")
+      onlineUsers.forEach(element => {
+        userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
+        <span class="user-name">${element}</span>
+        <span class="user-status">Online</span>
+        </li>`
+
+      });
     }else{
       const chatDiv = document.getElementById("chat");
       chatDiv.innerHTML += `<p> ${event.data}</p>`;
@@ -864,4 +882,44 @@ function sendMessage() {
   // Clear input fields
   messageInput.value = "";
   recipientInput.value = "";
+}
+
+function seeMessages(friend) {
+  let elem = document.getElementById('posts')
+  elem.innerHTML = ''
+  elem.innerHTML = `<div class="mbody"><div class="chat-container">
+  <div class="chat-header">
+    <img class="post-owner-image5" src="../../uploads/icon.webp" alt="User 2">
+    <h2>${friend}</h2>
+  </div>
+  <div class="messages" id="discuss">
+      
+  </div>
+  <form class="comment-form" id="cf">
+      <input type="text" class="comment-input" id="ci" placeholder="Write your message...">
+      <button type="submit" class="comment-button" id="cb">Send</button>
+    </form>
+</div></div>`
+let fff = document.getElementById('discuss')
+  fetch('http://localhost:8080/discussion/'+friend)
+    .then(response => response.json())
+    .then(data => {
+      data.Messages.forEach(message => {
+        if (message.Receiver == friend) {
+          fff.innerHTML += `<div class="message user2">
+          <p>${message.Message}</p>
+      </div>`
+        }else{
+          fff.innerHTML += `<div class="message user1">
+          <p>${message.Message}</p>
+      </div>`
+        }
+        console.log("nnnnn = ", message.Receiver);
+      })
+      console.log("mess = ", data);
+    })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return
+    });
 }
