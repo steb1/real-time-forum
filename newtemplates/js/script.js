@@ -799,11 +799,29 @@ function connectWebSocket() {
 
       });
     } else {
-      console.log('magui fi, ',event.data);
-      const chatDiv = document.getElementById("discuss");
-      chatDiv.innerHTML += `<div class="message user2">
-          <p>${event.data}</p>
-      </div>`
+      fetch('/dashboard')
+        .then(response => response.json())
+        .then(data => {
+        
+          let json = JSON.parse(event.data)
+          console.log('Nickname ===== : ', data.CurrentUser.Nickname);
+          const chatDiv = document.getElementById("discuss");
+          console.log(json);
+          if (data.CurrentUser.Nickname == json.sender) {
+            chatDiv.innerHTML += `<div class="message user1">
+          <p>${json.message}</p>
+          </div>`
+          }else{
+            chatDiv.innerHTML += `<div class="message user2">
+          <p>${json.message}</p>
+          </div>`
+          }
+        })
+        .catch(error => {
+          console.error('Error checking authentication:', error);
+          return
+        });
+
       // chatDiv.innerHTML += `<p> ${event.data}</p>`;
     }
 
@@ -855,7 +873,8 @@ function connectWebSocket() {
 //     console.log("Connection closed");
 // });
 
-function sendMessage(receiver) {
+function sendMessage(event, receiver) {
+  event.preventDefault();
   const messageInput = document.getElementById("ci");
   // const recipientInput = document.getElementById("recipientInput");
   // const sender = document.getElementById("sender");
@@ -878,6 +897,7 @@ function sendMessage(receiver) {
       console.log("data : ", datam);
 
       socket.send(JSON.stringify(datam));
+      
     })
     .catch(error => {
       console.error('Error checking authentication:', error);
@@ -902,7 +922,7 @@ function seeMessages(friend) {
   </div>
   <form class="comment-form" id="cf">
       <input type="text" class="comment-input" id="ci" placeholder="Write your message...">
-      <button class="comment-button" id="cb" onclick="sendMessage('${friend}')">Send</button>
+      <button class="comment-button" id="cb" onclick="sendMessage(event, '${friend}')">Send</button>
     </form>
 </div></div>`
   let fff = document.getElementById('discuss')
@@ -939,19 +959,19 @@ function send(receiver) {
   //   .then(response => response.json())
   //   .then(data => {
   //     console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
-      const datam = {
-        message: mess,
-        recipient: recipient,
-        sender: 'Gondia',
-      };
+  const datam = {
+    message: mess,
+    recipient: recipient,
+    sender: 'Gondia',
+  };
 
-      if (message.trim() !== "") {
-        socket.send(JSON.stringify(datam));
-      }
-      
-    // })
-    // .catch(error => {
-    //   console.error('Error checking authentication:', error);
-    //   return
-    // });
+  if (message.trim() !== "") {
+    socket.send(JSON.stringify(datam));
+  }
+
+  // })
+  // .catch(error => {
+  //   console.error('Error checking authentication:', error);
+  //   return
+  // });
 }

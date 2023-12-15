@@ -98,7 +98,9 @@ func Message(w http.ResponseWriter, r *http.Request) {
 		}
 
 		recipientUsername := messageData["recipient"]
+		user1Name := messageData["sender"]
 		recipientUser, ok := users[recipientUsername]
+		user1, _ := users[user1Name]
 		fmt.Println("recipientUsername : ", recipientUsername)
 		fmt.Println("ok : ", ok)
 
@@ -118,7 +120,9 @@ func Message(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if ok {
+			// broadcast2Users(messageData["message"], recipientUser, user)
 			recipientUser.conn.WriteMessage(websocket.TextMessage, p)
+			user1.conn.WriteMessage(websocket.TextMessage, p)
 		} else {
 			broadcast(messageData["message"])
 		}
@@ -132,6 +136,19 @@ func broadcast(message string) {
 			fmt.Println(err)
 			return
 		}
+	}
+}
+
+func broadcast2Users(message string, user1 *User, user2 *User) {
+	for _, user := range users {
+		if user.username == user1.username || user.username == user2.username {
+			err := user.conn.WriteMessage(websocket.TextMessage, []byte(message))
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+		}
+
 	}
 }
 
