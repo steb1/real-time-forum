@@ -135,58 +135,10 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 
 		isSessionOpen := models.ValidSession(req)
 		user := models.GetUserFromSession(req)
-		// queryParams := req.URL.Query()
-		// limit := 5
-		// numberOfPosts := models.PostRepo.GetNumberOfPosts()
-
-		// if len(queryParams["limit"]) != 0 {
-		// 	_limit, err := strconv.Atoi(queryParams.Get("limit"))
-		// 	if limit <= 0 || err != nil {
-		// 		res.WriteHeader(http.StatusBadRequest)
-		// 		log.Println("❌ Can't convert index to int")
-		// 		return
-		// 	} else {
-		// 		if _limit == numberOfPosts {
-		// 			limit = -1
-		// 		} else {
-		// 			limit = _limit
-		// 		}
-		// 	}
-		// }
-
-		// posts, _ := models.PostRepo.GetAllPosts("1000")
-
-		// TopUsers, err := models.UserRepo.TopUsers()
-		// if err != nil {
-		// 	res.WriteHeader(http.StatusInternalServerError)
-		// 	log.Println("❌ Can't get top users")
-		// 	return
-		// }
-
-		// if limit != -1 {
-		// 	if limit+5 > numberOfPosts {
-		// 		limit = numberOfPosts
-		// 	} else {
-		// 		limit += 5
-		// 	}
-		// }
-		// if posts != nil {
-		// 	for j := 0; j < len(posts); j++ {
-		// 		posts[j].Title = template.HTMLEscapeString(posts[j].Title)
-		// 	}
-		// }
-		// cat, err := models.CategoryRepo.GetAllCategory()
-		// if err != nil {
-		// 	return
-		// }
 		allPost, err := models.PostRepo.GetAllPost()
 		if err != nil {
 			return
 		}
-		// notifications, err := models.NotifRepo.GetAllNotifs()
-		// if err != nil {
-		// 	return
-		// }
 
 		homePageData := HomePageData{
 			IsLoggedIn:  isSessionOpen,
@@ -199,16 +151,6 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		//fmt.Println(response)
 		res.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(res).Encode(response)
-
-		// log.Println("✅ Account created with success")
-
-		// jsonData, err := json.Marshal(homePageData)
-		// if err != nil {
-		// 	fmt.Println("Erreur lors de la conversion en JSON:", err)
-		// 	return
-		// }
-
-		// lib.RenderPage(basePath, pagePath, string(jsonData), res)
 		log.Println("✅ Home page get with success")
 	}
 }
@@ -1168,7 +1110,6 @@ func DislikePost(res http.ResponseWriter, req *http.Request) {
 }
 
 func Discussion(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("djdhdhjdhdhjsjdjsdhjsdddsdj=============")
 	if lib.ValidateRequest(req, res, "/discussion/*", http.MethodGet) {
 		err := req.ParseForm()
 		if err != nil {
@@ -1198,7 +1139,6 @@ func Discussion(res http.ResponseWriter, req *http.Request) {
 			response["Messages"] = mess
 
 			writeJSONResponse(res, response)
-
 		}
 	}
 }

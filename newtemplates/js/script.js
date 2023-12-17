@@ -778,35 +778,45 @@ function connectWebSocket() {
   socket.addEventListener("message", (event) => {
     const [command, payload] = event.data.split('|');
     if (command === 'updateUsers') {
-      const k = payload.replace("[", "")
-      const l = k.replace("]", "")
-      const onlineUsers = l.split(' ');
-      const onlineUsersDiv = document.getElementById('onlineStatus');
-      onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
-      console.log(onlineUsers);
+      console.log("online users : " , JSON.parse(payload));
+      const onlineUsers = JSON.parse(payload)
 
-      onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
-        <h2>Users Online</h2>
-        <ul id="user-list">
-        </ul>
-      </div></div>`
-      const userList = document.getElementById("user-list")
-      onlineUsers.forEach(element => {
-        userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
-        <span class="user-name">${element}</span>
-        <span class="user-status">Online</span>
-        </li>`
-
-      });
+      fetch('/dashboard')
+      .then(response => response.json())
+      .then(data => {
+        onlineUsers.map((element, i) => {
+          console.log(element);
+          if (element.nom == data.CurrentUser.Nickname) {
+  
+            const onlineUsersDiv = document.getElementById('onlineStatus');
+           // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
+            
+              onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
+              <h2>Users Online</h2>
+              <ul id="user-list">
+              </ul>
+              </div></div>`
+              const userList = document.getElementById("user-list")
+  
+              element.onlineUsers.forEach(element => {
+              userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
+              <span class="user-name">${element}</span>
+              <span class="user-status">Online</span>
+              </li>`
+           })
+          }
+        })
+      })
+      
     } else {
       fetch('/dashboard')
         .then(response => response.json())
         .then(data => {
-        
+          console.log("Event data : ", event.data);
           let json = JSON.parse(event.data)
-          console.log('Nickname ===== : ', data.CurrentUser.Nickname);
+          //console.log('Nickname ===== : ', data.CurrentUser.Nickname);
           const chatDiv = document.getElementById("discuss");
-          console.log(json);
+          //console.log(json);
           if (data.CurrentUser.Nickname == json.sender) {
             chatDiv.innerHTML += `<div class="message user1">
           <p>${json.message}</p>
@@ -833,68 +843,22 @@ function connectWebSocket() {
 }
 
 
-// const socket = new WebSocket("ws://localhost:8080/ws");
-
-// socket.addEventListener("open", (event) => {
-//   console.log("checkAuthentication : ", checkAuthentication);
-//   if (!checkAuthentication){
-//     return
-//   } else {
-//     console.log("Connected to WebSocket");
-//     fetch('/dashboard')
-//         .then(response => response.json())
-//         .then(data => {
-//             console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
-
-//             // Check if the WebSocket connection is still open before sending data
-//             if (socket.readyState === WebSocket.OPEN) {
-//                 const initialData = {
-//                     username: data.CurrentUser.Nickname,
-//                     // Other initial data if necessary
-//                 };
-//                 socket.send(JSON.stringify(initialData));
-//             } else {
-//                 console.error('WebSocket is not in OPEN state.');
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error checking authentication:', error);
-//             return;
-//         });
-//   }
-// });
-
-// socket.addEventListener("message", (event) => {
-//     const chatDiv = document.getElementById("chat");
-//     chatDiv.innerHTML += `<p> ${event.data}</p>`;
-// });
-
-// socket.addEventListener("close", (event) => {
-//     console.log("Connection closed");
-// });
-
 function sendMessage(event, receiver) {
   event.preventDefault();
   const messageInput = document.getElementById("ci");
-  // const recipientInput = document.getElementById("recipientInput");
-  // const sender = document.getElementById("sender");
+
   const message = messageInput.value;
   let recipient = receiver;
-  console.log('recipientttttt = ', recipient);
-
-  //{"message": "Hello", "sender": "Alice", "recipient": "Bob"}
 
   fetch('/dashboard')
     .then(response => response.json())
     .then(data => {
-      console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
+      //console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
       const datam = {
         message: message,
         recipient: recipient,
         sender: data.CurrentUser.Nickname,
       };
-
-      console.log("data : ", datam);
 
       socket.send(JSON.stringify(datam));
       
@@ -950,15 +914,10 @@ function seeMessages(friend) {
 }
 
 function send(receiver) {
-  console.log('sennnnnnnddd');
   let mess = document.getElementById('ci').value
   console.log(mess);
   const recipient = receiver;
 
-  // fetch('/dashboard')
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
   const datam = {
     message: mess,
     recipient: recipient,
@@ -968,10 +927,4 @@ function send(receiver) {
   if (message.trim() !== "") {
     socket.send(JSON.stringify(datam));
   }
-
-  // })
-  // .catch(error => {
-  //   console.error('Error checking authentication:', error);
-  //   return
-  // });
 }

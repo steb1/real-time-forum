@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/gofrs/uuid"
 )
@@ -99,6 +100,29 @@ func (mr *MessageRepository) GetMessagesBySenderAndReceiver(sender string, recei
 	defer rows.Close()
 
 	var messages []Message
+	for rows.Next() {
+		var message Message
+		err := rows.Scan(&message.ID, &message.Message, &message.Author, &message.Receiver, &message.Time)
+		if err != nil {
+			return nil, err
+		}
+		messages = append(messages, message)
+	}
+
+	return messages, nil
+}
+
+func (mr *MessageRepository) GetMessagesByUser(username string) ([]Message, error) {
+
+	rows, err := mr.db.Query("SELECT id, message, author, receiver, time FROM message WHERE author = ?", username)
+	if err != nil {
+		fmt.Println("error here")
+		return nil, err
+	}
+	defer rows.Close()
+
+	var messages []Message
+
 	for rows.Next() {
 		var message Message
 		err := rows.Scan(&message.ID, &message.Message, &message.Author, &message.Receiver, &message.Time)
