@@ -93,7 +93,7 @@ func (r *MessageRepository) DeleteMessage(id uuid.UUID) error {
 
 func (mr *MessageRepository) GetMessagesBySenderAndReceiver(sender string, receiver string) ([]Message, error) {
 
-	rows, err := mr.db.Query("SELECT id, message, author, receiver, time FROM message WHERE (author = ? AND receiver = ?) OR (author = ? AND receiver = ?)", sender, receiver, receiver, sender)
+	rows, err := mr.db.Query("SELECT id, message, author, receiver, time FROM message WHERE (author = ? AND receiver = ?) OR (author = ? AND receiver = ?) LIMIT 10 ", sender, receiver, receiver, sender)
 	if err != nil {
 		return nil, err
 	}

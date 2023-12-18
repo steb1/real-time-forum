@@ -885,7 +885,7 @@ function sendMessage(event, receiver) {
 function seeMessages(friend) {
   let elem = document.getElementById('posts')
   elem.innerHTML = ''
-  elem.innerHTML = `<div class="mbody"><div class="chat-container">
+  elem.innerHTML = `<div id="mbody" class="mbody"><div id="chat-container" class="chat-container">
   <div class="chat-header">
     <img class="post-owner-image5" src="../../uploads/icon.webp" alt="User 2">
     <h2>${friend}</h2>
@@ -898,6 +898,8 @@ function seeMessages(friend) {
       <button class="comment-button" id="cb" onclick="sendMessage(event, '${friend}')">Send</button>
     </form>
 </div></div>`
+let toScroll = document.getElementById("discuss")
+toScroll.addEventListener("scroll", handleScroll)
   let fff = document.getElementById('discuss')
   fetch('http://localhost:8080/discussion/' + friend)
     .then(response => response.json())
@@ -922,6 +924,12 @@ function seeMessages(friend) {
     });
 }
 
+
+
+let handleScroll = (e) => {
+  
+}
+
 function send(receiver) {
   let mess = document.getElementById('ci').value
   console.log(mess);
@@ -937,3 +945,4 @@ function send(receiver) {
     socket.send(JSON.stringify(datam));
   }
 }
+

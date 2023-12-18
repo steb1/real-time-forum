@@ -159,37 +159,17 @@ func Message(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		OnlineUsersByProfile = updateStatus(users, "")
+		fmt.Println("updateStatus : ", updateStatus(users, user1Name))
+
+		OnlineUsersByProfile = updateStatus(users, user1Name)
 		broadcast(fmt.Sprintf("updateUsers|%v", OnlineUsersByProfile))
-
-		var OnlineUsersByProfile []string
-		i := 0
-		for v := range users {
-			i++
-			var user userStatus
-			user.Nom = v
-			user.OnlineUsers = cleanTab(GetOnlineUsers(username), v)
-
-			jsonData, err := json.Marshal(user)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			OnlineUsersByProfile = append(OnlineUsersByProfile, string(jsonData) + ",")
-		}
 
 		if ok {
 			// broadcast2Users(messageData["message"], recipientUser, user)
 			recipientUser.conn.WriteMessage(websocket.TextMessage, p)
-			sort.Strings(OnlineUsersByProfile)
-			broadcast(fmt.Sprintf("updateUsers|%v", OnlineUsersByProfile))
 			user1.conn.WriteMessage(websocket.TextMessage, p)
-		} else {
-			broadcast(messageData["message"])
-		}
+		} 
 
-		broadcast(fmt.Sprintf("updateUsers|%v", OnlineUsersByProfile))
 
 	}
 }
@@ -219,7 +199,7 @@ func broadcast2Users(message string, user1 *User, user2 *User) {
 
 
 func GetOnlineUsers(username string) []string {
-	fmt.Println(username)
+	fmt.Println("user for info : " , username)
 	Messages, err := models.MessageRepo.GetMessagesByUser(username)
 	if err != nil {
 		fmt.Println("error getting messsage")
@@ -230,10 +210,13 @@ func GetOnlineUsers(username string) []string {
 		onlineUsers = append(onlineUsers, username)
 	}
 	var OnlineUsersByProfile []string
-		for i := len(Messages) - 1; i >= 0; i-- {
-			if isPresent(onlineUsers, Messages[i].Receiver) && (Messages[i].Author != username) {
-			//OnlineUsersByProfile = append(OnlineUsersByProfile, Messages[i].Receiver)
-			OnlineUsersByProfile = append([]string{Messages[i].Receiver}, OnlineUsersByProfile...)
+		for i := len(Messages) - 1 ; i >= 0; i-- {
+			if isPresent(onlineUsers, Messages[i].Receiver) && Messages[i].Author == username  {
+				if !isPresent(OnlineUsersByProfile, Messages[i].Receiver) {
+					//OnlineUsersByProfile = append([]string{Messages[i].Receiver}, OnlineUsersByProfile...)
+					OnlineUsersByProfile = append(OnlineUsersByProfile, Messages[i].Receiver)
+					fmt.Println("OnlineUsersByProfileeeeeee : ", OnlineUsersByProfile)
+				}
 		}
 	}
 	
@@ -244,6 +227,8 @@ func GetOnlineUsers(username string) []string {
 			OnlineUsersByProfile = append(OnlineUsersByProfile, v)
 		}
 	}
+
+	fmt.Println("etape 2 : ", OnlineUsersByProfile)
 	
 	if len(Messages) == 0 {
 		sort.Strings(OnlineUsersByProfile)
@@ -254,13 +239,17 @@ func GetOnlineUsers(username string) []string {
 func cleanTab(tab []string, toClean string) []string {
 	var toReturn []string
 
+	fmt.Println("CleanTO", toClean)
+	fmt.Println("Clean tab", tab)
+
 	for _, v := range tab {
 		if v != toClean {
 			toReturn = append(toReturn, v)
 		}
+		
 	}
 
-	//fmt.Println("toReturn : ", toReturn)
+	fmt.Println("toReturn : ", toReturn)
 	return toReturn
 }
 
