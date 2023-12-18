@@ -829,10 +829,12 @@ function connectWebSocket() {
           if (data.CurrentUser.Nickname == json.sender) {
             chatDiv.innerHTML += `<div class="message user1">
           <p>${json.message}</p>
+          <span class="message-time">${getFormattedDate()}</span>
           </div>`
           }else{
             chatDiv.innerHTML += `<div class="message user2">
           <p>${json.message}</p>
+          <span class="message-time">${getFormattedDate()}</span>
           </div>`
           }
         })
@@ -906,10 +908,12 @@ function seeMessages(friend) {
         if (message.Receiver != friend) {
           fff.innerHTML += `<div class="message user2">
           <p>${message.Message}</p>
+          <span class="message-time">${message.Time}</span>
       </div>`
         } else {
           fff.innerHTML += `<div class="message user1">
           <p>${message.Message}</p>
+          <span class="message-time">${message.Time}</span>
       </div>`
         }
         console.log("nnnnn = ", message.Receiver);
@@ -936,4 +940,17 @@ function send(receiver) {
   if (message.trim() !== "") {
     socket.send(JSON.stringify(datam));
   }
+}
+
+function getFormattedDate() {
+    var date = new Date();
+
+    var annee = date.getFullYear();
+    var mois = (date.getMonth() + 1).toString().padStart(2, '0');
+    var jour = date.getDate().toString().padStart(2, '0');
+    var heures = date.getHours().toString().padStart(2, '0');
+    var minutes = date.getMinutes().toString().padStart(2, '0');
+    var secondes = date.getSeconds().toString().padStart(2, '0');
+
+    return `${annee}-${mois}-${jour} ${heures}:${minutes}:${secondes}`;
 }

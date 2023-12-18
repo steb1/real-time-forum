@@ -699,6 +699,10 @@ input {
 .post-time5 {
     color: #777;
 }
+.message-time{
+    font-size: x-small;
+    color: #777;
+}
 
 .post-content5 {
     font-size: 16px;
