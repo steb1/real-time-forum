@@ -776,10 +776,19 @@ function connectWebSocket() {
   })
 
   socket.addEventListener("message", (event) => {
+    
+
     const [command, payload] = event.data.split('|');
     if (command === 'updateUsers') {
-      console.log("online users : " , JSON.parse(payload));
-      const onlineUsers = JSON.parse(payload)
+      let last = payload[payload.length - 1]
+
+      console.log("Payload : ", payload);
+      
+      let newString = payload.slice(0, -2);
+      newString += last
+      console.log("Payload : ", newString);
+      console.log("online users : " , JSON.parse(newString));
+      const onlineUsers = JSON.parse(newString)
 
       fetch('/dashboard')
       .then(response => response.json())
