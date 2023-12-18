@@ -825,14 +825,16 @@ function connectWebSocket() {
           let json = JSON.parse(event.data)
           //console.log('Nickname ===== : ', data.CurrentUser.Nickname);
           const chatDiv = document.getElementById("discuss");
-          //console.log(json);
+          console.log("json : ", json);
           if (data.CurrentUser.Nickname == json.sender) {
             chatDiv.innerHTML += `<div class="message user1">
+            <span class="message-time">${json.recipient}</span>
           <p>${json.message}</p>
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
           }else{
             chatDiv.innerHTML += `<div class="message user2">
+            <span class="message-time">${json.recipient}</span>
           <p>${json.message}</p>
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
@@ -909,11 +911,13 @@ toScroll.addEventListener("scroll", handleScroll)
       data.Messages.forEach(message => {
         if (message.Receiver != friend) {
           fff.innerHTML += `<div class="message user2">
+          <span class="message-time">${message.Receiver}</span>
           <p>${message.Message}</p>
           <span class="message-time">${message.Time}</span>
       </div>`
         } else {
           fff.innerHTML += `<div class="message user1">
+          <span class="message-time">${message.Receiver}</span>
           <p>${message.Message}</p>
           <span class="message-time">${message.Time}</span>
       </div>`
