@@ -151,7 +151,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(res).Encode(response)
 		log.Println("✅ Home page get with success")
-		
+
 	}
 }
 
@@ -1138,6 +1138,45 @@ func Discussion(res http.ResponseWriter, req *http.Request) {
 			response := make(map[string]interface{})
 			response["Messages"] = mess
 
+			writeJSONResponse(res, response)
+		}
+	}
+}
+type MessageToSend struct {
+	Receiver string `json : receiver`
+	Content string `json : content`
+	Time string  `json : receiver`
+}
+func GetMessages(res http.ResponseWriter, req *http.Request) {
+	if lib.ValidateRequest(req, res, "/getAllMessages", http.MethodGet) {
+
+		isSessionOpen := models.ValidSession(req)
+		if isSessionOpen {
+			// isSessionOpen := true
+			user := models.GetUserFromSession(req)
+			message, err := models.MessageRepo.GetMessagesByUser(user.Nickname)
+
+			if err != nil {
+				return
+			}
+
+			var tab []MessageToSend
+			var users []string
+
+			for i := len(message) - 1 ; i >= 0; i-- {
+				var element MessageToSend
+				element.Receiver = message[i].Receiver
+				element.Content = message[i].Message
+				element.Time = message[i].Time
+
+				if !isPresent(users, message[i].Receiver) {
+					tab = append(tab, element)
+					users = append(users, message[i].Receiver)
+				}
+			}
+
+			response := make(map[string]interface{})
+			response["Messages"] = tab
 			writeJSONResponse(res, response)
 		}
 	}

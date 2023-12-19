@@ -45,7 +45,7 @@ func main() {
 	http.Handle("/like/", rateLimiter.Wrap("api", handler.LikePost))
 	http.Handle("/dislike/", rateLimiter.Wrap("api", handler.DislikePost))
 	http.Handle("/discussion/", rateLimiter.Wrap("api", handler.Discussion))
-
+	http.Handle("/getAllMessages", rateLimiter.Wrap("api", handler.GetMessages))
 	///
 	http.HandleFunc("/ws", handler.Message)
 

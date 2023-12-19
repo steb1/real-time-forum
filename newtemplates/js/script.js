@@ -123,7 +123,7 @@ const registerForm = (e) => {
 
   const authPage = document.createElement('div');
   var body = document.body;
-  body.style.backgroundColor = "#080710"
+  body.style.backgroundColor = "#f1f3f8"
   authPage.innerHTML = `
         <div class="background">
         <div class="shape"></div>
@@ -539,7 +539,6 @@ const displayAllContent = (element) => {
   let tabBar = document.createElement("div")
   tabBar.id = "tabBar"
 
-  tabBar.style.backgroundColor = "yellow"
   let messageButton = document.createElement("button")
   messageButton.textContent = "Message"
   messageButton.id = "messageButton"
@@ -547,15 +546,40 @@ const displayAllContent = (element) => {
 
   messageButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
+    elem.innerHTML = ""
     messageButton.style.borderBottom = "2px solid black";
     PostButton.style.borderBottom = "none";
-    elem.innerHTML = `<div id="chat"></div>
-    <div>
-        <input type="text" id="messageInput" placeholder="Type your message">
-        <input type="text" id="recipientInput" placeholder="Recipient (leave empty for public)">
-        <input type="text" id="sender" placeholder="sender">
-        <button onclick="sendMessage()">Send</button>
-    </div>`
+    fetch('/getAllMessages', {
+      credentials: 'include'
+    })
+      .then(response => response.json())
+      .then(data => {
+        let divMessages = document.createElement("div")
+        divMessages.id = "divMessages"
+        data.Messages.forEach(element => {
+          let elemm = document.createElement("div")
+          elemm.id = "mess"
+          elemm.innerHTML = `
+          <div class="" onClick="seeMessages('${element.Receiver}')">
+            <div class="MessName">${element.Receiver}</div>
+            <div class="MessContent">${element.Content}</div>
+            <div class="Time">${element.Time}</div>
+          </div>`
+    
+          divMessages.appendChild(elemm)
+       })
+
+       elem.appendChild(divMessages)
+        
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        return
+      })
+      //;onclick="sendMessage(event, '${friend}')"
+
+    // 
+   
   })
   let PostButton = document.createElement("button")
   PostButton.textContent = "Posts"
