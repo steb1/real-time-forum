@@ -123,7 +123,7 @@ const registerForm = (e) => {
 
   const authPage = document.createElement('div');
   var body = document.body;
-  body.style.backgroundColor = "#f1f3f8"
+  body.style.backgroundColor = "#080710"
   authPage.innerHTML = `
         <div class="background">
         <div class="shape"></div>
@@ -559,6 +559,7 @@ const displayAllContent = (element) => {
         data.Messages.forEach(element => {
           let elemm = document.createElement("div")
           elemm.id = "mess"
+          
           elemm.innerHTML = `
           <div class="" onClick="seeMessages('${element.Receiver}')">
             <div class="MessName">${element.Receiver}</div>
