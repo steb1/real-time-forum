@@ -21,6 +21,7 @@ function checkAuthentication() {
       return false
     });
 }
+let online = 0 
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
 })
@@ -532,7 +533,7 @@ const getAllPosts = () => {
 
 const displayAllContent = (element) => {
   let onlineDiv = document.createElement("div")
-  onlineDiv.textContent = '3 people are online'
+  onlineDiv.textContent = `${online} people are online` 
   onlineDiv.id = "onlineDiv"
   //onlineDiv.style.backgroundColor = "blue"
   element.appendChild(onlineDiv)
@@ -540,14 +541,14 @@ const displayAllContent = (element) => {
   tabBar.id = "tabBar"
 
   let messageButton = document.createElement("button")
-  messageButton.textContent = "Message"
+  messageButton.innerHTML= "<img id='MessageIcon' src='../../uploads/Message.png'> Message"
   messageButton.id = "messageButton"
   messageButton.className = "accueilButton"
 
   messageButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     elem.innerHTML = ""
-    messageButton.style.borderBottom = "2px solid black";
+    messageButton.style.borderBottom = "2px solid #DBDDE2";
     PostButton.style.borderBottom = "none";
     fetch('/getAllMessages', {
       credentials: 'include'
@@ -561,11 +562,12 @@ const displayAllContent = (element) => {
           elemm.id = "mess"
           
           elemm.innerHTML = `
-          <div class="" onClick="seeMessages('${element.Receiver}')">
+          <div class="full" onClick="seeMessages('${element.Receiver}')">
             <div class="MessName">${element.Receiver}</div>
             <div class="MessContent">${element.Content}</div>
             <div class="Time">${element.Time}</div>
           </div>`
+
     
           divMessages.appendChild(elemm)
        })
@@ -583,10 +585,10 @@ const displayAllContent = (element) => {
    
   })
   let PostButton = document.createElement("button")
-  PostButton.textContent = "Posts"
+  PostButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Dossier.png'> Posts"
   PostButton.id = "PostButton"
   PostButton.className = "accueilButton"
-  PostButton.style.borderBottom = "2px solid black";
+  PostButton.style.borderBottom = "2px solid #DBDDE2";
 
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
@@ -610,7 +612,7 @@ const displayAllContent = (element) => {
   addPost(posts)
 
   PostButton.addEventListener("click", (e) => {
-    PostButton.style.borderBottom = "2px solid black";
+    PostButton.style.borderBottom = "2px solid #DBDDE2";
     messageButton.style.borderBottom = "none";
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
@@ -801,7 +803,7 @@ console.log('messageContainer', messageContainer);
 
 
 const goBack = () => {
-  displayAccueil();
+  window.location.href = '/'
 }
 
 
@@ -847,6 +849,7 @@ function connectWebSocket() {
       console.log("Payload : ", newString);
       console.log("online users : " , JSON.parse(newString));
       const onlineUsers = JSON.parse(newString)
+      let ii = 0
 
       fetch('/dashboard')
       .then(response => response.json())
@@ -859,20 +862,23 @@ function connectWebSocket() {
            // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
             
               onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
-              <h2>Users Online</h2>
+              <h2>Online</h2>
               <ul id="user-list">
               </ul>
               </div></div>`
               const userList = document.getElementById("user-list")
   
               element.onlineUsers.forEach(element => {
+                ii++
               userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
               <span class="user-name">${element}</span>
-              <span class="user-status">Online</span>
+              <span class="user-status">🟢</span>
               </li>`
            })
           }
         })
+        console.log("iiiiiiiiiiii : ", ii);
+        windowonline = ii
       })
       
     } else {
