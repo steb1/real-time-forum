@@ -892,14 +892,8 @@ function connectWebSocket() {
 function sendMessage(event, receiver) {
   event.preventDefault();
   const messageInput = document.getElementById("ci");
-  let centralDiv = document.getElementById("discuss")
+  
 
-  let coordonnates = centralDiv.getBoundingClientRect()
-
-      centralDiv.scrollTo({
-        top: coordonnates.bottom + 10000,
-        behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
-      });
 
   const message = messageInput.value;
   let recipient = receiver;
@@ -924,10 +918,19 @@ function sendMessage(event, receiver) {
 
   // Clear input fields
   messageInput.value = "";
+  let centralDiv = document.getElementById("discuss")
+
+  let coordonnates = centralDiv.getBoundingClientRect()
+
+      centralDiv.scrollTo({
+        top: coordonnates.bottom +  50000,
+        behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
+      });
   // recipientInput.value = "";
 }
 
 function seeMessages(friend) {
+  
   let elem = document.getElementById('posts')
   elem.innerHTML = ''
   elem.innerHTML = `<div id="mbody" class="mbody"><div id="chat-container" class="chat-container">
@@ -943,8 +946,11 @@ function seeMessages(friend) {
       <button class="comment-button" id="cb" onclick="sendMessage(event, '${friend}')">Send</button>
     </form>
 </div></div>`
+
 let toScroll = document.getElementById("discuss")
 toScroll.addEventListener("scroll", handleScroll)
+
+
   let fff = document.getElementById('discuss')
   fetch('http://localhost:8080/discussion/' + friend)
     .then(response => response.json())
@@ -971,6 +977,16 @@ toScroll.addEventListener("scroll", handleScroll)
       console.error('Error checking authentication:', error);
       return
     });
+
+    let centralDiv = document.getElementById("discuss")
+
+  let coordonnates = centralDiv.getBoundingClientRect()
+
+  centralDiv.scrollTo({
+    top: coordonnates.bottom +  50000,
+    behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
+  });
+
 }
 
 

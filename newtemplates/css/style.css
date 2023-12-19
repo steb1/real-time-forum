@@ -702,6 +702,8 @@ input {
 .message-time{
     font-size: x-small;
     color: #777;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .post-content5 {
@@ -784,7 +786,7 @@ input {
 .messages {
     display: flex;
     flex-direction: column;
-    max-height: 500px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
@@ -819,31 +821,39 @@ h2 {
 }
 
 .message-bodyReceive {
-    height: 50px;
-    width: 50%;
+    height: 30px;
+    width: fit-content;
+    min-width: 70px;
+    padding: 5px;
     background-color: #f1f3f8;
     border-radius: 10px;
     text-align: left;
-    padding-left: 10px;
     display: flex;
     justify-content: left;
     align-items: center;
+    gap: 2px;
+    margin: 5px;
 }   
 
 .message-bodySend {
-    height: 50px;
+    height: 30px;
     float: right;
     width: 50%;
+    padding: 5px;
+    width: fit-content;
+    min-width: 70px;
     background-color: #f1f3f8;
     border-radius: 10px;
     text-align: left;
-    padding-right: 10px;
     display: flex;
     justify-content: right;
     align-items: center;
+    margin: 5px;
 }
 
 .message-Author {
     font-size: 15px;
     font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
 }
