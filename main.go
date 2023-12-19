@@ -33,6 +33,7 @@ func main() {
 	http.Handle("/", rateLimiter.Wrap("api", handler.Index))
 	http.Handle("/dashboard", rateLimiter.Wrap("api", handler.HandleDashboard))
 	http.Handle("/settings", rateLimiter.Wrap("api", handler.HandleSettings))
+	http.Handle("/accueil", rateLimiter.Wrap("api", handler.HandleSettings))
 	http.Handle("/disconnect", rateLimiter.Wrap("api", handler.HandleDisconnect))
 	http.Handle("/CheckAuthentication", rateLimiter.Wrap("api", handler.CheckAuthentication))
 	http.Handle("/register", rateLimiter.Wrap("api", handler.Registration))

@@ -132,7 +132,6 @@ func Index(res http.ResponseWriter, req *http.Request) {
 
 func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/dashboard", http.MethodGet) {
-
 		isSessionOpen := models.ValidSession(req)
 		user := models.GetUserFromSession(req)
 		allPost, err := models.PostRepo.GetAllPost()
@@ -152,6 +151,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(res).Encode(response)
 		log.Println("✅ Home page get with success")
+		
 	}
 }
 

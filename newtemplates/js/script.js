@@ -1,8 +1,8 @@
 function checkAuthentication() {
+
   fetch('/CheckAuthentication')
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       if (data.authenticated) {
         console.log('User is authenticated');
         displayAccueil();
@@ -38,16 +38,52 @@ function getData() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log("href : ", window.location.href)
+  e.preventDefault()
+  
+ if (!AllRoutes.includes(window.location.href.split("/")[3])) {
+    document.body.innerHTML = `<!DOCTYPE html>
+    <html lang="en">
+    
+    
+        <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Bootstrap 5 404 Error Page</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+    
+    
+        <body>
+            <div class="d-flex align-items-center justify-content-center vh-100">
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold">404</h1>
+                    <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+                    <p class="lead">
+                        The page you’re looking for doesn’t exist.
+                      </p>
+                    <a href="http://localhost:8080/" class="btn btn-primary">Go Home</a>
+                </div>
+            </div>
+        </body>
+    
+    
+    </html>`
+  ;
+  return
+ }
+  
   checkAuthentication();
 })
 
 
 console.log("session = ", all.IsLoggedIn);
-let rightBarContent = ["photo", "dashboard", "settings", "disconnect"]
+let rightBarContent = ["photo", "Accueil", "disconnect"]
 let container = document.getElementById("container-flex")
 const preventReloadLinks = container.querySelectorAll('.leftnav-link');
-const AllRoutes = ["", "photo", "dashboard", "settings", "disconnect"]
+const AllRoutes = ["", "photo", "Accueil", "disconnect"]
 
 
 function generateAuthPage() {
@@ -267,7 +303,6 @@ const generate404 = () => {
     `;
 }
 const displayAccueil = () => {
-
   document.body.style.backgroundColor = "white";
 
   let rightBar = document.createElement("div")
