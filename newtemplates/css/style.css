@@ -782,24 +782,28 @@ input {
 }
 
 .messages {
-    max-height: 300px;
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
     overflow-y: auto;
 }
 
 .message {
-    margin-bottom: 10px;
-    padding: 10px;
+    margin-bottom: 20px;
     border-radius: 8px;
 }
 
-.user1 {
-    background-color: #e6f7ff; /* Light blue for User 1's messages */
+.user2 {
+    display: flex;
+    flex-direction: column;
     text-align: left;
 }
 
-.user2 {
-    background-color: #ffe6e6; /* Light pink for User 2's messages */
+.user1 {
+    display: flex;
+    flex-direction: column;
     text-align: right;
+    align-items: end;
 }
 /* Ajoutez ces styles à votre fichier CSS existant */
 
@@ -807,7 +811,6 @@ input {
     text-align: center;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 
@@ -815,3 +818,32 @@ h2 {
     margin: 0;
 }
 
+.message-bodyReceive {
+    height: 50px;
+    width: 50%;
+    background-color: #f1f3f8;
+    border-radius: 10px;
+    text-align: left;
+    padding-left: 10px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}   
+
+.message-bodySend {
+    height: 50px;
+    float: right;
+    width: 50%;
+    background-color: #f1f3f8;
+    border-radius: 10px;
+    text-align: left;
+    padding-right: 10px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.message-Author {
+    font-size: 15px;
+    font-weight: bold;
+}

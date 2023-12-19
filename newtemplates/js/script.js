@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     <p class="lead">
                         The page you’re looking for doesn’t exist.
                       </p>
-                    <a href="http://localhost:8080/" class="btn btn-primary">Go Home</a>
+                    <a href="http://localhost:8080/ class="btn btn-primary">Go Home</a>
                 </div>
             </div>
         </body>
@@ -863,14 +863,14 @@ function connectWebSocket() {
           console.log("json : ", json);
           if (data.CurrentUser.Nickname == json.sender) {
             chatDiv.innerHTML += `<div class="message user1">
-            <span class="message-time">${json.recipient}</span>
-          <p>${json.message}</p>
+            <span class="message-Author">${json.sender}</span>
+          <p class="message-bodySend">${json.message}</p>
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
           }else{
             chatDiv.innerHTML += `<div class="message user2">
-            <span class="message-time">${json.recipient}</span>
-          <p>${json.message}</p>
+            <span class="message-Author">${json.sender}</span>
+          <p class="message-bodyReceive">${json.message}</p>
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
           }
@@ -946,14 +946,14 @@ toScroll.addEventListener("scroll", handleScroll)
       data.Messages.forEach(message => {
         if (message.Receiver != friend) {
           fff.innerHTML += `<div class="message user2">
-          <span class="message-time">${message.Receiver}</span>
-          <p>${message.Message}</p>
+          <span class="message-Author">${message.Author}</span>
+          <p class="message-bodyReceive">${message.Message}</p>
           <span class="message-time">${message.Time}</span>
       </div>`
         } else {
           fff.innerHTML += `<div class="message user1">
-          <span class="message-time">${message.Receiver}</span>
-          <p>${message.Message}</p>
+          <span class="message-Author">${message.Author}</span>
+          <p class="message-bodySend">${message.Message}</p>
           <span class="message-time">${message.Time}</span>
       </div>`
         }
