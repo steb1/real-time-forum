@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     <p class="lead">
                         The page you’re looking for doesn’t exist.
                       </p>
-                    <a href="http://localhost:8080/ class="btn btn-primary">Go Home</a>
+                    <a href="http://localhost:8080/" class="btn btn-primary">Go Home</a>
                 </div>
             </div>
         </body>
@@ -721,10 +721,10 @@ const seePost = (slug) => {
       <button type="submit" class="comment-button" id="cb">Comment</button>
     </form></div></div>`
 
-      let coordonnaes = centralDiv.getBoundingClientRect()
+      let coordonnates = centralDiv.getBoundingClientRect()
 
       centralDiv.scrollTo({
-        top: coordonnaes.bottom + 1000,
+        top: coordonnates.bottom + 1000,
         behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
       });
 
@@ -811,8 +811,6 @@ function connectWebSocket() {
   })
 
   socket.addEventListener("message", (event) => {
-    
-
     const [command, payload] = event.data.split('|');
     if (command === 'updateUsers') {
       let last = payload[payload.length - 1]
@@ -894,6 +892,14 @@ function connectWebSocket() {
 function sendMessage(event, receiver) {
   event.preventDefault();
   const messageInput = document.getElementById("ci");
+  let centralDiv = document.getElementById("discuss")
+
+  let coordonnates = centralDiv.getBoundingClientRect()
+
+      centralDiv.scrollTo({
+        top: coordonnates.bottom + 10000,
+        behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
+      });
 
   const message = messageInput.value;
   let recipient = receiver;
