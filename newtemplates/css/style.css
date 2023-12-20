@@ -44,6 +44,28 @@
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFFFFF", endColorstr="#DBDDE2", GradientType=1 );
 }
 
+#rightBar:hover {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 10%;
+    padding-left: 10%;
+ 
+    border-top-left-radius: 10px;
+    min-height: 100vh;
+    background: rgb(192, 206, 245);
+    background: rgb(155, 178, 221);
+
+    background: linear-gradient(90deg, rgb(243, 222, 222) 0%, hsla(223, 11%, 87%, 1) 100%);
+    
+    background: -moz-linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(223, 11%, 87%, 1) 100%);
+    
+    background: -webkit-linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(202, 208, 224) 100%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFFFFF", endColorstr="#DDDDE2", GradientType=1 );
+    transition: 1s;
+}
+
 .obody {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -72,6 +94,23 @@ background: -webkit-linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(223, 11
 filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFFFFF", endColorstr="#DBDDE2", GradientType=1 );
 }
 
+.user-list-container:hover {
+    width: 300px;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    background: hsla(223, 11%, 87%, 1);
+    background: hsla(0, 0%, 100%, 1);
+
+    background: linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(223, 11%, 87%, 1) 100%);
+    
+    background: -moz-linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, hsla(223, 11%, 87%, 1) 100%);
+    
+    background: -webkit-linear-gradient(90deg, hsla(0, 0%, 100%, 1) 0%, rgb(209, 212, 219) 100%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFFFFF", endColorstr="#DBDDE2", GradientType=1 );
+}
+
 h2 {
     color: #333;
 }
@@ -89,6 +128,11 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
+}
+
+#user-item:hover {
+    background-color: #2c2929;
 }
 
 .user-name {
@@ -108,6 +152,7 @@ h2 {
 
 .user-status {
     color: #4CAF50; /* Green color for online status */
+    
 }
 
 
@@ -724,6 +769,8 @@ input {
     border-radius: 20px;
 }
 
+
+
 .post-container5 {
     max-width: 600px;
     margin: 20px auto;
@@ -807,12 +854,16 @@ input {
     width: 20px;
 }
 
+#numberOfUser {
+    color: white;
+}
+
 #SendMessageIcon {
     height: 40px;
     width: 40px;
 }
 
-#messageButton, #PostButton{
+#messageButton, #PostButton , #NotificationButton{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -823,6 +874,8 @@ input {
     cursor: pointer;
     background: none;
 }
+
+
 
 #tabBar {
     display: flex;
@@ -949,7 +1002,9 @@ h2 {
 #divMessages {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #mess {

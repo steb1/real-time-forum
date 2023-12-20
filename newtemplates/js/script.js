@@ -21,7 +21,7 @@ function checkAuthentication() {
       return false
     });
 }
-let online = 0 
+ let online = 0 
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
 })
@@ -313,7 +313,7 @@ const displayAccueil = () => {
     if (element == "photo") {
       let li = document.createElement("li")
       let img = document.createElement("img")
-      img.src = "../../uploads/gif.gif"
+      img.src = "../../uploads/profile.png"
       img.id = `${element}${i}`
       li.appendChild(img)
       rightBar.appendChild(li)
@@ -533,7 +533,7 @@ const getAllPosts = () => {
 
 const displayAllContent = (element) => {
   let onlineDiv = document.createElement("div")
-  onlineDiv.textContent = `${online} people are online` 
+  onlineDiv.innerHTML = `<span id="numberOfUser">0 <span> people are online` 
   onlineDiv.id = "onlineDiv"
   //onlineDiv.style.backgroundColor = "blue"
   element.appendChild(onlineDiv)
@@ -549,6 +549,7 @@ const displayAllContent = (element) => {
     let elem = document.getElementById('posts')
     elem.innerHTML = ""
     messageButton.style.borderBottom = "2px solid #DBDDE2";
+    NotificationButton.style.borderBottom = "";
     PostButton.style.borderBottom = "none";
     fetch('/getAllMessages', {
       credentials: 'include'
@@ -590,8 +591,23 @@ const displayAllContent = (element) => {
   PostButton.className = "accueilButton"
   PostButton.style.borderBottom = "2px solid #DBDDE2";
 
+  let NotificationButton = document.createElement("button")
+  NotificationButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Notif.png'> Notifications"
+  NotificationButton.id = "NotificationButton"
+  NotificationButton.className = "NotificationButton"
+
+  NotificationButton.addEventListener("click", () => {
+    let elem = document.getElementById('posts')
+    posts.innerHTML = ""
+    PostButton.style.borderBottom = "";
+    messageButton.style.borderBottom = "";
+    NotificationButton.style.borderBottom = "2px solid #DBDDE2";
+  })
+  
+
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
+  tabBar.appendChild(NotificationButton)
   element.appendChild(tabBar)
 
   let bodyContent = document.createElement("div")
@@ -613,6 +629,7 @@ const displayAllContent = (element) => {
 
   PostButton.addEventListener("click", (e) => {
     PostButton.style.borderBottom = "2px solid #DBDDE2";
+    NotificationButton.style.borderBottom = "";
     messageButton.style.borderBottom = "none";
     let elem = document.getElementById('posts')
     posts.innerHTML = ""
@@ -869,16 +886,17 @@ function connectWebSocket() {
               const userList = document.getElementById("user-list")
   
               element.onlineUsers.forEach(element => {
-                ii++
+                online++
               userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
               <span class="user-name">${element}</span>
               <span class="user-status">🟢</span>
               </li>`
            })
+           let elem = document.getElementById('numberOfUser')
+           elem.textContent = online + " people are online"
           }
         })
-        console.log("iiiiiiiiiiii : ", ii);
-        windowonline = ii
+        
       })
       
     } else {
@@ -924,8 +942,6 @@ function sendMessage(event, receiver) {
   event.preventDefault();
   const messageInput = document.getElementById("ci");
   
-
-
   const message = messageInput.value;
   if (message.length == 0) {
     return

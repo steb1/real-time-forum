@@ -124,6 +124,22 @@ func Message(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 			delete(users, username)
+			var OnlineUsersByProfile []string
+			i := 0
+			for v := range users {
+				i++
+				var user userStatus
+				user.Nom = v
+				user.OnlineUsers = cleanTab(GetOnlineUsers(username), v)
+
+				jsonData, err := json.Marshal(user)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				OnlineUsersByProfile = append(OnlineUsersByProfile, string(jsonData)+",")
+			}
+			broadcast(fmt.Sprintf("updateUsers|%v", OnlineUsersByProfile))
 			// broadcast(fmt.Sprintf("%s left the chat", username))
 			return
 		}
