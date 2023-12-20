@@ -364,7 +364,7 @@ let addPost = (posts) => {
   let createPostButton = document.createElement("div")
 
   sort.id = "sortButton"
-  sort.innerHTML = '<p> Sort by </p>'
+  sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
 
   createPostButton.id = "createPostButton"
   createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
