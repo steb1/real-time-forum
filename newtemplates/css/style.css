@@ -1034,3 +1034,28 @@ h2 {
     color: rgb(148, 144, 144);
 }
 
+#message-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 70%;
+    max-width: 300px; /* Ajustez la largeur maximale selon vos préférences */
+    height: 7%; /* Ajustez la hauteur selon vos préférences */
+    z-index: 1000;
+    text-align: center;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 20px;
+    cursor: pointer;
+  }

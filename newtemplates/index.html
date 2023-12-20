@@ -15,22 +15,26 @@
                 <span class="close" onclick="closeModal()">&times;</span>
                 <label class="form-label" for="photo">Photo:</label>
                 <input class="form-input" type="file" id="photo" name="photo" accept="image/*">
-        
+
                 <label class="form-label" for="title">Titre:</label>
                 <input class="form-input" type="text" id="title" name="title" required>
-        
+
                 <label class="form-label" for="categories">Catégories:</label>
                 <input class="form-input" type="text" id="categories" name="categories" required>
-        
+
                 <label class="form-label" for="content">Contenu:</label>
                 <textarea class="form-input" id="content" name="content" rows="6" required></textarea>
-        
+
                 <button class="form-button" type="submit">Envoyer</button>
             </form>
         </div>
     </div>
+    <div id="message-popup">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+        <p>Vous avez un nouveau message de <strong id="user">@Utilisateur</strong></p>
+    </div>
     <div class="container-flex" id="container-flex"></div>
-    
+
     <script>
         function newPost1() {
             console.log('li');

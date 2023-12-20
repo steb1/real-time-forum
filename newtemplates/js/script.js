@@ -915,6 +915,7 @@ function connectWebSocket() {
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
           }else{
+            showPopup(json.sender);
             chatDiv.innerHTML += `<div class="message user2">
             <span class="message-Author">${json.sender}</span>
           <p class="message-bodyReceive">${json.message}</p>
@@ -1073,3 +1074,27 @@ function getFormattedDate() {
 
     return `${annee}-${mois}-${jour} ${heures}:${minutes}:${secondes}`;
 }
+// Fonction pour afficher le pop-up
+function showPopup(username) {
+  document.getElementById('message-popup').style.display = 'block';
+  document.getElementById('user').textContent = '@'+username
+
+  // Afficher le bouton après 5 secondes (ajustable selon vos besoins)
+  setTimeout(function () {
+      document.getElementById('countdown').style.display = 'none';
+      document.querySelector('button').style.display = 'inline-block';
+  }, 5000);
+
+  // Disparition du pop-up après 8 secondes (ajustable selon vos besoins)
+  setTimeout(closePopup, 4000);
+}
+
+// Fonction pour fermer le pop-up
+function closePopup() {
+  document.getElementById('message-popup').style.display = 'none';
+}
+
+// // Appel à la fonction showPopup au chargement de la page
+// document.addEventListener('DOMContentLoaded', function () {
+//   showPopup();
+// });
