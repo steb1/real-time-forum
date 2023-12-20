@@ -927,6 +927,9 @@ function sendMessage(event, receiver) {
 
 
   const message = messageInput.value;
+  if (message.length == 0) {
+    return
+  }
   let recipient = receiver;
 
   fetch('/dashboard')
@@ -974,7 +977,7 @@ function seeMessages(friend) {
   </div>
   <form class="comment-form" id="cf">
       <input type="text" class="comment-input" id="ci" placeholder="Write your message...">
-      <button class="comment-button" id="cb" onclick="sendMessage(event, '${friend}')">Send</button>
+      <button class="comment-button" id="cb" onclick="sendMessage(event, '${friend}')"><img id="SendMessageIcon" src="../../uploads/Sent.png"></button>
     </form>
 </div></div>`
 

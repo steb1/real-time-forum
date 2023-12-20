@@ -536,15 +536,14 @@ input {
 
 #cf {
     display: flex;
-    left: 16%;
     bottom: 0;
     height: 50px;
     position: fixed;
-    width: 45%;
+    width: 40%;
     background-color: #fff;
     text-align: center;
-    margin-right: 200px;
-    padding: 10px;
+    margin-right: auto;
+    margin-left: auto;
     box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -559,6 +558,10 @@ input {
 }
 
 #cb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -802,6 +805,11 @@ input {
 #MessageIcon {
     height: 20px;
     width: 20px;
+}
+
+#SendMessageIcon {
+    height: 40px;
+    width: 40px;
 }
 
 #messageButton, #PostButton{
