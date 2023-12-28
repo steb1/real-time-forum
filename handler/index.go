@@ -1111,15 +1111,27 @@ func DislikePost(res http.ResponseWriter, req *http.Request) {
 
 func Discussion(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/discussion/*", http.MethodGet) {
+		// Récupérer le paramètre "limit" de l'URL
+		lim := req.URL.Query().Get("limit")
+		if lim == "" {
+			http.Error(res, "Le paramètre 'limit' est manquant", http.StatusBadRequest)
+			return
+		}
 		err := req.ParseForm()
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusBadRequest)
 			return
 		}
 		path := req.URL.Path
+		fmt.Println("skdddddddddddddddddddddd")
+		fmt.Println(lim)
+		fmt.Println(path)
 		pathPart := strings.Split(path, "/")
 		if len(pathPart) == 3 && pathPart[1] == "discussion" && pathPart[2] != "" {
 			friendName := pathPart[2]
+			if err != nil {
+				return
+			}
 			friend, err := models.UserRepo.GetUserByNickname(friendName)
 			if err != nil {
 				return
@@ -1130,7 +1142,11 @@ func Discussion(res http.ResponseWriter, req *http.Request) {
 				log.Println("404 ❌ - Page not found ", req.URL.Path)
 				return
 			}
-			mess, err := models.MessageRepo.GetMessagesBySenderAndReceiver(user.Nickname, friend.Nickname)
+			li, err := strconv.Atoi(lim)
+			if err != nil {
+				return
+			}
+			mess, err := models.MessageRepo.GetMessagesBySenderAndReceiver(user.Nickname, friend.Nickname, li)
 			if err != nil {
 				return
 			}
@@ -1142,11 +1158,13 @@ func Discussion(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 }
+
 type MessageToSend struct {
 	Receiver string `json : receiver`
-	Content string `json : content`
-	Time string  `json : receiver`
+	Content  string `json : content`
+	Time     string `json : receiver`
 }
+
 func GetMessages(res http.ResponseWriter, req *http.Request) {
 	if lib.ValidateRequest(req, res, "/getAllMessages", http.MethodGet) {
 
@@ -1163,7 +1181,7 @@ func GetMessages(res http.ResponseWriter, req *http.Request) {
 			var tab []MessageToSend
 			var users []string
 
-			for i := len(message) - 1 ; i >= 0; i-- {
+			for i := len(message) - 1; i >= 0; i-- {
 				var element MessageToSend
 				element.Receiver = message[i].Receiver
 				element.Content = message[i].Message

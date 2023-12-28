@@ -21,7 +21,7 @@ function checkAuthentication() {
       return false
     });
 }
- let online = 0 
+let online = 0
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
 })
@@ -42,8 +42,8 @@ function getData() {
 document.addEventListener('DOMContentLoaded', function (e) {
   console.log("href : ", window.location.href)
   e.preventDefault()
-  
- if (!AllRoutes.includes(window.location.href.split("/")[3])) {
+
+  if (!AllRoutes.includes(window.location.href.split("/")[3])) {
     document.body.innerHTML = `<!DOCTYPE html>
     <html lang="en">
     
@@ -72,10 +72,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
     
     
     </html>`
-  ;
-  return
- }
-  
+      ;
+    return
+  }
+
   checkAuthentication();
 })
 
@@ -533,7 +533,7 @@ const getAllPosts = () => {
 
 const displayAllContent = (element) => {
   let onlineDiv = document.createElement("div")
-  onlineDiv.innerHTML = `<span id="numberOfUser">0 <span> people are online` 
+  onlineDiv.innerHTML = `<span id="numberOfUser">0 <span> people are online`
   onlineDiv.id = "onlineDiv"
   //onlineDiv.style.backgroundColor = "blue"
   element.appendChild(onlineDiv)
@@ -541,7 +541,7 @@ const displayAllContent = (element) => {
   tabBar.id = "tabBar"
 
   let messageButton = document.createElement("button")
-  messageButton.innerHTML= "<img id='MessageIcon' src='../../uploads/Message.png'> Message"
+  messageButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Message.png'> Message"
   messageButton.id = "messageButton"
   messageButton.className = "accueilButton"
 
@@ -561,7 +561,7 @@ const displayAllContent = (element) => {
         data.Messages.forEach(element => {
           let elemm = document.createElement("div")
           elemm.id = "mess"
-          
+
           elemm.innerHTML = `
           <div class="full" onClick="seeMessages('${element.Receiver}')">
             <div class="MessName">${element.Receiver}</div>
@@ -569,21 +569,21 @@ const displayAllContent = (element) => {
             <div class="Time">${element.Time}</div>
           </div>`
 
-    
-          divMessages.appendChild(elemm)
-       })
 
-       elem.appendChild(divMessages)
-        
+          divMessages.appendChild(elemm)
+        })
+
+        elem.appendChild(divMessages)
+
       })
       .catch(error => {
         console.error('Error checking authentication:', error);
         return
       })
-      //;onclick="sendMessage(event, '${friend}')"
+    //;onclick="sendMessage(event, '${friend}')"
 
     // 
-   
+
   })
   let PostButton = document.createElement("button")
   PostButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Dossier.png'> Posts"
@@ -603,7 +603,7 @@ const displayAllContent = (element) => {
     messageButton.style.borderBottom = "";
     NotificationButton.style.borderBottom = "2px solid #DBDDE2";
   })
-  
+
 
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
@@ -860,45 +860,45 @@ function connectWebSocket() {
       let last = payload[payload.length - 1]
 
       console.log("Payload : ", payload);
-      
+
       let newString = payload.slice(0, -2);
       newString += last
       console.log("Payload : ", newString);
-      console.log("online users : " , JSON.parse(newString));
+      console.log("online users : ", JSON.parse(newString));
       const onlineUsers = JSON.parse(newString)
       let ii = 0
 
       fetch('/dashboard')
-      .then(response => response.json())
-      .then(data => {
-        onlineUsers.map((element, i) => {
-          console.log(element);
-          if (element.nom == data.CurrentUser.Nickname) {
-  
-            const onlineUsersDiv = document.getElementById('onlineStatus');
-           // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
-            
+        .then(response => response.json())
+        .then(data => {
+          onlineUsers.map((element, i) => {
+            console.log(element);
+            if (element.nom == data.CurrentUser.Nickname) {
+
+              const onlineUsersDiv = document.getElementById('onlineStatus');
+              // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
+
               onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
               <h2>Online</h2>
               <ul id="user-list">
               </ul>
               </div></div>`
               const userList = document.getElementById("user-list")
-  
+
               element.onlineUsers.forEach(element => {
                 online++
-              userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
+                userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
               <span class="user-name">${element}</span>
               <span class="user-status">🟢</span>
               </li>`
-           })
-           let elem = document.getElementById('numberOfUser')
-           elem.textContent = online + " people are online"
-          }
+              })
+              let elem = document.getElementById('numberOfUser')
+              elem.textContent = online + " people are online"
+            }
+          })
+
         })
-        
-      })
-      
+
     } else {
       fetch('/dashboard')
         .then(response => response.json())
@@ -914,7 +914,7 @@ function connectWebSocket() {
           <p class="message-bodySend">${json.message}</p>
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
-          }else{
+          } else {
             showPopup(json.sender);
             chatDiv.innerHTML += `<div class="message user2">
             <span class="message-Author">${json.sender}</span>
@@ -942,7 +942,7 @@ function connectWebSocket() {
 function sendMessage(event, receiver) {
   event.preventDefault();
   const messageInput = document.getElementById("ci");
-  
+
   const message = messageInput.value;
   if (message.length == 0) {
     return
@@ -960,7 +960,7 @@ function sendMessage(event, receiver) {
       };
 
       socket.send(JSON.stringify(datam));
-      
+
     })
     .catch(error => {
       console.error('Error checking authentication:', error);
@@ -973,15 +973,40 @@ function sendMessage(event, receiver) {
 
   let coordonnates = centralDiv.getBoundingClientRect()
 
-      centralDiv.scrollTo({
-        top: coordonnates.bottom +  50000,
-        behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
-      });
+  centralDiv.scrollTo({
+    top: coordonnates.bottom + 50000,
+    behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
+  });
   // recipientInput.value = "";
 }
 
-function seeMessages(friend) {
-  
+function throttle(func, delay) {
+  let timeoutId;
+  let lastExecTime = 0;
+
+  return function (...args) {
+    const currentTime = new Date().getTime();
+
+    if (!lastExecTime || currentTime - lastExecTime >= delay) {
+      // Exécutez la fonction si le délai s'est écoulé
+      func.apply(this, args);
+      lastExecTime = currentTime;
+    } else {
+      // Sinon, planifiez l'exécution de la fonction après le délai restant
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func.apply(this, args);
+        lastExecTime = new Date().getTime();
+      }, delay - (currentTime - lastExecTime));
+    }
+  };
+}
+
+let loader = 10
+
+function seeMessages(friend, limit = 10) {
+  console.log('LIMIT ++++===== ', limit);
+
   let elem = document.getElementById('posts')
   elem.innerHTML = ''
   elem.innerHTML = `<div id="mbody" class="mbody"><div id="chat-container" class="chat-container">
@@ -998,12 +1023,24 @@ function seeMessages(friend) {
     </form>
 </div></div>`
 
-let toScroll = document.getElementById("discuss")
-toScroll.addEventListener("scroll", handleScroll)
+  let toScroll = document.getElementById("discuss")
+  // let c = toScroll.getBoundingClientRect();
+  // toScroll.scrollTo = 580;
+  // let coordonnates = centralDiv.getBoundingClientRect()
+
+  // toScroll.scrollTop
+  toScroll.addEventListener("scroll", function () {
+    console.log(toScroll.scrollTop);
+    if (toScroll.scrollTop === 0) {
+      console.log('ON TOPPPPPPPPPP', loader);
+      loader = loader + 10
+      throttle(seeMessages(friend, loader), 1000)
+    }
+  })
 
 
   let fff = document.getElementById('discuss')
-  fetch('http://localhost:8080/discussion/' + friend)
+  fetch(`http://localhost:8080/discussion/${friend}?limit=${limit}`)
     .then(response => response.json())
     .then(data => {
       data.Messages.forEach(message => {
@@ -1029,21 +1066,6 @@ toScroll.addEventListener("scroll", handleScroll)
       return
     });
 
-    let centralDiv = document.getElementById("discuss")
-
-  let coordonnates = centralDiv.getBoundingClientRect()
-
-  centralDiv.scrollTo({
-    top: coordonnates.bottom +  50000,
-    behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
-  });
-
-}
-
-
-
-let handleScroll = (e) => {
-  
 }
 
 function send(receiver) {
@@ -1063,26 +1085,26 @@ function send(receiver) {
 }
 
 function getFormattedDate() {
-    var date = new Date();
+  var date = new Date();
 
-    var annee = date.getFullYear();
-    var mois = (date.getMonth() + 1).toString().padStart(2, '0');
-    var jour = date.getDate().toString().padStart(2, '0');
-    var heures = date.getHours().toString().padStart(2, '0');
-    var minutes = date.getMinutes().toString().padStart(2, '0');
-    var secondes = date.getSeconds().toString().padStart(2, '0');
+  var annee = date.getFullYear();
+  var mois = (date.getMonth() + 1).toString().padStart(2, '0');
+  var jour = date.getDate().toString().padStart(2, '0');
+  var heures = date.getHours().toString().padStart(2, '0');
+  var minutes = date.getMinutes().toString().padStart(2, '0');
+  var secondes = date.getSeconds().toString().padStart(2, '0');
 
-    return `${annee}-${mois}-${jour} ${heures}:${minutes}:${secondes}`;
+  return `${annee}-${mois}-${jour} ${heures}:${minutes}:${secondes}`;
 }
 // Fonction pour afficher le pop-up
 function showPopup(username) {
   document.getElementById('message-popup').style.display = 'block';
-  document.getElementById('user').textContent = '@'+username
+  document.getElementById('user').textContent = '@' + username
 
   // Afficher le bouton après 5 secondes (ajustable selon vos besoins)
   setTimeout(function () {
-      document.getElementById('countdown').style.display = 'none';
-      document.querySelector('button').style.display = 'inline-block';
+    document.getElementById('countdown').style.display = 'none';
+    document.querySelector('button').style.display = 'inline-block';
   }, 5000);
 
   // Disparition du pop-up après 8 secondes (ajustable selon vos besoins)
