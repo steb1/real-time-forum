@@ -922,6 +922,11 @@ function connectWebSocket() {
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
           }
+          const messages = document.querySelectorAll('.message');
+          const lastMessage = messages[messages.length - 1];
+          if (lastMessage) {
+            lastMessage.scrollIntoView();
+          }
         })
         .catch(error => {
           console.error('Error checking authentication:', error);
