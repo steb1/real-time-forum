@@ -548,7 +548,7 @@ const displayAllContent = (element) => {
   messageButton.addEventListener("click", (e) => {
     let elem = document.getElementById('posts')
     elem.innerHTML = ""
-    messageButton.style.borderBottom = "2px solid #DBDDE2";
+    messageButton.style.borderBottom = "2px solid #76D7C4";
     NotificationButton.style.borderBottom = "";
     PostButton.style.borderBottom = "none";
     fetch('/getAllMessages', {
@@ -589,7 +589,7 @@ const displayAllContent = (element) => {
   PostButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Dossier.png'> Posts"
   PostButton.id = "PostButton"
   PostButton.className = "accueilButton"
-  PostButton.style.borderBottom = "2px solid #DBDDE2";
+  PostButton.style.borderBottom = "2px solid #76D7C4";
 
   let NotificationButton = document.createElement("button")
   NotificationButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Notif.png'> Notifications"
@@ -601,7 +601,7 @@ const displayAllContent = (element) => {
     posts.innerHTML = ""
     PostButton.style.borderBottom = "";
     messageButton.style.borderBottom = "";
-    NotificationButton.style.borderBottom = "2px solid #DBDDE2";
+    NotificationButton.style.borderBottom = "2px solid #76D7C4";
   })
 
 
@@ -628,7 +628,7 @@ const displayAllContent = (element) => {
   addPost(posts)
 
   PostButton.addEventListener("click", (e) => {
-    PostButton.style.borderBottom = "2px solid #DBDDE2";
+    PostButton.style.borderBottom = "2px solid #76D7C4";
     NotificationButton.style.borderBottom = "";
     messageButton.style.borderBottom = "none";
     let elem = document.getElementById('posts')
@@ -642,7 +642,7 @@ const displayAllContent = (element) => {
     let createPostButton = document.createElement("div")
 
     sort.id = "sortButton"
-    sort.innerHTML = '<p> Sort by </p>'
+    sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
 
     createPostButton.id = "createPostButton"
     createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
@@ -1060,6 +1060,14 @@ function seeMessages(friend, limit = 10) {
         console.log("nnnnn = ", message.Receiver);
       })
       console.log("mess = ", data);
+      if (loader === 10) {
+        const messages = document.querySelectorAll('.message');
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage) {
+          lastMessage.scrollIntoView();
+        }
+      }
+
     })
     .catch(error => {
       console.error('Error checking authentication:', error);
