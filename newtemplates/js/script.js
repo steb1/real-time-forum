@@ -607,7 +607,7 @@ const displayAllContent = (element) => {
 
   tabBar.appendChild(PostButton)
   tabBar.appendChild(messageButton)
-  tabBar.appendChild(NotificationButton)
+  //tabBar.appendChild(NotificationButton)
   element.appendChild(tabBar)
 
   let bodyContent = document.createElement("div")
