@@ -533,7 +533,7 @@ const getAllPosts = () => {
 
 const displayAllContent = (element) => {
   let onlineDiv = document.createElement("div")
-  onlineDiv.innerHTML = `<span id="numberOfUser">0 <span> people are online`
+  onlineDiv.innerHTML = `<span id="numberOfUser"> <span>`
   onlineDiv.id = "onlineDiv"
   //onlineDiv.style.backgroundColor = "blue"
   element.appendChild(onlineDiv)
@@ -893,7 +893,7 @@ function connectWebSocket() {
               </li>`
               })
               let elem = document.getElementById('numberOfUser')
-              elem.textContent = online + " people are online"
+              elem.textContent = "Hello, " + data.CurrentUser.Nickname + " 🙂"
             }
           })
 
