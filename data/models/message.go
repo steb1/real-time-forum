@@ -135,3 +135,23 @@ func (mr *MessageRepository) GetMessagesByUser(username string) ([]Message, erro
 
 	return messages, nil
 }
+func (mr *MessageRepository) GetLatestMessageBetweenUsers(user1 string, user2 string) (*Message, error) {
+    row := mr.db.QueryRow(`
+        SELECT id, message, author, receiver, time
+        FROM message
+        WHERE (author = ? AND receiver = ?) OR (author = ? AND receiver = ?)
+        ORDER BY time DESC
+        LIMIT 1
+    `, user1, user2, user2, user1)
+
+    var msg Message
+    err := row.Scan(&msg.ID, &msg.Message, &msg.Author, &msg.Receiver, &msg.Time)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return nil, nil // No message found
+        }
+        return nil, err
+    }
+
+    return &msg, nil
+}

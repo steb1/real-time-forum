@@ -1189,13 +1189,25 @@ func GetMessages(res http.ResponseWriter, req *http.Request) {
 
 			for i := len(message) - 1; i >= 0; i-- {
 				var element MessageToSend
-				element.Receiver = message[i].Receiver
-				element.Content = message[i].Message
-				element.Time = message[i].Time
-				if !isPresent(users, message[i].Receiver) && message[i].Receiver != user.Nickname {
-					tab = append(tab, element)
-					users = append(users, message[i].Receiver)
+
+				if message[i].Receiver == user.Nickname {
+					element.Receiver = message[i].Author
+					element.Content = message[i].Message
+					element.Time = message[i].Time
+					if !isPresent(users, message[i].Author) {
+						tab = append(tab, element)
+						users = append(users, message[i].Author)
+					}
+				} else if message[i].Author == user.Nickname {
+					element.Receiver = message[i].Receiver
+					element.Content = message[i].Message
+					element.Time = message[i].Time
+					if !isPresent(users, message[i].Receiver) {
+						tab = append(tab, element)
+						users = append(users, message[i].Receiver)
+					}
 				}
+
 			}
 
 			response := make(map[string]interface{})
