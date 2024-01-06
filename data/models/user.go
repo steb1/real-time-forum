@@ -58,6 +58,7 @@ func (ur *UserRepository) CreateUser(user *User) error {
 	if err != nil {
 		log.Fatalf("❌ Failed to generate UUID: %v", err)
 	}
+	
 	user.ID = ID.String()
 	_, err = ur.db.Exec("INSERT INTO user (id, nickname, age, gender, firstname, lastname, email, password, avatarURL, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		user.ID, user.Nickname, user.Age, user.Gender, user.FirstName, user.LastName, user.Email, user.Password, user.AvatarURL, user.Role)

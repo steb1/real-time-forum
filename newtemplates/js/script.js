@@ -120,8 +120,7 @@ function generateAuthPage() {
   })
 }
 
-const registerForm = (e) => {
-
+const registerForm = (message) => {
   const authPage = document.createElement('div');
   var body = document.body;
   body.style.backgroundColor = "#080710"
@@ -130,7 +129,11 @@ const registerForm = (e) => {
         <div class="shape"></div>
         <div class="shape"></div>
         </div>
-    <form id="form" class="formLogin" method="POST" action="/sign-in">
+        <form id="form" class="formLogin" method="POST" action="/sign-in">
+        <h3>Register Here</h3>
+        <p id="loginError" color: red;">${message
+          ? message
+          : ''}</p>
         <label for="nickname">Nickname:</label>
         <input type="text" id="nickname" name="nickname" required>
     
@@ -164,7 +167,7 @@ const registerForm = (e) => {
   container.innerHTML = '';
   container.appendChild(authPage);
   let form = document.getElementById("form")
-  form.style.height = "900px"
+  form.style.height = "fit-content"
   form.style.marginTop = '200px'
 
   document.getElementById("form").addEventListener("click", (e) => {
@@ -222,7 +225,7 @@ function registerUser() {
         displayAccueil()
         connectWebSocket()
       } else {
-        generateAuthPage()
+        registerForm("Bad Credentials")
       }
 
     })
@@ -231,7 +234,6 @@ function registerUser() {
     });
 }
 
-// Perform login
 function login() {
   let username = document.getElementById("username").value
   let password = document.getElementById("password").value

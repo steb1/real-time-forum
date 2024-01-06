@@ -155,7 +155,7 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		response["CurrentUser"] = homePageData.CurrentUser
 		response["AllPosts"] = homePageData.AllPosts
 		response["AllUsers"] = homePageData.AllUsers
-		
+
 		//fmt.Println(response)
 		res.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(res).Encode(response)
@@ -324,13 +324,13 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	//user.ID = ID.String()
-	user.Nickname = userData.Nickname
+	user.Nickname = strings.ToLower(userData.Nickname)
 	user.Password = userData.Password
-	user.FirstName = userData.FirstName
+	user.FirstName = strings.ToLower(userData.FirstName)
 	user.Gender = userData.Gender
-	user.LastName = userData.LastName
+	user.LastName = strings.ToLower(userData.LastName)
 	user.Age = strconv.Itoa((userData.Age))
-	user.Email = userData.Email
+	user.Email = strings.ToLower(userData.Email)
 
 	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist {
 		err := models.UserRepo.CreateUser(&user)
