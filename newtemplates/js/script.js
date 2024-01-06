@@ -21,6 +21,21 @@ function checkAuthentication() {
       return false
     });
 }
+function IsAuthenticated() {
+  fetch('/CheckAuthentication')
+    .then(response => response.json())
+    .then(data => {
+      if (data.authenticated) {
+        return true
+      } else {
+        return false
+      }
+    })
+    .catch(error => {
+      console.error('Error checking authentication:', error);
+      return false
+    });
+}
 let online = 0
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
@@ -328,9 +343,9 @@ const displayAccueil = () => {
       a.addEventListener('click', function (e) {
         e.preventDefault()
         window.history.pushState({}, '', e.target.href)
-        if (element == "disconnect") {
-          window.location.href = "http://localhost:8080/disconnect"
-        }
+       
+          window.location.href = `http://localhost:8080/${element}` 
+        
 
       });
       rightBar.appendChild(a)
