@@ -871,34 +871,43 @@ function connectWebSocket() {
       fetch('/dashboard')
         .then(response => response.json())
         .then(data => {
+          console.log("Online Users : ", onlineUsers);
+          let onlines = []
           onlineUsers.map((element, i) => {
-            console.log(element);
             if (element.nom == data.CurrentUser.Nickname) {
 
               const onlineUsersDiv = document.getElementById('onlineStatus');
               // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
 
               onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
-              <h2>Online</h2>
+              <h2>Online / Offline</h2>
               <ul id="user-list">
               </ul>
               </div></div>`
+
               const userList = document.getElementById("user-list")
 
               element.onlineUsers.forEach(element => {
-                online++
+                onlines.push(element)
                 userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
-              <span class="user-name">${element}</span>
-              <span class="user-status">🟢</span>
-              </li>`
+                <span class="user-name">${element}</span>
+                <span class="user-status">🟢</span>
+                </li>`
+              })
+              data.AllUsers.forEach(ele => {
+                console.log("user : ", ele.Nickname);
+                console.log(!onlineUsers.includes(ele.Nickname));
+                if (ele.Nickname.length != 0 && !onlines.includes(ele.Nickname) && ele.Nickname != data.CurrentUser.Nickname) 
+                userList.innerHTML += `<li class="user-item">
+                <span class="user-name">${ele.Nickname}</span>
+                <span class="user-status"></span>
+                </li>`
               })
               let elem = document.getElementById('numberOfUser')
               elem.textContent = "Hello, " + data.CurrentUser.Nickname + " 🙂"
             }
           })
-
         })
-
     } else {
       fetch('/dashboard')
         .then(response => response.json())

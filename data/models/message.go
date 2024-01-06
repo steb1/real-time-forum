@@ -115,7 +115,7 @@ func (mr *MessageRepository) GetMessagesBySenderAndReceiver(sender string, recei
 
 func (mr *MessageRepository) GetMessagesByUser(username string) ([]Message, error) {
 
-	rows, err := mr.db.Query("SELECT id, message, author, receiver, time FROM message WHERE author = ?", username)
+	rows, err := mr.db.Query("SELECT id, message, author, receiver, time FROM message WHERE author = ? OR receiver = ?", username, username)
 	if err != nil {
 		fmt.Println("error here")
 		return nil, err

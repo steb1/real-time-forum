@@ -25,6 +25,7 @@ type HomePageData struct {
 	Categories    []*models.Category
 	AllPosts      []models.PostItems
 	AllNotifs     []*models.Notification
+	AllUsers 	  []models.User
 }
 
 type PostPageData struct {
@@ -139,14 +140,22 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
+		AllUsers, _ := models.UserRepo.SelectAllUsers()
+		
+
+
+
 		homePageData := HomePageData{
 			IsLoggedIn:  isSessionOpen,
 			CurrentUser: *user,
 			AllPosts:    allPost,
+			AllUsers: AllUsers,
 		}
 		response := make(map[string]interface{})
 		response["CurrentUser"] = homePageData.CurrentUser
 		response["AllPosts"] = homePageData.AllPosts
+		response["AllUsers"] = homePageData.AllUsers
+		
 		//fmt.Println(response)
 		res.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(res).Encode(response)
