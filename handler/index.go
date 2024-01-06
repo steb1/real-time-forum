@@ -25,7 +25,7 @@ type HomePageData struct {
 	Categories    []*models.Category
 	AllPosts      []models.PostItems
 	AllNotifs     []*models.Notification
-	AllUsers 	  []models.User
+	AllUsers      []models.User
 }
 
 type PostPageData struct {
@@ -141,15 +141,12 @@ func HandleDashboard(res http.ResponseWriter, req *http.Request) {
 		}
 
 		AllUsers, _ := models.UserRepo.SelectAllUsers()
-		
-
-
 
 		homePageData := HomePageData{
 			IsLoggedIn:  isSessionOpen,
 			CurrentUser: *user,
 			AllPosts:    allPost,
-			AllUsers: AllUsers,
+			AllUsers:    AllUsers,
 		}
 		response := make(map[string]interface{})
 		response["CurrentUser"] = homePageData.CurrentUser
@@ -1195,8 +1192,7 @@ func GetMessages(res http.ResponseWriter, req *http.Request) {
 				element.Receiver = message[i].Receiver
 				element.Content = message[i].Message
 				element.Time = message[i].Time
-
-				if !isPresent(users, message[i].Receiver) {
+				if !isPresent(users, message[i].Receiver) && message[i].Receiver != user.Nickname {
 					tab = append(tab, element)
 					users = append(users, message[i].Receiver)
 				}
