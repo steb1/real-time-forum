@@ -888,14 +888,16 @@ function connectWebSocket() {
               </div></div>`
 
               const userList = document.getElementById("user-list")
+              if (element.onlineUsers) {
+                element.onlineUsers.forEach(element => {
+                  onlines.push(element)
+                  userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
+                  <span class="user-name">${element}</span>
+                  <span class="user-status">🟢</span>
+                  </li>`
+                })
+              }
 
-              element.onlineUsers.forEach(element => {
-                onlines.push(element)
-                userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
-                <span class="user-name">${element}</span>
-                <span class="user-status">🟢</span>
-                </li>`
-              })
               data.AllUsers.forEach(ele => {
                 console.log("user : ", ele.Nickname);
                 console.log(!onlineUsers.includes(ele.Nickname));
