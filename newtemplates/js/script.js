@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
   checkAuthentication();
 })
 
-
 console.log("session = ", all.IsLoggedIn);
 let rightBarContent = ["photo", "Home", "disconnect"]
 let container = document.getElementById("container-flex")
@@ -106,7 +105,7 @@ const AllRoutes = ["", "photo", "/", "disconnect"]
 function generateAuthPage() {
   const authPage = document.createElement('div');
   var body = document.body;
-  body.style.backgroundColor = "#080710"
+  body.style.backgroundColor = "#ECEEF2"
   authPage.innerHTML = `
         <div class="background">
     <div class="shape"></div>
@@ -141,7 +140,7 @@ const registerForm = (message) => {
     if (!isAuthenticated) {
         const authPage = document.createElement('div');
         var body = document.body;
-        body.style.backgroundColor = "#080710"
+        body.style.backgroundColor = "#ECEEF2"
         authPage.innerHTML = `
         <div class="background">
         <div class="shape"></div>
