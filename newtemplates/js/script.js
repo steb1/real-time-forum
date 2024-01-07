@@ -922,9 +922,7 @@ function connectWebSocket() {
               // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
 
               onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
-              ${onlineUsers.length == 0
-                ? "<h2>Offline</h2>"
-                : ''}
+              
               <ul id="user-list">
               </ul>
               </div></div>
@@ -940,8 +938,9 @@ function connectWebSocket() {
                   </li>`
                 })
 
-                userList.innerHTML += "<h2>Offline</h2>"
+                
               }
+              userList.innerHTML += "<h2>Offline</h2>"
               data.AllUsers.sort()
 
               data.AllUsers.forEach(ele => {
