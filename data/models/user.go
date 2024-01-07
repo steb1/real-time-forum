@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"forum/lib"
 	"log"
-	"strings"
 
 	uuid "github.com/gofrs/uuid"
 	_ "github.com/mattn/go-sqlite3"
@@ -58,7 +57,7 @@ func (ur *UserRepository) CreateUser(user *User) error {
 	if err != nil {
 		log.Fatalf("❌ Failed to generate UUID: %v", err)
 	}
-	
+
 	user.ID = ID.String()
 	_, err = ur.db.Exec("INSERT INTO user (id, nickname, age, gender, firstname, lastname, email, password, avatarURL, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		user.ID, user.Nickname, user.Age, user.Gender, user.FirstName, user.LastName, user.Email, user.Password, user.AvatarURL, user.Role)
@@ -269,8 +268,6 @@ func (ur *UserRepository) DeleteUser(userID string) error {
 // Check if user exists
 func (ur *UserRepository) IsExisted(email, Nickname string) (*User, bool) {
 	var user User
-	email = strings.ToLower(email)
-	Nickname = strings.ToLower(Nickname)
 	row := ur.db.QueryRow("SELECT password FROM user WHERE email = ? OR Nickname = ?", email, Nickname)
 	err := row.Scan(&user.Password)
 	if err != nil {

@@ -321,13 +321,13 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	//user.ID = ID.String()
-	user.Nickname = strings.ToLower(userData.Nickname)
+	user.Nickname = userData.Nickname
 	user.Password = userData.Password
-	user.FirstName = strings.ToLower(userData.FirstName)
+	user.FirstName = userData.FirstName
 	user.Gender = userData.Gender
-	user.LastName = strings.ToLower(userData.LastName)
+	user.LastName = userData.LastName
 	user.Age = strconv.Itoa((userData.Age))
-	user.Email = strings.ToLower(userData.Email)
+	user.Email = userData.Email
 
 	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist {
 		err := models.UserRepo.CreateUser(&user)

@@ -39,6 +39,32 @@ async function IsAuthenticated() {
   }
 }
 
+function checkAuthenticationPeriodically() {
+  // Set up interval to check authentication every 2 seconds
+   var toClear =  setInterval(async () => {
+    try {
+      const isAuthenticated = await IsAuthenticated();
+      console.log('IsAuthenticated result:', isAuthenticated);
+
+      // You can perform actions based on the updated authentication status here
+      if (isAuthenticated) {
+        
+      } else {
+        generateAuthPage()
+        clearInterval(toClear)
+      }
+    } catch (error) {
+      console.error('Error during authentication check:', error);
+    }
+  }, 2000);
+}
+
+
+
+// Call the function to start checking authentication periodically
+checkAuthenticationPeriodically();
+
+
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
 })
