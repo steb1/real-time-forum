@@ -55,7 +55,6 @@ function getData() {
     });
 }
 
-
 document.addEventListener('DOMContentLoaded', function (e) {
   console.log("href : ", window.location.href)
   e.preventDefault()
@@ -101,7 +100,7 @@ console.log("session = ", all.IsLoggedIn);
 let rightBarContent = ["photo", "Accueil", "disconnect"]
 let container = document.getElementById("container-flex")
 const preventReloadLinks = container.querySelectorAll('.leftnav-link');
-const AllRoutes = ["", "photo", "Accueil", "disconnect"]
+const AllRoutes = ["", "photo", "/", "disconnect"]
 
 
 function generateAuthPage() {
@@ -344,15 +343,21 @@ const displayAccueil = () => {
         } else {
           let a = document.createElement("a")
           a.className = "leftnav-link"
-          a.href = "/" + element
+          if (element != "Accueil") {
+            a.href = "/" + element
+          } else {
+            a.href = "/" 
+          }
           a.textContent = element
           a.id = `${element}${i}`
           a.addEventListener('click', function (e) {
             e.preventDefault()
             window.history.pushState({}, '', e.target.href)
-           
+            if (element != "Accueil") {
               window.location.href = `http://localhost:8080/${element}` 
-            
+            } else {
+              window.location.href = `http://localhost:8080/` 
+            }
     
           });
           rightBar.appendChild(a)
@@ -467,10 +472,6 @@ let addPost = (posts) => {
   }
 //}
 
-let comment = () => {
-
-}
-
 let like = (event, slug) => {
  
     event.stopPropagation()
@@ -512,8 +513,7 @@ let dislike = (event, slug) => {
     .catch(error => {
       console.error('Error:', error);
     });
-  }
-
+}
 
 const createNewPost = () => {
   IsAuthenticated().then(isAuthenticated => {
