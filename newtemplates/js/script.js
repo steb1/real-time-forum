@@ -343,7 +343,7 @@ const displayAccueil = () => {
         } else {
           let a = document.createElement("a")
           a.className = "leftnav-link"
-          if (element != "Accueil") {
+          if (element != "Home") {
             a.href = "/" + element
           } else {
             a.href = "/" 
@@ -353,7 +353,7 @@ const displayAccueil = () => {
           a.addEventListener('click', function (e) {
             e.preventDefault()
             window.history.pushState({}, '', e.target.href)
-            if (element != "Accueil") {
+            if (element != "Home") {
               window.location.href = `http://localhost:8080/${element}` 
             } else {
               window.location.href = `http://localhost:8080/` 
@@ -922,7 +922,9 @@ function connectWebSocket() {
               // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
 
               onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
-              <h2>Online</h2>
+              ${onlineUsers.length == 0
+                ? "<h2>Offline</h2>"
+                : ''}
               <ul id="user-list">
               </ul>
               </div></div>
@@ -943,7 +945,6 @@ function connectWebSocket() {
               data.AllUsers.sort()
 
               data.AllUsers.forEach(ele => {
-
                 if (ele.Nickname.length != 0 && !onlines.includes(ele.Nickname) && ele.Nickname != data.CurrentUser.Nickname) 
                 userList.innerHTML += `<li class="user-item">
                 <span class="user-name">${ele.Nickname}</span>
@@ -967,7 +968,7 @@ function connectWebSocket() {
           let json = JSON.parse(event.data)
           //console.log('Nickname ===== : ', data.CurrentUser.Nickname);
           const chatDiv = document.getElementById("discuss");
-          console.log("json : ", json);
+          
           if (data.CurrentUser.Nickname == json.sender) {
             chatDiv.innerHTML += `<div class="message user1">
             <span class="message-Author">${json.sender}</span>
