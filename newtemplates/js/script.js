@@ -1,5 +1,4 @@
 function checkAuthentication() {
-
   fetch('/CheckAuthentication')
     .then(response => response.json())
     .then(data => {
@@ -21,22 +20,39 @@ function checkAuthentication() {
       return false
     });
 }
-function IsAuthenticated() {
-  fetch('/CheckAuthentication')
-    .then(response => response.json())
-    .then(data => {
-      if (data.authenticated) {
-        return true
-      } else {
-        return false
-      }
-    })
-    .catch(error => {
-      console.error('Error checking authentication:', error);
-      return false
-    });
+
+// function IsAuthenticated() {
+//   fetch('/CheckAuthentication')
+//     .then(response => response.json())
+//     .then(data => {
+//       if (data.authenticated) {
+//         console.log("trueeeee");
+//         return true
+//       } else {
+//         console.log("falseeeeee");
+//         return false
+//       }
+//   }) 
+// }
+
+async function IsAuthenticated() {
+  try {
+    const response = await fetch('/CheckAuthentication');
+    const data = await response.json();
+
+    if (data.authenticated) {
+      console.log("trueeeee");
+      return true;
+    } else {
+      console.log("falseeeeee");
+      return false;
+    }
+  } catch (error) {
+    console.error('Error during authentication check:', error);
+    return false;
+  }
 }
-let online = 0
+
 document.addEventListener('DOMContentLoaded', () => {
   closeModal()
 })
@@ -321,138 +337,142 @@ const generate404 = () => {
     `;
 }
 const displayAccueil = () => {
-  document.body.style.backgroundColor = "white";
-
-  let rightBar = document.createElement("div")
-  rightBar.id = "rightBar"
-
-  rightBarContent.forEach((element, i) => {
-    if (element == "photo") {
-      let li = document.createElement("li")
-      let img = document.createElement("img")
-      img.src = "../../uploads/profile.png"
-      img.id = `${element}${i}`
-      li.appendChild(img)
-      rightBar.appendChild(li)
-    } else {
-      let a = document.createElement("a")
-      a.className = "leftnav-link"
-      a.href = "/" + element
-      a.textContent = element
-      a.id = `${element}${i}`
-      a.addEventListener('click', function (e) {
-        e.preventDefault()
-        window.history.pushState({}, '', e.target.href)
-       
-          window.location.href = `http://localhost:8080/${element}` 
-        
-
-      });
-      rightBar.appendChild(a)
-    }
-  })
-
-
-  let content = document.createElement("div")
-  content.id = "allContent"
-
-  displayAllContent(content)
-  container.innerHTML = ""
-  container.style.backgroundColor = "white"
-  container.appendChild(rightBar)
-  container.appendChild(content)
-  document.body.appendChild(container)
-
-}
-getData()
-
-
-
-let addPost = (posts) => {
-  let elem = posts
-  elem.innerHTML = ""
-
-  let createPost = document.createElement("div")
-  createPost.id = "createPost"
-  createPost.className = "createPost"
-
-
-  let sort = document.createElement("div")
-  let createPostButton = document.createElement("div")
-
-  sort.id = "sortButton"
-  sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
-
-  createPostButton.id = "createPostButton"
-  createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
-  createPostButton.style.marginRight = "10px"
-  createPostButton.style.cursor = "pointer"
-
-
-  createPost.appendChild(sort)
-  createPost.appendChild(createPostButton)
-  elem.appendChild(createPost)
-  createPostButton.addEventListener("click", createNewPost)
-
-
-
-  //createPostButton.addEventListener("click", createNewPost)
-  fetch('/dashboard')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      data.AllPosts.forEach((element, i) => {
-        let post = document.createElement("div")
-        let c = `<div class="pBody"><div class="post-container5">
-        <div class="post5" onClick="seePost('${element.Slug}')">
-            <div class="post-header5">
-                <img class="post-owner-image5" src="../../uploads/icon.webp" alt="Owner Image">
-                <div class="post-owner-info5">
-                    <span class="post-owner-name5">${element.AuthorName}</span>
-                    <span class="post-time5">${element.LastEditionDate}</span>
-                </div>
-            </div>
-
-            <h2 class="post-title">${element.Title}</h2>
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
+      document.body.style.backgroundColor = "white";
     
-            <div class="post-content5">
-            ${element.Description}
-            </div>
-            ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>'} 
+      let rightBar = document.createElement("div")
+      rightBar.id = "rightBar"
+    
+      rightBarContent.forEach((element, i) => {
+        if (element == "photo") {
+          let li = document.createElement("li")
+          let img = document.createElement("img")
+          img.src = "../../uploads/profile.png"
+          img.id = `${element}${i}`
+          li.appendChild(img)
+          rightBar.appendChild(li)
+        } else {
+          let a = document.createElement("a")
+          a.className = "leftnav-link"
+          a.href = "/" + element
+          a.textContent = element
+          a.id = `${element}${i}`
+          a.addEventListener('click', function (e) {
+            e.preventDefault()
+            window.history.pushState({}, '', e.target.href)
+           
+              window.location.href = `http://localhost:8080/${element}` 
             
     
-            <div class="post-stats5">
-                <span onClick="like(event, '${element.Slug}')">
-                      <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> <span id="likeCount-${element.Slug}">${element.NumberOfLikes}</span>
-                  </span>
-                  <span onClick="dislike(event, '${element.Slug}')">
-                      <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> <span id="dislikeCount-${element.Slug}">${element.NumberOfDislikes}</span>
-                  </span>
-                <span>
-                    <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
-                </span>
-            </div>
-    
-            <div class="post-hashtags5">
-                ${(element.Categories && element.Categories.length > 0)
-            ? element.Categories.map(category => `#${category.Name}`).join('<br>')
-            : 'Aucune catégorie'}
-            </div>
-        </div>
-    
-        
-    </div></div>`
-
-
-        post.innerHTML = c
-        elem.appendChild(post)
+          });
+          rightBar.appendChild(a)
+        }
       })
-    })
-    .catch(error => {
-      console.error('Error checking authentication:', error);
-      return
-    });
+    
+    
+      let content = document.createElement("div")
+      content.id = "allContent"
+    
+      displayAllContent(content)
+      container.innerHTML = ""
+      container.style.backgroundColor = "white"
+      container.appendChild(rightBar)
+      container.appendChild(content)
+      document.body.appendChild(container)
+    }
+  })
 }
+
+getData()
+
+let addPost = (posts) => {
+  //if (IsAuthenticated()) {
+    let elem = posts
+    elem.innerHTML = ""
+
+    let createPost = document.createElement("div")
+    createPost.id = "createPost"
+    createPost.className = "createPost"
+
+
+    let sort = document.createElement("div")
+    let createPostButton = document.createElement("div")
+
+    sort.id = "sortButton"
+    sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
+
+    createPostButton.id = "createPostButton"
+    createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
+    createPostButton.style.marginRight = "10px"
+    createPostButton.style.cursor = "pointer"
+
+
+    createPost.appendChild(sort)
+    createPost.appendChild(createPostButton)
+    elem.appendChild(createPost)
+    createPostButton.addEventListener("click", createNewPost)
+
+
+
+    //createPostButton.addEventListener("click", createNewPost)
+    fetch('/dashboard')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        data.AllPosts.forEach((element, i) => {
+          let post = document.createElement("div")
+          let c = `<div class="pBody"><div class="post-container5">
+          <div class="post5" onClick="seePost('${element.Slug}')">
+              <div class="post-header5">
+                  <img class="post-owner-image5" src="../../uploads/icon.webp" alt="Owner Image">
+                  <div class="post-owner-info5">
+                      <span class="post-owner-name5">${element.AuthorName}</span>
+                      <span class="post-time5">${element.LastEditionDate}</span>
+                  </div>
+              </div>
+
+              <h2 class="post-title">${element.Title}</h2>
+      
+              <div class="post-content5">
+              ${element.Description}
+              </div>
+              ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>'} 
+              
+      
+              <div class="post-stats5">
+                  <span onClick="like(event, '${element.Slug}')">
+                        <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> <span id="likeCount-${element.Slug}">${element.NumberOfLikes}</span>
+                    </span>
+                    <span onClick="dislike(event, '${element.Slug}')">
+                        <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> <span id="dislikeCount-${element.Slug}">${element.NumberOfDislikes}</span>
+                    </span>
+                  <span>
+                      <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
+                  </span>
+              </div>
+      
+              <div class="post-hashtags5">
+                  ${(element.Categories && element.Categories.length > 0)
+              ? element.Categories.map(category => `#${category.Name}`).join('<br>')
+              : 'Aucune catégorie'}
+              </div>
+          </div>
+      
+          
+      </div></div>`
+
+
+          post.innerHTML = c
+          elem.appendChild(post)
+        })
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        return
+      });
+  }
+//}
 
 let comment = () => {
 
@@ -844,6 +864,7 @@ const goBack = () => {
 let socket;
 
 function connectWebSocket() {
+  //if (IsAuthenticated()) {
   socket = new WebSocket("ws://localhost:8080/ws");
 
   socket.addEventListener("open", (event) => {
@@ -883,7 +904,6 @@ function connectWebSocket() {
       console.log("Payload : ", newString);
       console.log("online users : ", JSON.parse(newString));
       const onlineUsers = JSON.parse(newString)
-      let ii = 0
 
       fetch('/dashboard')
         .then(response => response.json())
@@ -897,10 +917,11 @@ function connectWebSocket() {
               // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
 
               onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
-              <h2>Online / Offline</h2>
+              <h2>Online</h2>
               <ul id="user-list">
               </ul>
-              </div></div>`
+              </div></div>
+              `
 
               const userList = document.getElementById("user-list")
               if (element.onlineUsers) {
@@ -911,11 +932,13 @@ function connectWebSocket() {
                   <span class="user-status">🟢</span>
                   </li>`
                 })
+
+                userList.innerHTML += "<h2>Offline</h2>"
               }
+              data.AllUsers.sort()
 
               data.AllUsers.forEach(ele => {
-                console.log("user : ", ele.Nickname);
-                console.log(!onlineUsers.includes(ele.Nickname));
+
                 if (ele.Nickname.length != 0 && !onlines.includes(ele.Nickname) && ele.Nickname != data.CurrentUser.Nickname) 
                 userList.innerHTML += `<li class="user-item">
                 <span class="user-name">${ele.Nickname}</span>
@@ -927,6 +950,10 @@ function connectWebSocket() {
             }
           })
         })
+        .catch(error => {
+          console.error('Error checking authentication:', error);
+          return;
+        });
     } else {
       fetch('/dashboard')
         .then(response => response.json())
@@ -970,6 +997,7 @@ function connectWebSocket() {
     console.log("Connection closed");
   });
 }
+//}
 
 
 function sendMessage(event, receiver) {
