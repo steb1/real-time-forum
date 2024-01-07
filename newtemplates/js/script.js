@@ -803,7 +803,7 @@ const seePost = (slug) => {
           
       <form class="comment-form" id="cf">
       <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
-      <button type="submit" class="comment-button" id="cb">Comment</button>
+      <button type="submit" class="comment-button" id="cb"><img src="../../uploads/sentt.png"></button>
     </form></div></div>`
 
       let coordonnates = centralDiv.getBoundingClientRect()
