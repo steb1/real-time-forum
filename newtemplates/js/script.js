@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
 
 console.log("session = ", all.IsLoggedIn);
-let rightBarContent = ["photo", "Accueil", "disconnect"]
+let rightBarContent = ["photo", "Home", "disconnect"]
 let container = document.getElementById("container-flex")
 const preventReloadLinks = container.querySelectorAll('.leftnav-link');
 const AllRoutes = ["", "photo", "/", "disconnect"]
@@ -580,7 +580,7 @@ const displayAllContent = (element) => {
   tabBar.id = "tabBar"
 
   let messageButton = document.createElement("button")
-  messageButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Message.png'> Message"
+  messageButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Message.png'> Messages"
   messageButton.id = "messageButton"
   messageButton.className = "accueilButton"
 
