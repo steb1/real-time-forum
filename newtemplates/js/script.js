@@ -21,20 +21,6 @@ function checkAuthentication() {
     });
 }
 
-// function IsAuthenticated() {
-//   fetch('/CheckAuthentication')
-//     .then(response => response.json())
-//     .then(data => {
-//       if (data.authenticated) {
-//         console.log("trueeeee");
-//         return true
-//       } else {
-//         console.log("falseeeeee");
-//         return false
-//       }
-//   }) 
-// }
-
 async function IsAuthenticated() {
   try {
     const response = await fetch('/CheckAuthentication');
@@ -152,10 +138,12 @@ function generateAuthPage() {
 }
 
 const registerForm = (message) => {
-  const authPage = document.createElement('div');
-  var body = document.body;
-  body.style.backgroundColor = "#080710"
-  authPage.innerHTML = `
+  IsAuthenticated().then(isAuthenticated => {
+    if (!isAuthenticated) {
+        const authPage = document.createElement('div');
+        var body = document.body;
+        body.style.backgroundColor = "#080710"
+        authPage.innerHTML = `
         <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -205,7 +193,8 @@ const registerForm = (message) => {
     e.preventDefault();
     window.history.pushState({}, '', e.target.href)
   })
-
+}
+})
 }
 
 function registerUser() {
@@ -387,90 +376,94 @@ const displayAccueil = () => {
 getData()
 
 let addPost = (posts) => {
-  //if (IsAuthenticated()) {
-    let elem = posts
-    elem.innerHTML = ""
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
+      let elem = posts
+      elem.innerHTML = ""
 
-    let createPost = document.createElement("div")
-    createPost.id = "createPost"
-    createPost.className = "createPost"
-
-
-    let sort = document.createElement("div")
-    let createPostButton = document.createElement("div")
-
-    sort.id = "sortButton"
-    sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
-
-    createPostButton.id = "createPostButton"
-    createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
-    createPostButton.style.marginRight = "10px"
-    createPostButton.style.cursor = "pointer"
+      let createPost = document.createElement("div")
+      createPost.id = "createPost"
+      createPost.className = "createPost"
 
 
-    createPost.appendChild(sort)
-    createPost.appendChild(createPostButton)
-    elem.appendChild(createPost)
-    createPostButton.addEventListener("click", createNewPost)
+      let sort = document.createElement("div")
+      let createPostButton = document.createElement("div")
+
+      sort.id = "sortButton"
+      sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
+
+      createPostButton.id = "createPostButton"
+      createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
+      createPostButton.style.marginRight = "10px"
+      createPostButton.style.cursor = "pointer"
+
+
+      createPost.appendChild(sort)
+      createPost.appendChild(createPostButton)
+      elem.appendChild(createPost)
+      createPostButton.addEventListener("click", createNewPost)
 
 
 
-    //createPostButton.addEventListener("click", createNewPost)
-    fetch('/dashboard')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        data.AllPosts.forEach((element, i) => {
-          let post = document.createElement("div")
-          let c = `<div class="pBody"><div class="post-container5">
-          <div class="post5" onClick="seePost('${element.Slug}')">
-              <div class="post-header5">
-                  <img class="post-owner-image5" src="../../uploads/icon.webp" alt="Owner Image">
-                  <div class="post-owner-info5">
-                      <span class="post-owner-name5">${element.AuthorName}</span>
-                      <span class="post-time5">${element.LastEditionDate}</span>
-                  </div>
-              </div>
+      //createPostButton.addEventListener("click", createNewPost)
+      fetch('/dashboard')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          data.AllPosts.forEach((element, i) => {
+            let post = document.createElement("div")
+            let c = `<div class="pBody"><div class="post-container5">
+            <div class="post5" onClick="seePost('${element.Slug}')">
+                <div class="post-header5">
+                    <img class="post-owner-image5" src="../../uploads/icon.webp" alt="Owner Image">
+                    <div class="post-owner-info5">
+                        <span class="post-owner-name5">${element.AuthorName}</span>
+                        <span class="post-time5">${element.LastEditionDate}</span>
+                    </div>
+                </div>
 
-              <h2 class="post-title">${element.Title}</h2>
-      
-              <div class="post-content5">
-              ${element.Description}
-              </div>
-              ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>'} 
-              
-      
-              <div class="post-stats5">
-                  <span onClick="like(event, '${element.Slug}')">
-                        <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> <span id="likeCount-${element.Slug}">${element.NumberOfLikes}</span>
+                <h2 class="post-title">${element.Title}</h2>
+        
+                <div class="post-content5">
+                ${element.Description}
+                </div>
+                ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>'} 
+                
+        
+                <div class="post-stats5">
+                    <span onClick="like(event, '${element.Slug}')">
+                          <img class="heart-icon5" src="../../uploads/like.png" alt="Heart Icon"> <span id="likeCount-${element.Slug}">${element.NumberOfLikes}</span>
+                      </span>
+                      <span onClick="dislike(event, '${element.Slug}')">
+                          <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> <span id="dislikeCount-${element.Slug}">${element.NumberOfDislikes}</span>
+                      </span>
+                    <span>
+                        <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
                     </span>
-                    <span onClick="dislike(event, '${element.Slug}')">
-                        <img class="heart-icon5" src="../../uploads/unlike.png" alt="Broken Heart Icon"> <span id="dislikeCount-${element.Slug}">${element.NumberOfDislikes}</span>
-                    </span>
-                  <span>
-                      <img class="heart-icon5" src="../../uploads/comment.png" alt="Comment Icon"> ${element.NumberOfComments}
-                  </span>
-              </div>
-      
-              <div class="post-hashtags5">
-                  ${(element.Categories && element.Categories.length > 0)
-              ? element.Categories.map(category => `#${category.Name}`).join('<br>')
-              : 'Aucune catégorie'}
-              </div>
-          </div>
-      
-          
-      </div></div>`
+                </div>
+        
+                <div class="post-hashtags5">
+                    ${(element.Categories && element.Categories.length > 0)
+                ? element.Categories.map(category => `#${category.Name}`).join('<br>')
+                : 'Aucune catégorie'}
+                </div>
+            </div>
+        
+            
+        </div></div>`
 
 
-          post.innerHTML = c
-          elem.appendChild(post)
+            post.innerHTML = c
+            elem.appendChild(post)
+          })
         })
-      })
-      .catch(error => {
-        console.error('Error checking authentication:', error);
-        return
-      });
+        .catch(error => {
+          console.error('Error checking authentication:', error);
+          return
+        });
+      }
+    })
+
   }
 //}
 
@@ -479,29 +472,29 @@ let comment = () => {
 }
 
 let like = (event, slug) => {
-
-  event.stopPropagation()
-  fetch('http://localhost:8080/like/' + slug, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      // console.log(event.target.parentNode);
-      document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
-      document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
+ 
+    event.stopPropagation()
+    fetch('http://localhost:8080/like/' + slug, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  console.log(slug);
-}
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        // console.log(event.target.parentNode);
+        document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
+        document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
 
 let dislike = (event, slug) => {
-
+ 
   event.stopPropagation()
   fetch('http://localhost:8080/dislike/' + slug, {
     method: 'GET',
@@ -519,18 +512,23 @@ let dislike = (event, slug) => {
     .catch(error => {
       console.error('Error:', error);
     });
-  console.log(slug);
-}
-
-const createNewPost = () => {
-  if (checkAuthentication) {
-    openModal();
   }
 
+
+const createNewPost = () => {
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
+    openModal();
+    }
+  })
 }
 
 function openModal() {
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
   document.getElementById("myModal").style.display = "block";
+    }
+  })
 }
 
 // Fonction pour fermer le modal
@@ -539,7 +537,8 @@ function closeModal() {
 }
 
 const getAllPosts = () => {
-  if (checkAuthentication) {
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
 
     fetch('http://localhost:8080/getAllPosts', {
       method: 'POST',
@@ -565,10 +564,13 @@ const getAllPosts = () => {
         console.error('Registration error:', error);
       });
   }
+})
 }
 
 
 const displayAllContent = (element) => {
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
   let onlineDiv = document.createElement("div")
   onlineDiv.innerHTML = `<span id="numberOfUser"> <span>`
   onlineDiv.id = "onlineDiv"
@@ -754,10 +756,13 @@ const displayAllContent = (element) => {
   bodyContent.appendChild(posts)
   bodyContent.appendChild(onlineStatus)
   element.appendChild(bodyContent)
+  }
+})
 }
 
 const seePost = (slug) => {
-
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
   // alert('CLick on post')
   // window.history.replaceState({},'', '/post')
   let centralDiv = document.getElementById('posts')
@@ -844,9 +849,8 @@ const seePost = (slug) => {
       console.error('Error checking authentication:', error);
       return
     });
-
-
-  console.log(slug);
+    }
+  })
 }
 
 var messageContainer = document.getElementById('posts');
@@ -864,7 +868,8 @@ const goBack = () => {
 let socket;
 
 function connectWebSocket() {
-  //if (IsAuthenticated()) {
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
   socket = new WebSocket("ws://localhost:8080/ws");
 
   socket.addEventListener("open", (event) => {
@@ -996,11 +1001,15 @@ function connectWebSocket() {
   socket.addEventListener("close", (event) => {
     console.log("Connection closed");
   });
+  }
+})
 }
 //}
 
 
 function sendMessage(event, receiver) {
+  // IsAuthenticated().then(isAuthenticated => {
+  //   if (isAuthenticated) {
   event.preventDefault();
   const messageInput = document.getElementById("ci");
 
@@ -1039,7 +1048,9 @@ function sendMessage(event, receiver) {
     behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
   });
   // recipientInput.value = "";
-}
+    }
+// })
+// }
 
 function throttle(func, delay) {
   let timeoutId;
@@ -1066,6 +1077,8 @@ function throttle(func, delay) {
 let loader = 10
 
 function seeMessages(friend, limit = 10) {
+  IsAuthenticated().then(isAuthenticated => {
+    if (isAuthenticated) {
   console.log('LIMIT ++++===== ', limit);
 
   let elem = document.getElementById('posts')
@@ -1134,10 +1147,13 @@ function seeMessages(friend, limit = 10) {
       console.error('Error checking authentication:', error);
       return
     });
-
+  }
+  })
 }
 
 function send(receiver) {
+  // IsAuthenticated().then(isAuthenticated => {
+  //   if (isAuthenticated) {
   let mess = document.getElementById('ci').value
   console.log(mess);
   const recipient = receiver;
@@ -1152,6 +1168,8 @@ function send(receiver) {
     socket.send(JSON.stringify(datam));
   }
 }
+// })
+// }
 
 function getFormattedDate() {
   var date = new Date();
