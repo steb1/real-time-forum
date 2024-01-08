@@ -562,6 +562,9 @@ input {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     flex-grow: 1;
+    overflow-x: scroll;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 .post-content {
