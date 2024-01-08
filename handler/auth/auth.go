@@ -222,5 +222,3 @@ func Logout(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 }
-
-

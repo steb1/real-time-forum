@@ -3,7 +3,6 @@ package models
 import (
 	"database/sql"
 	"fmt"
-	"forum/lib"
 	"log"
 
 	uuid "github.com/gofrs/uuid"
@@ -284,12 +283,48 @@ func (ur *UserRepository) IsExistedSignIn(username string) (*User, bool) {
 	var user User
 	//username = strings.ToLower(username)
 	// fmt.Println(lib.IsEmailValid(username))
-	req := ""
-	if lib.IsEmailValid(username) {
-		req = "SELECT password, email FROM user WHERE email = ?"
-	} else {
-		req = "SELECT password, email FROM user WHERE nickname = ?"
+	
+
+	req := "SELECT password, email FROM user WHERE nickname = ?"
+
+	row := ur.db.QueryRow(req, username)
+	err := row.Scan(&user.Password, &user.Email)
+	if err != nil {
+		log.Println("❌1 ", err)
+		if err == sql.ErrNoRows {
+			return nil, false
+		}
+		return nil, false
 	}
+	return &user, true
+}
+
+func (ur *UserRepository) IsExistedSignInNickName(username string) (*User, bool) {
+	var user User
+	//username = strings.ToLower(username)
+	// fmt.Println(lib.IsEmailValid(username))
+
+	req := "SELECT password, email FROM user WHERE nickname = ?"
+
+	row := ur.db.QueryRow(req, username)
+	err := row.Scan(&user.Password, &user.Email)
+	if err != nil {
+		log.Println("❌1 ", err)
+		if err == sql.ErrNoRows {
+			return nil, false
+		}
+		return nil, false
+	}
+	return &user, true
+}
+
+func (ur *UserRepository) IsExistedSignInEmail(username string) (*User, bool) {
+	var user User
+	//username = strings.ToLower(username)
+	// fmt.Println(lib.IsEmailValid(username))
+
+	req := "SELECT password, email FROM user WHERE email = ?"
+
 	row := ur.db.QueryRow(req, username)
 	err := row.Scan(&user.Password, &user.Email)
 	if err != nil {

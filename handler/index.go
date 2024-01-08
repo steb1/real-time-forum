@@ -375,7 +375,16 @@ func Login(res http.ResponseWriter, req *http.Request) {
 
 		user := models.User{}
 
-		if _user, exist := models.UserRepo.IsExistedSignIn(userData1.Username); exist {
+		user__, mailExist := models.UserRepo.IsExistedSignInEmail(userData1.Username)
+		user_, NickNameExist := models.UserRepo.IsExistedSignInNickName(userData1.Username)
+
+		var _user = user_
+
+		if mailExist {
+			_user = user__
+		} 
+
+		if mailExist || NickNameExist {
 			fmt.Println("Match :", lib.IsPasswordsMatch(_user.Password, userData1.Password))
 			if userData1.Password != _user.Password {
 				// res.WriteHeader(http.StatusNotFound)
