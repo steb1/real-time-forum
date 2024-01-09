@@ -329,7 +329,7 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 	user.Age = strconv.Itoa((userData.Age))
 	user.Email = userData.Email
 
-	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist {
+	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist && lib.IsEmailValid(userData.Email) {
 		err := models.UserRepo.CreateUser(&user)
 		if err != nil {
 			log.Fatalf("❌ Failed to created account %v", err)
@@ -382,7 +382,7 @@ func Login(res http.ResponseWriter, req *http.Request) {
 
 		if mailExist {
 			_user = user__
-		} 
+		}
 
 		if mailExist || NickNameExist {
 			fmt.Println("Match :", lib.IsPasswordsMatch(_user.Password, userData1.Password))
