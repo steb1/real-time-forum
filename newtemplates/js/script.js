@@ -39,30 +39,30 @@ async function IsAuthenticated() {
   }
 }
 
-function checkAuthenticationPeriodically() {
-  // Set up interval to check authentication every 2 seconds
-   var toClear =  setInterval(async () => {
-    try {
-      const isAuthenticated = await IsAuthenticated();
-      console.log('IsAuthenticated result:', isAuthenticated);
+// function checkAuthenticationPeriodically() {
+//   // Set up interval to check authentication every 2 seconds
+//   var toClear = setInterval(async () => {
+//     try {
+//       const isAuthenticated = await IsAuthenticated();
+//       console.log('IsAuthenticated result:', isAuthenticated);
 
-      // You can perform actions based on the updated authentication status here
-      if (isAuthenticated) {
-        
-      } else {
-        generateAuthPage()
-        clearInterval(toClear)
-      }
-    } catch (error) {
-      console.error('Error during authentication check:', error);
-    }
-  }, 2000);
-}
+//       // You can perform actions based on the updated authentication status here
+//       if (isAuthenticated) {
+
+//       } else {
+//         generateAuthPage()
+//         clearInterval(toClear)
+//       }
+//     } catch (error) {
+//       console.error('Error during authentication check:', error);
+//     }
+//   }, 2000);
+// }
 
 
 
 // Call the function to start checking authentication periodically
-checkAuthenticationPeriodically();
+// checkAuthenticationPeriodically();
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -164,10 +164,10 @@ function generateAuthPage() {
 const registerForm = (message) => {
   IsAuthenticated().then(isAuthenticated => {
     if (!isAuthenticated) {
-        const authPage = document.createElement('div');
-        var body = document.body;
-        body.style.backgroundColor = "#ECEEF2"
-        authPage.innerHTML = `
+      const authPage = document.createElement('div');
+      var body = document.body;
+      body.style.backgroundColor = "#ECEEF2"
+      authPage.innerHTML = `
         <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -207,18 +207,18 @@ const registerForm = (message) => {
     </form>
     `;
 
-  container.innerHTML = '';
-  container.appendChild(authPage);
-  let form = document.getElementById("form")
-  form.style.height = "fit-content"
-  form.style.marginTop = '200px'
+      container.innerHTML = '';
+      container.appendChild(authPage);
+      let form = document.getElementById("form")
+      form.style.height = "fit-content"
+      form.style.marginTop = '200px'
 
-  document.getElementById("form").addEventListener("click", (e) => {
-    e.preventDefault();
-    window.history.pushState({}, '', e.target.href)
+      document.getElementById("form").addEventListener("click", (e) => {
+        e.preventDefault();
+        window.history.pushState({}, '', e.target.href)
+      })
+    }
   })
-}
-})
 }
 
 function registerUser() {
@@ -353,10 +353,10 @@ const displayAccueil = () => {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
       document.body.style.backgroundColor = "white";
-    
+
       let rightBar = document.createElement("div")
       rightBar.id = "rightBar"
-    
+
       rightBarContent.forEach((element, i) => {
         if (element == "photo") {
           let li = document.createElement("li")
@@ -371,7 +371,7 @@ const displayAccueil = () => {
           if (element != "Home") {
             a.href = "/" + element
           } else {
-            a.href = "/" 
+            a.href = "/"
           }
           a.textContent = element
           a.id = `${element}${i}`
@@ -379,20 +379,20 @@ const displayAccueil = () => {
             e.preventDefault()
             window.history.pushState({}, '', e.target.href)
             if (element != "Home") {
-              window.location.href = `http://localhost:8080/${element}` 
+              window.location.href = `http://localhost:8080/${element}`
             } else {
-              window.location.href = `http://localhost:8080/` 
+              window.location.href = `http://localhost:8080/`
             }
-    
+
           });
           rightBar.appendChild(a)
         }
       })
-    
-    
+
+
       let content = document.createElement("div")
       content.id = "allContent"
-    
+
       displayAllContent(content)
       container.innerHTML = ""
       container.style.backgroundColor = "white"
@@ -491,36 +491,36 @@ let addPost = (posts) => {
           console.error('Error checking authentication:', error);
           return
         });
-      }
-    })
+    }
+  })
 
-  }
+}
 //}
 
 let like = (event, slug) => {
- 
-    event.stopPropagation()
-    fetch('http://localhost:8080/like/' + slug, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+
+  event.stopPropagation()
+  fetch('http://localhost:8080/like/' + slug, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // console.log(event.target.parentNode);
+      document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
+      document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        // console.log(event.target.parentNode);
-        document.getElementById(`likeCount-${slug}`).textContent = data.NbrLike
-        document.getElementById(`dislikeCount-${slug}`).textContent = data.NbrDislike
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    }
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
 
 
 let dislike = (event, slug) => {
- 
+
   event.stopPropagation()
   fetch('http://localhost:8080/dislike/' + slug, {
     method: 'GET',
@@ -543,7 +543,7 @@ let dislike = (event, slug) => {
 const createNewPost = () => {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
-    openModal();
+      openModal();
     }
   })
 }
@@ -551,7 +551,7 @@ const createNewPost = () => {
 function openModal() {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
-  document.getElementById("myModal").style.display = "block";
+      document.getElementById("myModal").style.display = "block";
     }
   })
 }
@@ -565,68 +565,68 @@ const getAllPosts = () => {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
 
-    fetch('http://localhost:8080/getAllPosts', {
-      method: 'POST',
-      credentials: 'include',  // Include cookies in the request
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Login failed');
+      fetch('http://localhost:8080/getAllPosts', {
+        method: 'POST',
+        credentials: 'include',  // Include cookies in the request
+        headers: {
+          'Content-Type': 'application/json',
         }
-        return response.json();
       })
-      .then(data => {
-        //  successful
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Login failed');
+          }
+          return response.json();
+        })
+        .then(data => {
+          //  successful
 
 
-        // console.log('Cookies:', document.cookie);
-        // Redirect to a new page or perform other actions
-      })
-      .catch(error => {
-        console.error('Registration error:', error);
-      });
-  }
-})
+          // console.log('Cookies:', document.cookie);
+          // Redirect to a new page or perform other actions
+        })
+        .catch(error => {
+          console.error('Registration error:', error);
+        });
+    }
+  })
 }
 
 
 const displayAllContent = (element) => {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
-  let onlineDiv = document.createElement("div")
-  onlineDiv.innerHTML = `<span id="numberOfUser"> <span>`
-  onlineDiv.id = "onlineDiv"
-  //onlineDiv.style.backgroundColor = "blue"
-  element.appendChild(onlineDiv)
-  let tabBar = document.createElement("div")
-  tabBar.id = "tabBar"
+      let onlineDiv = document.createElement("div")
+      onlineDiv.innerHTML = `<span id="numberOfUser"> <span>`
+      onlineDiv.id = "onlineDiv"
+      //onlineDiv.style.backgroundColor = "blue"
+      element.appendChild(onlineDiv)
+      let tabBar = document.createElement("div")
+      tabBar.id = "tabBar"
 
-  let messageButton = document.createElement("button")
-  messageButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Message.png'> Messages"
-  messageButton.id = "messageButton"
-  messageButton.className = "accueilButton"
+      let messageButton = document.createElement("button")
+      messageButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Message.png'> Messages"
+      messageButton.id = "messageButton"
+      messageButton.className = "accueilButton"
 
-  messageButton.addEventListener("click", (e) => {
-    let elem = document.getElementById('posts')
-    elem.innerHTML = ""
-    messageButton.style.borderBottom = "2px solid #76D7C4";
-    NotificationButton.style.borderBottom = "";
-    PostButton.style.borderBottom = "none";
-    fetch('/getAllMessages', {
-      credentials: 'include'
-    })
-      .then(response => response.json())
-      .then(data => {
-        let divMessages = document.createElement("div")
-        divMessages.id = "divMessages"
-        data.Messages.forEach(element => {
-          let elemm = document.createElement("div")
-          elemm.id = "mess"
+      messageButton.addEventListener("click", (e) => {
+        let elem = document.getElementById('posts')
+        elem.innerHTML = ""
+        messageButton.style.borderBottom = "2px solid #76D7C4";
+        NotificationButton.style.borderBottom = "";
+        PostButton.style.borderBottom = "none";
+        fetch('/getAllMessages', {
+          credentials: 'include'
+        })
+          .then(response => response.json())
+          .then(data => {
+            let divMessages = document.createElement("div")
+            divMessages.id = "divMessages"
+            data.Messages.forEach(element => {
+              let elemm = document.createElement("div")
+              elemm.id = "mess"
 
-          elemm.innerHTML = `
+              elemm.innerHTML = `
           <div class="full" onClick="seeMessages('${element.Receiver}')">
             <div class="MessName">${element.Receiver}</div>
             <div class="MessContent">${element.Content}</div>
@@ -634,99 +634,99 @@ const displayAllContent = (element) => {
           </div>`
 
 
-          divMessages.appendChild(elemm)
-        })
+              divMessages.appendChild(elemm)
+            })
 
-        elem.appendChild(divMessages)
+            elem.appendChild(divMessages)
+
+          })
+          .catch(error => {
+            console.error('Error checking authentication:', error);
+            return
+          })
+        //;onclick="sendMessage(event, '${friend}')"
+
+        // 
 
       })
-      .catch(error => {
-        console.error('Error checking authentication:', error);
-        return
+      let PostButton = document.createElement("button")
+      PostButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Dossier.png'> Posts"
+      PostButton.id = "PostButton"
+      PostButton.className = "accueilButton"
+      PostButton.style.borderBottom = "2px solid #76D7C4";
+
+      let NotificationButton = document.createElement("button")
+      NotificationButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Notif.png'> Notifications"
+      NotificationButton.id = "NotificationButton"
+      NotificationButton.className = "NotificationButton"
+
+      NotificationButton.addEventListener("click", () => {
+        let elem = document.getElementById('posts')
+        posts.innerHTML = ""
+        PostButton.style.borderBottom = "";
+        messageButton.style.borderBottom = "";
+        NotificationButton.style.borderBottom = "2px solid #76D7C4";
       })
-    //;onclick="sendMessage(event, '${friend}')"
-
-    // 
-
-  })
-  let PostButton = document.createElement("button")
-  PostButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Dossier.png'> Posts"
-  PostButton.id = "PostButton"
-  PostButton.className = "accueilButton"
-  PostButton.style.borderBottom = "2px solid #76D7C4";
-
-  let NotificationButton = document.createElement("button")
-  NotificationButton.innerHTML = "<img id='MessageIcon' src='../../uploads/Notif.png'> Notifications"
-  NotificationButton.id = "NotificationButton"
-  NotificationButton.className = "NotificationButton"
-
-  NotificationButton.addEventListener("click", () => {
-    let elem = document.getElementById('posts')
-    posts.innerHTML = ""
-    PostButton.style.borderBottom = "";
-    messageButton.style.borderBottom = "";
-    NotificationButton.style.borderBottom = "2px solid #76D7C4";
-  })
 
 
-  tabBar.appendChild(PostButton)
-  tabBar.appendChild(messageButton)
-  //tabBar.appendChild(NotificationButton)
-  element.appendChild(tabBar)
+      tabBar.appendChild(PostButton)
+      tabBar.appendChild(messageButton)
+      //tabBar.appendChild(NotificationButton)
+      element.appendChild(tabBar)
 
-  let bodyContent = document.createElement("div")
-  //bodyContent.style.backgroundColor = 'rgb(188, 174, 247)'
-  bodyContent.id = "bodyContent"
+      let bodyContent = document.createElement("div")
+      //bodyContent.style.backgroundColor = 'rgb(188, 174, 247)'
+      bodyContent.id = "bodyContent"
 
-  let posts = document.createElement("div")
-  posts.id = "posts"
-  posts.className = "Allposts"
-  posts.textContent = "All Posts"
+      let posts = document.createElement("div")
+      posts.id = "posts"
+      posts.className = "Allposts"
+      posts.textContent = "All Posts"
 
-  let onlineStatus = document.createElement("div")
-  onlineStatus.id = "onlineStatus"
-  // onlineStatus.style.backgroundColor = 'grey'
+      let onlineStatus = document.createElement("div")
+      onlineStatus.id = "onlineStatus"
+      // onlineStatus.style.backgroundColor = 'grey'
 
-  // onlineStatus.textContent = 'We are online'
+      // onlineStatus.textContent = 'We are online'
 
-  addPost(posts)
+      addPost(posts)
 
-  PostButton.addEventListener("click", (e) => {
-    PostButton.style.borderBottom = "2px solid #76D7C4";
-    NotificationButton.style.borderBottom = "";
-    messageButton.style.borderBottom = "none";
-    let elem = document.getElementById('posts')
-    posts.innerHTML = ""
+      PostButton.addEventListener("click", (e) => {
+        PostButton.style.borderBottom = "2px solid #76D7C4";
+        NotificationButton.style.borderBottom = "";
+        messageButton.style.borderBottom = "none";
+        let elem = document.getElementById('posts')
+        posts.innerHTML = ""
 
-    let createPost = document.createElement("div")
-    createPost.id = "createPost"
-    createPost.className = "createPost"
+        let createPost = document.createElement("div")
+        createPost.id = "createPost"
+        createPost.className = "createPost"
 
-    let sort = document.createElement("div")
-    let createPostButton = document.createElement("div")
+        let sort = document.createElement("div")
+        let createPostButton = document.createElement("div")
 
-    sort.id = "sortButton"
-    sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
+        sort.id = "sortButton"
+        sort.innerHTML = "<img id='MessageIcon' src='../../uploads/Sort.png'><p> Sort by </p>"
 
-    createPostButton.id = "createPostButton"
-    createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
-    createPostButton.style.marginRight = "10px"
-    createPostButton.style.cursor = "pointer"
+        createPostButton.id = "createPostButton"
+        createPostButton.innerHTML = '<img src="../../uploads/add.png" alt="">'
+        createPostButton.style.marginRight = "10px"
+        createPostButton.style.cursor = "pointer"
 
-    createPost.appendChild(sort)
-    createPost.appendChild(createPostButton)
+        createPost.appendChild(sort)
+        createPost.appendChild(createPostButton)
 
-    elem.appendChild(createPost)
-    createPostButton.addEventListener("click", createNewPost)
+        elem.appendChild(createPost)
+        createPostButton.addEventListener("click", createNewPost)
 
-    fetch('/dashboard')
-      .then(response => response.json())
-      .then(data => {
-        console.log("");
-        let post = document.createElement("div")
-        data.AllPosts.forEach((element, i) => {
-          console.log(element.ID);
-          let c = `<div class="pBody"><div class="post-container5">
+        fetch('/dashboard')
+          .then(response => response.json())
+          .then(data => {
+            console.log("");
+            let post = document.createElement("div")
+            data.AllPosts.forEach((element, i) => {
+              console.log(element.ID);
+              let c = `<div class="pBody"><div class="post-container5">
           <div class="post5" onClick="seePost('${element.Slug}')">
               <div class="post-header5">
                   <img class="post-owner-image5" src="../../uploads/icon.webp" alt="Owner Image">
@@ -758,45 +758,45 @@ const displayAllContent = (element) => {
       
               <div class="post-hashtags5">
                   ${(element.Categories && element.Categories.length > 0)
-              ? element.Categories.map(category => `#${category.Name}`).join('<br>')
-              : 'Aucune catégorie'}
+                  ? element.Categories.map(category => `#${category.Name}`).join('<br>')
+                  : 'Aucune catégorie'}
               </div>
           </div>
       
           
       </div></div>`
 
-          post.innerHTML += c
-        })
-        elem.appendChild(post)
+              post.innerHTML += c
+            })
+            elem.appendChild(post)
+          })
+          .catch(error => {
+            console.error('Error checking authentication:', error);
+            return
+          });
+
+
       })
-      .catch(error => {
-        console.error('Error checking authentication:', error);
-        return
-      });
 
-
+      bodyContent.appendChild(posts)
+      bodyContent.appendChild(onlineStatus)
+      element.appendChild(bodyContent)
+    }
   })
-
-  bodyContent.appendChild(posts)
-  bodyContent.appendChild(onlineStatus)
-  element.appendChild(bodyContent)
-  }
-})
 }
 
 const seePost = (slug) => {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
-  // alert('CLick on post')
-  // window.history.replaceState({},'', '/post')
-  let centralDiv = document.getElementById('posts')
-  centralDiv.innerHTML = ''
-  fetch('/post/' + slug)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data.UserPoster.Nickname);
-      centralDiv.innerHTML = `
+      // alert('CLick on post')
+      // window.history.replaceState({},'', '/post')
+      let centralDiv = document.getElementById('posts')
+      centralDiv.innerHTML = ''
+      fetch('/post/' + slug)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.UserPoster.Nickname);
+          centralDiv.innerHTML = `
         <div id="cBody" class="cBody">
         <img class="back-button" src="../../uploads/back.png" alt="Back" onclick="goBack()">
           <div id="post-container" class="post-container">
@@ -814,7 +814,7 @@ const seePost = (slug) => {
             </div>
           <div class="comments-container">
           ${data.Comments && data.Comments.length > 0
-          ? data.Comments.map(comment => `
+              ? data.Comments.map(comment => `
           <div class="comment">
               <div class="comment-header">
                   <img class="comment-owner-image" src="../../uploads/icon.webp" alt="Commenter Image">
@@ -826,55 +826,55 @@ const seePost = (slug) => {
               <p>${comment.Text}</p>
           </div>
       `).join('')
-          : 'No comments available.'}
+              : 'No comments available.'}
           
       <form class="comment-form" id="cf">
       <input type="text" class="comment-input" id="ci" placeholder="Write a comment...">
       <button type="submit" class="comment-button" id="cb"><img src="../../uploads/sentt.png"></button>
     </form></div></div>`
 
-      let coordonnates = centralDiv.getBoundingClientRect()
+          let coordonnates = centralDiv.getBoundingClientRect()
 
-      centralDiv.scrollTo({
-        top: coordonnates.bottom + 1000,
-        behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
-      });
-
-      const commentForm = document.getElementById('cf');
-      const commentInput = document.getElementById('ci');
-
-      commentForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-
-        const commentText = commentInput.value;
-        console.log(commentText);
-
-        fetch('/comment/' + data.Post.ID, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ text: commentText }),
-        })
-          .then(response => response.json())
-          .then(newComment => {
-            if (newComment.commented == true) {
-              seePost(slug)
-              console.log('New comment added:', newComment);
-            }
-          })
-          .catch(error => {
-            console.error('Error adding comment:', error);
+          centralDiv.scrollTo({
+            top: coordonnates.bottom + 1000,
+            behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
           });
-      });
+
+          const commentForm = document.getElementById('cf');
+          const commentInput = document.getElementById('ci');
+
+          commentForm.addEventListener('submit', (event) => {
+            event.preventDefault();
 
 
-    })
-    .catch(error => {
-      console.error('Error checking authentication:', error);
-      return
-    });
+            const commentText = commentInput.value;
+            console.log(commentText);
+
+            fetch('/comment/' + data.Post.ID, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ text: commentText }),
+            })
+              .then(response => response.json())
+              .then(newComment => {
+                if (newComment.commented == true) {
+                  seePost(slug)
+                  console.log('New comment added:', newComment);
+                }
+              })
+              .catch(error => {
+                console.error('Error adding comment:', error);
+              });
+          });
+
+
+        })
+        .catch(error => {
+          console.error('Error checking authentication:', error);
+          return
+        });
     }
   })
 }
@@ -896,140 +896,140 @@ let socket;
 function connectWebSocket() {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
-  socket = new WebSocket("ws://localhost:8080/ws");
+      socket = new WebSocket("ws://localhost:8080/ws");
 
-  socket.addEventListener("open", (event) => {
-    console.log("Connected to WebSocket");
-    fetch('/dashboard')
-      .then(response => response.json())
-      .then(data => {
-        console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
+      socket.addEventListener("open", (event) => {
+        console.log("Connected to WebSocket");
+        fetch('/dashboard')
+          .then(response => response.json())
+          .then(data => {
+            console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
 
-        // Check if the WebSocket connection is still open before sending data
-        if (socket.readyState === WebSocket.OPEN) {
-          const initialData = {
-            username: data.CurrentUser.Nickname,
-            // Other initial data if necessary
-          };
-          socket.send(JSON.stringify(initialData));
-          // document.getElementById("onlineStatus").textContent = data.tabOnline
-        } else {
-          console.error('WebSocket is not in OPEN state.');
-        }
+            // Check if the WebSocket connection is still open before sending data
+            if (socket.readyState === WebSocket.OPEN) {
+              const initialData = {
+                username: data.CurrentUser.Nickname,
+                // Other initial data if necessary
+              };
+              socket.send(JSON.stringify(initialData));
+              // document.getElementById("onlineStatus").textContent = data.tabOnline
+            } else {
+              console.error('WebSocket is not in OPEN state.');
+            }
+          })
+          .catch(error => {
+            console.error('Error checking authentication:', error);
+            return;
+          });
       })
-      .catch(error => {
-        console.error('Error checking authentication:', error);
-        return;
-      });
-  })
 
-  socket.addEventListener("message", (event) => {
-    const [command, payload] = event.data.split('|');
-    if (command === 'updateUsers') {
-      let last = payload[payload.length - 1]
+      socket.addEventListener("message", (event) => {
+        const [command, payload] = event.data.split('|');
+        if (command === 'updateUsers') {
+          let last = payload[payload.length - 1]
 
-      console.log("Payload : ", payload);
+          console.log("Payload : ", payload);
 
-      let newString = payload.slice(0, -2);
-      newString += last
-      console.log("Payload : ", newString);
-      console.log("online users : ", JSON.parse(newString));
-      const onlineUsers = JSON.parse(newString)
+          let newString = payload.slice(0, -2);
+          newString += last
+          console.log("Payload : ", newString);
+          console.log("online users : ", JSON.parse(newString));
+          const onlineUsers = JSON.parse(newString)
 
-      fetch('/dashboard')
-        .then(response => response.json())
-        .then(data => {
-          console.log("Online Users : ", onlineUsers);
-          let onlines = []
-          onlineUsers.map((element, i) => {
-            if (element.nom == data.CurrentUser.Nickname) {
+          fetch('/dashboard')
+            .then(response => response.json())
+            .then(data => {
+              console.log("Online Users : ", onlineUsers);
+              let onlines = []
+              onlineUsers.map((element, i) => {
+                if (element.nom == data.CurrentUser.Nickname) {
 
-              const onlineUsersDiv = document.getElementById('onlineStatus');
-              // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
+                  const onlineUsersDiv = document.getElementById('onlineStatus');
+                  // onlineUsersDiv.innerHTML = onlineUsers.join('<br>');
 
-              onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
+                  onlineStatus.innerHTML = `<div class="obody"><div class="user-list-container">
               
               <ul id="user-list">
               </ul>
               </div></div>
               `
 
-              const userList = document.getElementById("user-list")
-              if (element.onlineUsers) {
-                element.onlineUsers.forEach(element => {
-                  onlines.push(element)
-                  userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
+                  const userList = document.getElementById("user-list")
+                  if (element.onlineUsers) {
+                    element.onlineUsers.forEach(element => {
+                      onlines.push(element)
+                      userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
                   <span class="user-name">${element}</span>
                   <span class="user-status">🟢</span>
                   </li>`
-                })
+                    })
 
-                
-              }
-              userList.innerHTML += "<h2>Offline</h2>"
-              console.log("Offline Users", data.AllUsers);
-             tab = data.AllUsers.sort()
 
-              tab.forEach(ele => {
-                if (ele.Nickname.length != 0 && !onlines.includes(ele.Nickname) && ele.Nickname != data.CurrentUser.Nickname) 
-                userList.innerHTML += `<li class="user-item">
+                  }
+                  userList.innerHTML += "<h2>Offline</h2>"
+                  console.log("Offline Users", data.AllUsers);
+                  tab = data.AllUsers.sort()
+
+                  tab.forEach(ele => {
+                    if (ele.Nickname.length != 0 && !onlines.includes(ele.Nickname) && ele.Nickname != data.CurrentUser.Nickname)
+                      userList.innerHTML += `<li class="user-item">
                 <span class="user-name">${ele.Nickname}</span>
                 <span class="user-status"></span>
                 </li>`
+                  })
+                  let elem = document.getElementById('numberOfUser')
+                  elem.textContent = "Hello, " + data.CurrentUser.Nickname + " 🙂"
+                }
               })
-              let elem = document.getElementById('numberOfUser')
-              elem.textContent = "Hello, " + data.CurrentUser.Nickname + " 🙂"
-            }
-          })
-        })
-        .catch(error => {
-          console.error('Error checking authentication:', error);
-          return;
-        });
-    } else {
-      fetch('/dashboard')
-        .then(response => response.json())
-        .then(data => {
-          console.log("Event data : ", event.data);
-          let json = JSON.parse(event.data)
-          //console.log('Nickname ===== : ', data.CurrentUser.Nickname);
-          const chatDiv = document.getElementById("discuss");
-          
-          if (data.CurrentUser.Nickname == json.sender) {
-            chatDiv.innerHTML += `<div class="message user1">
+            })
+            .catch(error => {
+              console.error('Error checking authentication:', error);
+              return;
+            });
+        } else {
+          fetch('/dashboard')
+            .then(response => response.json())
+            .then(data => {
+              console.log("Event data : ", event.data);
+              let json = JSON.parse(event.data)
+              //console.log('Nickname ===== : ', data.CurrentUser.Nickname);
+              const chatDiv = document.getElementById("discuss");
+
+              if (data.CurrentUser.Nickname == json.sender) {
+                chatDiv.innerHTML += `<div class="message user1">
             <span class="message-Author">${json.sender}</span>
           <p class="message-bodySend">${json.message}</p>
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
-          } else {
-            showPopup(json.sender);
-            chatDiv.innerHTML += `<div class="message user2">
+              } else {
+                showPopup(json.sender);
+                chatDiv.innerHTML += `<div class="message user2">
             <span class="message-Author">${json.sender}</span>
           <p class="message-bodyReceive">${json.message}</p>
           <span class="message-time">${getFormattedDate()}</span>
           </div>`
-          }
-          const messages = document.querySelectorAll('.message');
-          const lastMessage = messages[messages.length - 1];
-          if (lastMessage) {
-            lastMessage.scrollIntoView();
-          }
-        })
-        .catch(error => {
-          console.error('Error checking authentication:', error);
-          return
-        });
+              }
+              const messages = document.querySelectorAll('.message');
+              const lastMessage = messages[messages.length - 1];
+              if (lastMessage) {
+                lastMessage.scrollIntoView();
+              }
+            })
+            .catch(error => {
+              console.error('Error checking authentication:', error);
+              return
+            });
 
-      // chatDiv.innerHTML += `<p> ${event.data}</p>`;
+          // chatDiv.innerHTML += `<p> ${event.data}</p>`;
+        }
+
+      });
+
+      socket.addEventListener("close", (event) => {
+        console.log("Connection closed");
+      });
     }
-
-  });
-
-  socket.addEventListener("close", (event) => {
-    console.log("Connection closed");
-  });
-  }
-})
+  })
 }
 //}
 
@@ -1041,6 +1041,26 @@ function sendMessage(event, receiver) {
   const messageInput = document.getElementById("ci");
 
   const message = messageInput.value;
+
+  // const messageInput = document.getElementById("ci"); // Assurez-vous que c'est le bon ID pour votre champ de saisie
+  // let typingTimeout;
+
+  messageInput.addEventListener('input', () => {
+    console.log("ISTYPING ", true);
+    // L'utilisateur a commencé à taper, annulez le timeout précédent s'il existe
+    // clearTimeout(typingTimeout);
+
+    // // Envoyez une notification de frappe au serveur
+    // sendTypingNotification(true);
+
+    // // Définissez un timeout pour envoyer une notification d'arrêt de frappe après un certain temps d'inactivité
+    // typingTimeout = setTimeout(() => {
+    //   sendTypingNotification(false);
+    // }, 5000); // 5 secondes d'inactivité
+  });
+
+
+
   if (message.length == 0) {
     return
   }
@@ -1075,7 +1095,7 @@ function sendMessage(event, receiver) {
     behavior: 'smooth' // Pour un défilement fluide, si pris en charge par le navigateur
   });
   // recipientInput.value = "";
-    }
+}
 // })
 // }
 
@@ -1106,11 +1126,11 @@ let loader = 10
 function seeMessages(friend, limit = 10) {
   IsAuthenticated().then(isAuthenticated => {
     if (isAuthenticated) {
-  console.log('LIMIT ++++===== ', limit);
+      console.log('LIMIT ++++===== ', limit);
 
-  let elem = document.getElementById('posts')
-  elem.innerHTML = ''
-  elem.innerHTML = `<div id="mbody" class="mbody"><div id="chat-container" class="chat-container">
+      let elem = document.getElementById('posts')
+      elem.innerHTML = ''
+      elem.innerHTML = `<div id="mbody" class="mbody"><div id="chat-container" class="chat-container">
   <div class="chat-header">
     <img class="post-owner-image5" src="../../uploads/icon.webp" alt="User 2">
     <h2>${friend}</h2>
@@ -1124,57 +1144,62 @@ function seeMessages(friend, limit = 10) {
     </form>
 </div></div>`
 
-  let toScroll = document.getElementById("discuss")
-  // let c = toScroll.getBoundingClientRect();
-  // toScroll.scrollTo = 580;
-  // let coordonnates = centralDiv.getBoundingClientRect()
+      let toScroll = document.getElementById("discuss")
+      // let c = toScroll.getBoundingClientRect();
+      // toScroll.scrollTo = 580;
+      // let coordonnates = centralDiv.getBoundingClientRect()
 
-  // toScroll.scrollTop
-  toScroll.addEventListener("scroll", function () {
-    console.log(toScroll.scrollTop);
-    if (toScroll.scrollTop === 0) {
-      console.log('ON TOPPPPPPPPPP', loader);
-      loader = loader + 10
-      throttle(seeMessages(friend, loader), 1000)
-    }
-  })
+      // toScroll.scrollTop
+      toScroll.addEventListener("scroll", function () {
+        console.log(toScroll.scrollTop);
+        if (toScroll.scrollTop === 0) {
+          console.log('ON TOPPPPPPPPPP', loader);
+          loader = loader + 10
+          throttle(seeMessages(friend, loader), 1000)
+        }
+      })
 
 
-  let fff = document.getElementById('discuss')
-  fetch(`http://localhost:8080/discussion/${friend}?limit=${limit}`)
-    .then(response => response.json())
-    .then(data => {
-      data.Messages.forEach(message => {
-        if (message.Receiver != friend) {
-          fff.innerHTML += `<div class="message user2">
+      let fff = document.getElementById('discuss')
+      fetch(`http://localhost:8080/discussion/${friend}?limit=${limit}`)
+        .then(response => response.json())
+        .then(data => {
+          data.Messages.forEach(message => {
+            if (message.Receiver != friend) {
+              fff.innerHTML += `<div class="message user2">
           <span class="message-Author">${message.Author}</span>
           <p class="message-bodyReceive">${message.Message}</p>
           <span class="message-time">${message.Time}</span>
       </div>`
-        } else {
-          fff.innerHTML += `<div class="message user1">
+            } else {
+              fff.innerHTML += `<div class="message user1">
           <span class="message-Author">${message.Author}</span>
           <p class="message-bodySend">${message.Message}</p>
           <span class="message-time">${message.Time}</span>
       </div>`
-        }
-        console.log("nnnnn = ", message.Receiver);
-      })
-      console.log("mess = ", data);
-      if (loader === 10) {
-        const messages = document.querySelectorAll('.message');
-        const lastMessage = messages[messages.length - 1];
-        if (lastMessage) {
-          lastMessage.scrollIntoView();
-        }
-      }
+            }
+            console.log("nnnnn = ", message.Receiver);
+          })
+          console.log("mess = ", data);
+          if (loader === 10) {
+            const messages = document.querySelectorAll('.message');
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage) {
+              lastMessage.scrollIntoView();
+            }
+          }
 
-    })
-    .catch(error => {
-      console.error('Error checking authentication:', error);
-      return
-    });
-  }
+        })
+        .catch(error => {
+          console.error('Error checking authentication:', error);
+          return
+        });
+      const messageInput = document.getElementById("ci");
+
+      messageInput.addEventListener('input', () => {
+        console.log("ISTYPING ", true);
+      });
+    }
   })
 }
 
