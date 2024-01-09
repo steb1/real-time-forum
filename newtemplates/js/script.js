@@ -457,7 +457,7 @@ let addPost = (posts) => {
                 <div class="post-content5">
                 ${element.Description}
                 </div>
-                ${(element.ImageURL.length != 9) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : ''} 
+                ${(element.ImageURL.length > 0) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : ''} 
                 
         
                 <div class="post-stats5">
@@ -809,7 +809,8 @@ const seePost = (slug) => {
             </div>
             <div class="post-content">
               <p>${data.Post.Description}</p>
-              <img class="post-image" src="../..${data.Post.ImageURL}" alt="Post Image">
+              ${(data.Post.ImageURL.length > 0) ? `<img class="post-image5" src="../..${data.Post.ImageURL}" alt="Post Image"></img>` : ''} 
+              
             </div>
           <div class="comments-container">
           ${data.Comments && data.Comments.length > 0

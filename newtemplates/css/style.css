@@ -968,10 +968,12 @@ h2 {
     align-items: center;
     gap: 2px;
     margin: 5px;
+    word-wrap: break-word;
+    word-break: break-all;
 }   
 
 .message-bodySend {
-    height: 30px;
+    min-height: 30px;
     float: right;
     width: 50%;
     padding: 5px;
@@ -984,6 +986,9 @@ h2 {
     justify-content: right;
     align-items: center;
     margin: 5px;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-y: visible;
 }
 
 .message-Author {
