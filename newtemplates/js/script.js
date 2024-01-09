@@ -457,7 +457,7 @@ let addPost = (posts) => {
                 <div class="post-content5">
                 ${element.Description}
                 </div>
-                ${(element.ImageURL) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : '<p></p>'} 
+                ${(element.ImageURL.length != 9) ? `<img class="post-image5" src="../..${element.ImageURL}" alt="Post Image"></img>` : ''} 
                 
         
                 <div class="post-stats5">
@@ -966,9 +966,10 @@ function connectWebSocket() {
                 
               }
               userList.innerHTML += "<h2>Offline</h2>"
-              data.AllUsers.sort()
+              console.log("Offline Users", data.AllUsers);
+             tab = data.AllUsers.sort()
 
-              data.AllUsers.forEach(ele => {
+              tab.forEach(ele => {
                 if (ele.Nickname.length != 0 && !onlines.includes(ele.Nickname) && ele.Nickname != data.CurrentUser.Nickname) 
                 userList.innerHTML += `<li class="user-item">
                 <span class="user-name">${ele.Nickname}</span>

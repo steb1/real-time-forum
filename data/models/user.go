@@ -141,7 +141,7 @@ func (ur *UserRepository) GetUserByNickname(Nickname string) (*User, error) {
 // Select All users
 func (ur *UserRepository) SelectAllUsers() ([]User, error) {
 	var user []User
-	row, err := ur.db.Query("SELECT * FROM user")
+	row, err := ur.db.Query("SELECT * FROM user ORDER BY nickname")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -206,6 +206,14 @@ func (ur *UserRepository) SelectAllUsersByPost(postID string) ([]User, error) {
 
 		user = append(user, tab)
 	}
+	// var tab []User
+	// for _, v := range user {
+	// 	for _, v2 := range user {
+	// 		if v.Nickname < v2.Nickname {
+
+	// 		}
+	// 	}
+	// }
 	return user, nil
 }
 
