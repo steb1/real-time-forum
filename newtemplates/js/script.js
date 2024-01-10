@@ -1201,7 +1201,7 @@ function seeMessages(friend, limit = 10) {
           console.log("ISTYPING ", false);
           sendTypingNotification('false', currentUser, friend);
           //typing false
-        }, 5000);
+        }, 1000);
       });
 
       
@@ -1213,9 +1213,8 @@ function sendTypingNotification(isTyping, username, recipient) {
   const typingData = {
     type: 'typing',
     isTyping: isTyping,
-    username: username, // Envoyez le nom d'utilisateur avec la notification
+    username: username,
     receiver: recipient,
-    // Vous pouvez ajouter d'autres informations si nécessaire
   };
 
   // Envoyez les données de frappe via WebSocket
