@@ -1037,6 +1037,8 @@ h2 {
     margin: 1px;
     font-size: 15px;
     color: rgb(148, 144, 144);
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 #message-popup {

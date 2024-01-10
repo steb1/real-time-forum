@@ -27,7 +27,6 @@ type User struct {
 var users = make(map[string]*User)
 
 func printUsers() {
-	fmt.Println("List of Users:")
 	for username, user := range users {
 		fmt.Printf("Username: %s, Connection: %v\n", username, user.conn)
 	}
@@ -112,14 +111,12 @@ func Message(w http.ResponseWriter, r *http.Request) {
 		OnlineUsersByProfile = append(OnlineUsersByProfile, string(jsonData)+",")
 	}
 
-	fmt.Println("online users : ", OnlineUsersByProfile)
 	broadcast(fmt.Sprintf("updateUsers|%v", OnlineUsersByProfile))
 
 	// broadcast <- fmt.Sprintf("updateUsers|%v", onlineUsers)
 
 	// Gérer les messages
 	for {
-		fmt.Println("ON MESSAGE")
 		_, p, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
@@ -154,8 +151,6 @@ func Message(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		if messageData["type"] == "typing" {
-			fmt.Println("======------------==========------=====")
-			fmt.Println(messageData)
 			user1, _ := users[messageData["receiver"]]
 			if messageData["isTyping"] == "true" {
 				user1.conn.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf("Typing|%v", messageData["username"])))
@@ -168,7 +163,6 @@ func Message(w http.ResponseWriter, r *http.Request) {
 			user1Name := messageData["sender"]
 			recipientUser, ok := users[recipientUsername]
 			user1, _ := users[user1Name]
-			fmt.Println("recipientUsername : ", recipientUsername)
 
 			fmt.Printf("After adding user. Users count: %d\n", len(users))
 
@@ -184,8 +178,6 @@ func Message(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				fmt.Println(err)
 			}
-
-			fmt.Println("updateStatus : ", updateStatus(users, user1Name))
 
 			OnlineUsersByProfile = updateStatus(users, user1Name)
 			broadcast(fmt.Sprintf("updateUsers|%v", OnlineUsersByProfile))

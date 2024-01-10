@@ -268,7 +268,6 @@ func HandleDisconnect(res http.ResponseWriter, req *http.Request) {
 }
 func CheckAuthentication(res http.ResponseWriter, req *http.Request) {
 	isSessionOpen := models.ValidSession(req)
-	fmt.Println(isSessionOpen)
 	if isSessionOpen {
 		response := map[string]bool{"authenticated": true}
 		writeJSONResponse(res, response)
@@ -293,7 +292,7 @@ func writeJSONResponse(w http.ResponseWriter, data interface{}) {
 func Registration(res http.ResponseWriter, req *http.Request) {
 	type UserData struct {
 		Nickname  string `json:"nickname"`
-		Age       int    `json:"age"`
+		Age       string `json:"age"`
 		Gender    string `json:"gender"`
 		FirstName string `json:"firstName"`
 		LastName  string `json:"lastName"`
@@ -307,7 +306,6 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 	json.Unmarshal(responseData, &userData)
 
 	if err != nil {
-		fmt.Println("ici")
 		http.Error(res, "Invalid request payload", http.StatusBadRequest)
 		return
 	}
@@ -320,13 +318,17 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 		fmt.Println("Failed to generate uuid")
 		return
 	}
+	r, err := strconv.Atoi(userData.Age)
+	if err != nil {
+		return
+	}
 	//user.ID = ID.String()
 	user.Nickname = userData.Nickname
 	user.Password = userData.Password
 	user.FirstName = userData.FirstName
 	user.Gender = userData.Gender
 	user.LastName = userData.LastName
-	user.Age = strconv.Itoa((userData.Age))
+	user.Age = strconv.Itoa(r)
 	user.Email = userData.Email
 
 	if _, exist := models.UserRepo.IsExisted(userData.Email, userData.Nickname); !exist && lib.IsEmailValid(userData.Email) {
@@ -335,8 +337,6 @@ func Registration(res http.ResponseWriter, req *http.Request) {
 			log.Fatalf("❌ Failed to created account %v", err)
 		}
 
-		fmt.Println(user.ID)
-		fmt.Println(userData.Nickname)
 		models.NewSessionToken(res, user.ID, userData.Nickname)
 
 		res.WriteHeader(200)
@@ -367,11 +367,9 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		responseData, err := io.ReadAll(req.Body)
 		json.Unmarshal(responseData, &userData1)
 		if err != nil {
-			fmt.Println("ici")
 			http.Error(res, "Invalid request payload", http.StatusBadRequest)
 			return
 		}
-		fmt.Printf("Received user data: %+v\n", userData1)
 
 		user := models.User{}
 
@@ -385,7 +383,6 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		}
 
 		if mailExist || NickNameExist {
-			fmt.Println("Match :", lib.IsPasswordsMatch(_user.Password, userData1.Password))
 			if userData1.Password != _user.Password {
 				// res.WriteHeader(http.StatusNotFound)
 
@@ -403,7 +400,6 @@ func Login(res http.ResponseWriter, req *http.Request) {
 
 				models.NewSessionToken(res, user.ID, user.Email)
 				response := map[string]bool{"login": true}
-				fmt.Println(response)
 				writeJSONResponse(res, response)
 
 				log.Println("✅ Sign in with success")
@@ -575,8 +571,6 @@ func GetPostDetail(res http.ResponseWriter, req *http.Request) {
 		pathPart := strings.Split(path, "/")
 		if len(pathPart) == 3 && pathPart[1] == "post" && pathPart[2] != "" {
 			slug := pathPart[2]
-			fmt.Println("HEEEEEEEEEEEEEE")
-			fmt.Println(slug)
 			post, err := models.PostRepo.GetPostBySlug(slug)
 			if post == nil {
 				res.WriteHeader(http.StatusNotFound)
@@ -651,8 +645,6 @@ func GetPostDetail(res http.ResponseWriter, req *http.Request) {
 				NbrLike:        nbrLike,
 				NbrDislike:     nbrDislike,
 			}
-			fmt.Println("data GATE = ")
-			fmt.Println(PostPageData)
 
 			response := make(map[string]interface{})
 			response["CurrentUser"] = PostPageData.CurrentUser
@@ -672,7 +664,6 @@ func GetPostDetail(res http.ResponseWriter, req *http.Request) {
 }
 
 func Comment(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("C BONNNNNNNNNNNNN")
 	if lib.ValidateRequest(req, res, "/comment/*", http.MethodPost) {
 		// err := req.ParseForm()
 		// if err != nil {
@@ -695,7 +686,6 @@ func Comment(res http.ResponseWriter, req *http.Request) {
 		json.Unmarshal(responseData, &userData)
 
 		if err != nil {
-			fmt.Println("ici")
 			http.Error(res, "Invalid request payload", http.StatusBadRequest)
 			return
 		}
@@ -801,8 +791,6 @@ func LikePost(res http.ResponseWriter, req *http.Request) {
 				response["NbrLike"] = homePageData.NbrLike
 				response["NbrDislike"] = homePageData.NbrDislike
 
-				fmt.Println(response)
-
 				writeJSONResponse(res, response)
 				// u, err := uuid.NewV4()
 				// if err != nil {
@@ -863,8 +851,6 @@ func LikePost(res http.ResponseWriter, req *http.Request) {
 					response := make(map[string]interface{})
 					response["NbrLike"] = homePageData.NbrLike
 					response["NbrDislike"] = homePageData.NbrDislike
-
-					fmt.Println(response)
 
 					writeJSONResponse(res, response)
 					// lib.RedirectToPreviousURL(res, req)
@@ -987,8 +973,6 @@ func DislikePost(res http.ResponseWriter, req *http.Request) {
 				response["NbrLike"] = homePageData.NbrLike
 				response["NbrDislike"] = homePageData.NbrDislike
 
-				fmt.Println(response)
-
 				writeJSONResponse(res, response)
 				// u, err := uuid.NewV4()
 				// if err != nil {
@@ -1071,8 +1055,6 @@ func DislikePost(res http.ResponseWriter, req *http.Request) {
 					response["NbrLike"] = homePageData.NbrLike
 					response["NbrDislike"] = homePageData.NbrDislike
 
-					fmt.Println(response)
-
 					writeJSONResponse(res, response)
 					// lib.RedirectToPreviousURL(res, req)
 				} else if view.Rate == 2 {
@@ -1110,8 +1092,6 @@ func DislikePost(res http.ResponseWriter, req *http.Request) {
 					response["NbrLike"] = homePageData.NbrLike
 					response["NbrDislike"] = homePageData.NbrDislike
 
-					fmt.Println(response)
-
 					writeJSONResponse(res, response)
 					// lib.RedirectToPreviousURL(res, req)
 				}
@@ -1138,9 +1118,6 @@ func Discussion(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 		path := req.URL.Path
-		fmt.Println("skdddddddddddddddddddddd")
-		fmt.Println(lim)
-		fmt.Println(path)
 		pathPart := strings.Split(path, "/")
 		if len(pathPart) == 3 && pathPart[1] == "discussion" && pathPart[2] != "" {
 			friendName := pathPart[2]
