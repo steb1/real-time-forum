@@ -126,6 +126,7 @@ let rightBarContent = ["photo", "Home", "disconnect"]
 let container = document.getElementById("container-flex")
 const preventReloadLinks = container.querySelectorAll('.leftnav-link');
 const AllRoutes = ["", "photo", "/", "disconnect"]
+let currentUser;
 
 
 function generateAuthPage() {
@@ -904,6 +905,7 @@ function connectWebSocket() {
           .then(response => response.json())
           .then(data => {
             console.log('data.CurrentUser.Nickname : ', data.CurrentUser.Nickname);
+            currentUser = data.CurrentUser.Nickname;
 
             // Check if the WebSocket connection is still open before sending data
             if (socket.readyState === WebSocket.OPEN) {
@@ -959,7 +961,7 @@ function connectWebSocket() {
                     element.onlineUsers.forEach(element => {
                       onlines.push(element)
                       userList.innerHTML += `<li class="user-item" onClick="seeMessages('${element}')">
-                  <span class="user-name">${element}</span>
+                  <span class="user-name" id="${element}">${element}</span>
                   <span class="user-status">🟢</span>
                   </li>`
                     })
@@ -986,7 +988,16 @@ function connectWebSocket() {
               console.error('Error checking authentication:', error);
               return;
             });
-        } else {
+        } else if (command === 'Typing') {
+          let elem = document.getElementById(payload)
+          elem.textContent = `${payload} is Typing`
+          elem.innerHTML += `<img class="typing" src="../../uploads/typing2.gif">`
+          console.log("element : ",elem);
+          console.log("Payload : ooo ", payload);
+        }else if (command === 'NoTyping') {
+          let elem = document.getElementById(payload)
+          elem.textContent = `${payload}`
+        }else {
           fetch('/dashboard')
             .then(response => response.json())
             .then(data => {
@@ -1042,25 +1053,7 @@ function sendMessage(event, receiver) {
 
   const message = messageInput.value;
 
-  // const messageInput = document.getElementById("ci"); // Assurez-vous que c'est le bon ID pour votre champ de saisie
-  // let typingTimeout;
-
-  messageInput.addEventListener('input', () => {
-    console.log("ISTYPING ", true);
-    // L'utilisateur a commencé à taper, annulez le timeout précédent s'il existe
-    // clearTimeout(typingTimeout);
-
-    // // Envoyez une notification de frappe au serveur
-    // sendTypingNotification(true);
-
-    // // Définissez un timeout pour envoyer une notification d'arrêt de frappe après un certain temps d'inactivité
-    // typingTimeout = setTimeout(() => {
-    //   sendTypingNotification(false);
-    // }, 5000); // 5 secondes d'inactivité
-  });
-
-
-
+ 
   if (message.length == 0) {
     return
   }
@@ -1195,12 +1188,38 @@ function seeMessages(friend, limit = 10) {
           return
         });
       const messageInput = document.getElementById("ci");
+      let typingTimeout;
 
       messageInput.addEventListener('input', () => {
+        clearTimeout(typingTimeout)
         console.log("ISTYPING ", true);
+        console.log("curr user ", currentUser);
+        sendTypingNotification('true', currentUser, friend);
+        //typing true
+
+        typingTimeout = setTimeout(() => {
+          console.log("ISTYPING ", false);
+          sendTypingNotification('false', currentUser, friend);
+          //typing false
+        }, 5000);
       });
+
+      
     }
   })
+}
+
+function sendTypingNotification(isTyping, username, recipient) {
+  const typingData = {
+    type: 'typing',
+    isTyping: isTyping,
+    username: username, // Envoyez le nom d'utilisateur avec la notification
+    receiver: recipient,
+    // Vous pouvez ajouter d'autres informations si nécessaire
+  };
+
+  // Envoyez les données de frappe via WebSocket
+  socket.send(JSON.stringify(typingData));
 }
 
 function send(receiver) {

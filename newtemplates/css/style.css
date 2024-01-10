@@ -804,6 +804,12 @@ input {
     border-radius: 50%;
     margin-right: 10px;
 }
+.typing {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    padding-top: 5px;
+}
 
 .post-owner-info5 {
     display: flex;
